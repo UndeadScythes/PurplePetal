@@ -4,24 +4,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Displays diary entries for the status of various plants.
@@ -30,21 +30,22 @@ import javax.swing.event.ListSelectionListener;
  */
 @SuppressWarnings("serial")
 public class Diary extends PurplePanel {
-    private final DefaultListModel<Pair> mdlDates = new DefaultListModel<>();
     private final DefaultListModel<Pair> mldPlants = new DefaultListModel<>();
     private final DefaultComboBoxModel<Pair> mdlMonths = new DefaultComboBoxModel<>();
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    private final TableCellRenderer cellRenderer;
 
     /**
      * Initialise components.
      */
     public Diary() {
         initComponents();
-        for (Month month : Month.values()) {
-            mdlMonths.addElement(new Pair(month.getValue() - 1, month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)));
+        cellRenderer = new TableCellRenderer(tabCalendar.getColumnCount());
+        for (int i = 0; i < tabCalendar.getColumnCount(); i++) {
+            tabCalendar.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
-        btnTodayActionPerformed(null);
-        btnRefreshActionPerformed(null);
+        for (Month month : Month.values()) {
+            mdlMonths.addElement(new Pair(month.getValue(), month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)));
+        }
         btnTodayActionPerformed(null);
     }
 
@@ -74,8 +75,8 @@ public class Diary extends PurplePanel {
         JButton btnToday = new JButton();
         cmbMonth = new JComboBox<Pair>();
         spnYear = new JSpinner();
-        final JScrollPane scrDates = new JScrollPane();
-        lstDates = new JList<Pair>();
+        scrCalendar = new JScrollPane();
+        tabCalendar = new JTable();
         final JButton btnRefresh = new JButton();
         JPanel panEntries = new JPanel();
         final JScrollPane scrPlants = new JScrollPane();
@@ -215,6 +216,7 @@ public class Diary extends PurplePanel {
             }
         });
 
+        cmbMonth.setMaximumRowCount(12);
         cmbMonth.setModel(mdlMonths);
         cmbMonth.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent evt) {
@@ -222,21 +224,55 @@ public class Diary extends PurplePanel {
             }
         });
 
-        spnYear.setModel(new SpinnerDateModel(new Date(), new Date(1114939920000L), new Date(2692780320000L), Calendar.YEAR));
-        spnYear.setEditor(new JSpinner.DateEditor(spnYear, "yyyy"));
+        spnYear.setModel(new SpinnerNumberModel());
+        spnYear.setEditor(new JSpinner.NumberEditor(spnYear, "0000"));
         spnYear.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent evt) {
                 spnYearStateChanged(evt);
             }
         });
 
-        lstDates.setModel(mdlDates);
-        lstDates.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent evt) {
-                lstDatesValueChanged(evt);
+        tabCalendar.setModel(new DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"
+            }
+        ) {
+            Class[] types = new Class [] {
+                String.class, String.class, String.class, String.class, String.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        scrDates.setViewportView(lstDates);
+        tabCalendar.setAutoscrolls(false);
+        tabCalendar.setColumnSelectionAllowed(false);
+        tabCalendar.setFocusable(false);
+        tabCalendar.setRowSelectionAllowed(false);
+        tabCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabCalendar.getTableHeader().setResizingAllowed(false);
+        tabCalendar.getTableHeader().setReorderingAllowed(false);
+        tabCalendar.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tabCalendarMouseClicked(evt);
+            }
+        });
+        scrCalendar.setViewportView(tabCalendar);
 
         btnRefresh.setText("Refresh");
         btnRefresh.addActionListener(new ActionListener() {
@@ -248,14 +284,15 @@ public class Diary extends PurplePanel {
         GroupLayout panCalendarLayout = new GroupLayout(panCalendar);
         panCalendar.setLayout(panCalendarLayout);
         panCalendarLayout.setHorizontalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panCalendarLayout.createSequentialGroup()
-                .addComponent(btnToday)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE))
+            .addGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(panCalendarLayout.createSequentialGroup()
+                    .addComponent(btnToday)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE))
+                .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE))
             .addComponent(btnRefresh)
-            .addComponent(scrDates, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panCalendarLayout.setVerticalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panCalendarLayout.createSequentialGroup()
@@ -265,7 +302,7 @@ public class Diary extends PurplePanel {
                     .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrDates)
+                .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRefresh))
         );
@@ -309,85 +346,75 @@ public class Diary extends PurplePanel {
                 .addComponent(panEntries, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(panEntries, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 201, Short.MAX_VALUE))
-                    .addComponent(panCalendar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panEntries, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 178, Short.MAX_VALUE))
+                            .addComponent(panCalendar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lstDatesValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstDatesValueChanged
-        mldPlants.clear();
-        if (!lstDates.isSelectionEmpty()) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime((Date) spnYear.getValue());
-            int year = cal.get(Calendar.YEAR);
-            int month = getSelection(cmbMonth).getKey();
-            int day = lstDates.getSelectedValue().getKey();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Diary JOIN Plant ON PlantID=PlantREF WHERE Date = " +
-                    "'"+ year + "-" + String.format("%02d", month + 1) + "-" + String.format("%02d", day) + "';")) {
-                while (rs.next()) {
-                    mldPlants.addElement(new Pair(rs.getInt("DiaryID"), rs.getString("CommonName")));
-                }
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_lstDatesValueChanged
-
     private void btnRefreshActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        Calendar cal = Calendar.getInstance();
-        mdlDates.clear();
-        cal.setTime((Date) spnYear.getValue());
-        int year = cal.get(Calendar.YEAR);
-        int month = getSelection(cmbMonth).getKey();
+        String query = String.format("SELECT * FROM Diary WHERE Date %s;", getSQLDateRange());
         try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery("SELECT * FROM Diary WHERE Date BETWEEN " +
-                    "'" + year + "-" + String.format("%02d", month + 1) + "-01' AND " +
-                    "'" + year + "-" + String.format("%02d", month + 1) + "-31';")) {
+                ResultSet rs = s.executeQuery(query)) {
             ArrayList<Integer> days = new ArrayList<>(31);
             while (rs.next()) {
-                cal.setTime(dateFormat.parse(rs.getString("Date")));
-                days.add(cal.get(Calendar.DAY_OF_MONTH));
+                days.add(parseSQLDate(rs.getString("Date")).getDayOfMonth());
             }
-            cal.set(year, month, 1);
-            int max = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-            for (int day = 1; day <= max; day++) {
-                cal.set(year, month, day);
-                if (days.contains(day)) {
-                    mdlDates.addElement(new Pair(day, day + ", " + cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH) + " ***"));
+            LocalDate date = getDate();
+            int max = date.lengthOfMonth();
+            int first = date.withDayOfMonth(1).getDayOfWeek().getValue();
+            cellRenderer.marked.clear();
+            cellRenderer.dimmed.clear();
+            for (int i = 0; i < 42; i++) {
+                int day = i + 2 - first;
+                if (day < 1) {
+                    tabCalendar.setValueAt(date.minusMonths(1).lengthOfMonth() + day, i / 7, i % 7);
+                    cellRenderer.dimmed.add(i);
+                } else if (day > max) {
+                    tabCalendar.setValueAt(day - max, i / 7, i % 7);
+                    cellRenderer.dimmed.add(i);
                 } else {
-                    mdlDates.addElement(new Pair(day, day + ", " + cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)));
+                    if (days.contains(day)) {
+                        cellRenderer.marked.add(i);
+                    }
+                    tabCalendar.setValueAt(day, i / 7, i % 7);
                 }
             }
-        } catch (SQLException | ParseException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            error(ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnTodayActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnTodayActionPerformed
-        Calendar cal = Calendar.getInstance();
-        spnYear.setValue(cal.getTime());
-        cmbMonth.setSelectedIndex(cal.get(Calendar.MONTH));
-        btnRefreshActionPerformed(null);
-        lstDates.setSelectedIndex(cal.get(Calendar.DAY_OF_MONTH) - 1);
-        lstDatesValueChanged(null);
+        setDate(LocalDate.now());
     }//GEN-LAST:event_btnTodayActionPerformed
 
+    private void setDate(LocalDate date) {
+        spnYear.setValue(date.getYear());
+        cmbMonth.setSelectedIndex(date.getMonthValue() - 1);
+        btnRefreshActionPerformed(null);
+        selectCell(tabCalendar, getCoord(date));
+        tabCalendarMouseClicked(null);
+    }
+    
     private void lstPlantsValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstPlantsValueChanged
         if (!lstPlants.isSelectionEmpty()) {
-            int id = lstPlants.getSelectedValue().getKey();
+            int plant = lstPlants.getSelectedValue().getKey();
+            LocalDate date = getDate();
+            String query = String.format("SELECT * FROM Diary WHERE PlantREF = %d AND Date %s;", plant, makeSQLDate(date));
             try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Diary WHERE DiaryID = " + id + ";")) {
+                    ResultSet rs = s.executeQuery(query)) {
                 while (rs.next()) {
                     selectKey(cmbPlant, rs.getInt("PlantREF"));
                     txtBought.setText(Integer.toString(rs.getInt("Bought")));
@@ -398,61 +425,48 @@ public class Diary extends PurplePanel {
                     txtSold.setText(Integer.toString(rs.getInt("Sold")));
                 }
             } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                error(ex);
             }
         }
     }//GEN-LAST:event_lstPlantsValueChanged
 
     private void btnSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try (Statement s = createStatement()) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime((Date) spnYear.getValue());
-            int year = cal.get(Calendar.YEAR);
-            int month = getSelection(cmbMonth).getKey();
-            int day = lstDates.getSelectedValue().getKey();
-            int plant = getSelection(cmbPlant).getKey();
+            LocalDate date = getDate();
             int bought = Integer.parseInt(txtBought.getText());
             int potted = Integer.parseInt(txtPotted.getText());
             int hardened = Integer.parseInt(txtHardened.getText());
             int ready = Integer.parseInt(txtReady.getText());
             int lost = Integer.parseInt(txtLost.getText());
             int sold = Integer.parseInt(txtSold.getText());
-            if (lstPlants.isSelectionEmpty()) {
-                s.executeUpdate("INSERT INTO Diary (PlantREF, Date, Bought, PottedOn, HardenedOff, ReadyForSale, Lost, Sold) VALUES (" +
-                    plant + ", " +
-                    "'" + year + "-" + String.format("%02d", month + 1) + "-" + String.format("%02d", day) + "', " +
-                    bought + ", " +
-                    potted + ", " +
-                    hardened + ", " +
-                    ready + ", " +
-                    lost + ", " +
-                    sold + ");");
+            if (!lstPlants.isSelectionEmpty() && getSelection(cmbPlant).getKey() == lstPlants.getSelectedValue().getKey()) {
+                int plant = lstPlants.getSelectedValue().getKey();
+                String query = String.format("UPDATE Diary SET " +
+                    "Bought = %d, PottedOn = %d, HardenedOff = %d, ReadyForSale = %d, Lost = %d, Sold = %d " +
+                    "WHERE PlantREF = %d AND Date %s;", bought, potted, hardened, ready, lost, sold, plant, makeSQLDate(date));
+                s.executeUpdate(query);
             } else {
-                int id = lstPlants.getSelectedValue().getKey();
-                s.executeUpdate("UPDATE Diary SET " +
-                    "PlantREF = " + plant + ", " +
-                    "Bought = " + bought + ", " +
-                    "PottedOn = " + potted + ", " +
-                    "HardenedOff = " + hardened + ", " +
-                    "ReadyForSale = " + ready + ", " +
-                    "Lost = " + lost + ", " +
-                    "Sold = " + sold + " " +
-                    "WHERE DiaryID = " + id + ";");
+                int plant = getSelection(cmbPlant).getKey();
+                String query = String.format("INSERT INTO Diary (PlantREF, Date, Bought, PottedOn, HardenedOff, ReadyForSale, Lost, Sold) VALUES (" +
+                    "%d, '%s', %d, %d, %d, %d, %d, %d);", plant, makeDate(date), bought, potted, hardened, ready, lost, sold);
+                s.executeUpdate(query);
             }
             s.close();
             btnRefreshActionPerformed(null);
+            setDate(date);
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCancelActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        lstDatesValueChanged(null);
+        tabCalendarMouseClicked(null);
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnNewActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
         cmbPlant.setSelectedIndex(0);
+        lstPlants.clearSelection();
         txtBought.setText("0");
         txtPotted.setText("0");
         txtHardened.setText("0");
@@ -464,13 +478,15 @@ public class Diary extends PurplePanel {
     private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         try (Statement s = createStatement()) {
             if (!lstPlants.isSelectionEmpty()) {
-                int id = lstPlants.getSelectedValue().getKey();
-                s.executeUpdate("DELETE FROM Diary WHERE DiaryID = " + id + ";");
+                int plant = lstPlants.getSelectedValue().getKey();
+                LocalDate date = getDate();
+                String query = String.format("DELETE FROM Diary WHERE PlantREF = %d AND Date %s;", plant, makeSQLDate(date));
+                s.executeUpdate(query);
             }
             btnRefreshActionPerformed(null);
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -482,13 +498,103 @@ public class Diary extends PurplePanel {
         btnRefreshActionPerformed(null);
     }//GEN-LAST:event_spnYearStateChanged
 
+    private void tabCalendarMouseClicked(MouseEvent evt) {//GEN-FIRST:event_tabCalendarMouseClicked
+        setCell();
+        LOGGER.info(getDate().toString());
+        mldPlants.clear();
+        if (tabCalendar.getSelectedColumn() > -1) {
+            String query = String.format("SELECT * FROM Diary JOIN Plant ON PlantID=PlantREF WHERE Date %s;", getSQLDate());
+            try (Statement s = createStatement();
+                    ResultSet rs = s.executeQuery(query)) {
+                while (rs.next()) {
+                    mldPlants.addElement(new Pair(rs.getInt("PlantREF"), rs.getString("CommonName")));
+                }
+            } catch (SQLException ex) {
+                error(ex);
+            }
+        }
+    }//GEN-LAST:event_tabCalendarMouseClicked
+
+    private LocalDate getDate() {
+        YearMonth ym = getYearMonth();
+        int day = getDay();
+        if (tabCalendar.getSelectedColumn() < 0 || day < 1 || day > ym.lengthOfMonth()) {
+            return LocalDate.of(ym.getYear(), ym.getMonthValue(), 1);
+        } else {
+            return LocalDate.of(ym.getYear(), ym.getMonthValue(), day);
+        }
+    }
+    
+    private YearMonth getYearMonth() {
+        int year = (int) spnYear.getValue();
+        int month = getSelection(cmbMonth).getKey();
+        return YearMonth.of(year, month);
+    }
+    
+    private String getSQLDate() {
+        if (tabCalendar.getSelectedColumn() < 0) {
+            return makeSQLDate(getYearMonth());
+        } else {
+            return makeSQLDate(getDate());
+        }
+    }
+    
+    private String getSQLDateRange() {
+        return makeSQLDate(getYearMonth());
+    }
+    
+    private int getCoord(LocalDate date) {
+        return getOffset(date) + date.getDayOfMonth();
+    }
+    
+    private int getOffset(YearMonth ym) {
+        return getOffset(LocalDate.of(ym.getYear(), ym.getMonthValue(), 1));
+    }
+    
+    private int getOffset(LocalDate date) {
+        return date.withDayOfMonth(1).getDayOfWeek().getValue() - 2;
+    }
+    
+    private int getDay() {
+        YearMonth ym = getYearMonth();
+        int row = tabCalendar.getSelectedRow();
+        int col = tabCalendar.getSelectedColumn();
+        return (row * 7) + col - getOffset(ym);
+    }
+    
+    private void setCell() {
+        YearMonth ym = getYearMonth();
+        int max = ym.lengthOfMonth();
+        int day = getDay();
+        if (day < 1) {
+            ym = ym.minusMonths(1);
+            setDate(LocalDate.of(ym.getYear(), ym.getMonth(), ym.lengthOfMonth() + day));
+        } else if (day > max) {
+            ym = ym.plusMonths(1);
+            setDate(LocalDate.of(ym.getYear(), ym.getMonth(), day - max));
+        }
+        int row = tabCalendar.getSelectedRow();
+        int col = tabCalendar.getSelectedColumn();
+        cellRenderer.setCell(row, col);
+        tabCalendar.repaint();
+    }
+    
+    private void selectCell(JTable table, int coord) {
+        int cols = table.getColumnCount();
+        int row = coord / cols;
+        int col = coord % cols;
+        table.setColumnSelectionInterval(col, col);
+        table.setRowSelectionInterval(row, row);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton btnDelete;
     private JComboBox<Pair> cmbMonth;
     private JComboBox<Pair> cmbPlant;
-    private JList<Pair> lstDates;
     private JList<Pair> lstPlants;
+    private JScrollPane scrCalendar;
     private JSpinner spnYear;
+    private JTable tabCalendar;
     private JTextField txtBought;
     private JTextField txtHardened;
     private JTextField txtLost;

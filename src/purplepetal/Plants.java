@@ -237,7 +237,7 @@ public class Plants extends PurplePanel {
                 plantsCombo.addElement(new Pair(rs.getInt("PlantID"), rs.getString("CommonName")));
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
@@ -254,7 +254,7 @@ public class Plants extends PurplePanel {
                     txtPrice.setText(rs.getString("Price"));
                 }
             } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                error(ex);
             }
         }
     }//GEN-LAST:event_lstPlantsValueChanged
@@ -296,7 +296,7 @@ public class Plants extends PurplePanel {
             btnRefreshActionPerformed(null);
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -311,7 +311,7 @@ public class Plants extends PurplePanel {
                 s.executeUpdate("INSERT INTO PlantType (Description) VALUES ('" + newName + "');");
                 updatePlantTypesCombo();
             } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                error(ex);
             }
         }
     }//GEN-LAST:event_btnNewTypeActionPerformed
@@ -325,7 +325,7 @@ public class Plants extends PurplePanel {
             btnRefreshActionPerformed(null);
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

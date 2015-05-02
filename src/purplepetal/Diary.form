@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -23,7 +23,7 @@
               <Component id="panEntries" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="panDetails" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="78" max="32767" attributes="0"/>
+              <EmptySpace pref="122" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -31,13 +31,17 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="panEntries" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panDetails" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="201" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="panDetails" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="178" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="panCalendar" alignment="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <Component id="panCalendar" max="32767" attributes="0"/>
-                  <Component id="panEntries" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -299,15 +303,17 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Component id="btnToday" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="cmbMonth" min="-2" pref="76" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="spnYear" min="-2" pref="62" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="btnToday" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cmbMonth" min="-2" pref="76" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="spnYear" min="-2" pref="62" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="scrCalendar" min="-2" pref="226" max="-2" attributes="0"/>
               </Group>
-              <Component id="btnRefresh" alignment="0" min="-2" max="-2" attributes="0"/>
-              <Component id="scrDates" alignment="0" pref="0" max="32767" attributes="0"/>
+              <Component id="btnRefresh" min="-2" max="-2" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -320,7 +326,7 @@
                       <Component id="spnYear" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="scrDates" max="32767" attributes="0"/>
+                  <Component id="scrCalendar" pref="0" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnRefresh" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -342,6 +348,7 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="cmbMonth">
           <Properties>
+            <Property name="maximumRowCount" type="int" value="12"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="mdlMonths" type="code"/>
             </Property>
@@ -356,10 +363,10 @@
         <Component class="javax.swing.JSpinner" name="spnYear">
           <Properties>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="now" maximum="2692780320000" minimum="1114939920000" stepSize="1" type="date"/>
+              <SpinnerModel initial="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
             <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
-              <SpinnerEditor format="yyyy" type="1"/>
+              <SpinnerEditor format="0000" type="3"/>
             </Property>
           </Properties>
           <Events>
@@ -369,27 +376,40 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
           </AuxValues>
         </Component>
-        <Container class="javax.swing.JScrollPane" name="scrDates">
+        <Container class="javax.swing.JScrollPane" name="scrCalendar">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="16"/>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="lstDates">
+            <Component class="javax.swing.JTable" name="tabCalendar">
               <Properties>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="mdlDates" type="code"/>
+                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                  <Table columnCount="7" rowCount="6">
+                    <Column editable="false" title="Mo" type="java.lang.String"/>
+                    <Column editable="false" title="Tu" type="java.lang.String"/>
+                    <Column editable="false" title="We" type="java.lang.String"/>
+                    <Column editable="false" title="Th" type="java.lang.String"/>
+                    <Column editable="false" title="Fr" type="java.lang.String"/>
+                    <Column editable="false" title="Sa" type="java.lang.String"/>
+                    <Column editable="false" title="Su" type="java.lang.String"/>
+                  </Table>
+                </Property>
+                <Property name="autoscrolls" type="boolean" value="false"/>
+                <Property name="columnSelectionAllowed" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="rowSelectionAllowed" type="boolean" value="false"/>
+                <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+                  <JTableSelectionModel selectionMode="0"/>
+                </Property>
+                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                  <TableHeader reorderingAllowed="false" resizingAllowed="false"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="lstDatesValueChanged"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabCalendarMouseClicked"/>
               </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Pair&gt;"/>
-              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

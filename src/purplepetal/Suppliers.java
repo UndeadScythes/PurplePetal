@@ -222,7 +222,7 @@ public class Suppliers extends PurplePanel {
                     txtAccount.setText(rs.getString("AccountNo"));
                 }
             } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                error(ex);
             }
         }
     }//GEN-LAST:event_lstSuppliersValueChanged
@@ -255,7 +255,7 @@ public class Suppliers extends PurplePanel {
             btnRefreshActionPerformed(null);
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -283,7 +283,7 @@ public class Suppliers extends PurplePanel {
                 suppliersCombo.addElement(new Pair(rs.getInt("SupplierID"), rs.getString("Name")));
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
@@ -296,7 +296,7 @@ public class Suppliers extends PurplePanel {
             btnRefreshActionPerformed(null);
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
