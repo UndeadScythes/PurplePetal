@@ -53,6 +53,18 @@ public class Diary extends PurplePanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JPanel panCalendar = new JPanel();
+        JButton btnToday = new JButton();
+        cmbMonth = new JComboBox<Pair>();
+        spnYear = new JSpinner();
+        scrCalendar = new JScrollPane();
+        tabCalendar = new JTable();
+        final JButton btnRefresh = new JButton();
+        JSplitPane spl1 = new JSplitPane();
+        JPanel panEntries = new JPanel();
+        final JScrollPane scrPlants = new JScrollPane();
+        lstPlants = new JList<Pair>();
+        JButton btnNew = new JButton();
         JPanel panDetails = new JPanel();
         final JLabel labPlant = new JLabel();
         final JLabel labBought = new JLabel();
@@ -71,17 +83,135 @@ public class Diary extends PurplePanel {
         JButton btnSave = new JButton();
         JButton btnCancel = new JButton();
         btnDelete = new JButton();
-        JPanel panCalendar = new JPanel();
-        JButton btnToday = new JButton();
-        cmbMonth = new JComboBox<Pair>();
-        spnYear = new JSpinner();
-        scrCalendar = new JScrollPane();
-        tabCalendar = new JTable();
-        final JButton btnRefresh = new JButton();
-        JPanel panEntries = new JPanel();
-        final JScrollPane scrPlants = new JScrollPane();
-        lstPlants = new JList<Pair>();
-        JButton btnNew = new JButton();
+
+        btnToday.setText("Today");
+        btnToday.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                btnTodayActionPerformed(evt);
+            }
+        });
+
+        cmbMonth.setMaximumRowCount(12);
+        cmbMonth.setModel(mdlMonths);
+        cmbMonth.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent evt) {
+                cmbMonthItemStateChanged(evt);
+            }
+        });
+
+        spnYear.setModel(new SpinnerNumberModel());
+        spnYear.setEditor(new JSpinner.NumberEditor(spnYear, "0000"));
+        spnYear.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent evt) {
+                spnYearStateChanged(evt);
+            }
+        });
+
+        tabCalendar.setModel(new DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"
+            }
+        ) {
+            Class[] types = new Class [] {
+                String.class, String.class, String.class, String.class, String.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabCalendar.setAutoscrolls(false);
+        tabCalendar.setFocusable(false);
+        tabCalendar.setRowSelectionAllowed(false);
+        tabCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabCalendar.getTableHeader().setResizingAllowed(false);
+        tabCalendar.getTableHeader().setReorderingAllowed(false);
+        tabCalendar.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tabCalendarMouseClicked(evt);
+            }
+        });
+        scrCalendar.setViewportView(tabCalendar);
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        GroupLayout panCalendarLayout = new GroupLayout(panCalendar);
+        panCalendar.setLayout(panCalendarLayout);
+        panCalendarLayout.setHorizontalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(panCalendarLayout.createSequentialGroup()
+                .addComponent(btnToday)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE))
+            .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnRefresh)
+        );
+        panCalendarLayout.setVerticalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(panCalendarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnToday)
+                    .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrCalendar, GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRefresh))
+        );
+
+        spl1.setDividerLocation(150);
+
+        lstPlants.setModel(mldPlants);
+        lstPlants.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent evt) {
+                lstPlantsValueChanged(evt);
+            }
+        });
+        scrPlants.setViewportView(lstPlants);
+
+        btnNew.setText("New");
+        btnNew.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+
+        GroupLayout panEntriesLayout = new GroupLayout(panEntries);
+        panEntries.setLayout(panEntriesLayout);
+        panEntriesLayout.setHorizontalGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(scrPlants, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnNew)
+        );
+        panEntriesLayout.setVerticalGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(panEntriesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrPlants)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnNew))
+        );
+
+        spl1.setLeftComponent(panEntries);
 
         labPlant.setText("Plant");
 
@@ -209,157 +339,23 @@ public class Diary extends PurplePanel {
                 .addGap(0, 0, 0))
         );
 
-        btnToday.setText("Today");
-        btnToday.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnTodayActionPerformed(evt);
-            }
-        });
-
-        cmbMonth.setMaximumRowCount(12);
-        cmbMonth.setModel(mdlMonths);
-        cmbMonth.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent evt) {
-                cmbMonthItemStateChanged(evt);
-            }
-        });
-
-        spnYear.setModel(new SpinnerNumberModel());
-        spnYear.setEditor(new JSpinner.NumberEditor(spnYear, "0000"));
-        spnYear.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                spnYearStateChanged(evt);
-            }
-        });
-
-        tabCalendar.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"
-            }
-        ) {
-            Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class, String.class, String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tabCalendar.setAutoscrolls(false);
-        tabCalendar.setColumnSelectionAllowed(false);
-        tabCalendar.setFocusable(false);
-        tabCalendar.setRowSelectionAllowed(false);
-        tabCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tabCalendar.getTableHeader().setResizingAllowed(false);
-        tabCalendar.getTableHeader().setReorderingAllowed(false);
-        tabCalendar.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tabCalendarMouseClicked(evt);
-            }
-        });
-        scrCalendar.setViewportView(tabCalendar);
-
-        btnRefresh.setText("Refresh");
-        btnRefresh.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnRefreshActionPerformed(evt);
-            }
-        });
-
-        GroupLayout panCalendarLayout = new GroupLayout(panCalendar);
-        panCalendar.setLayout(panCalendarLayout);
-        panCalendarLayout.setHorizontalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(panCalendarLayout.createSequentialGroup()
-                    .addComponent(btnToday)
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE))
-                .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE))
-            .addComponent(btnRefresh)
-        );
-        panCalendarLayout.setVerticalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panCalendarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnToday)
-                    .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRefresh))
-        );
-
-        lstPlants.setModel(mldPlants);
-        lstPlants.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent evt) {
-                lstPlantsValueChanged(evt);
-            }
-        });
-        scrPlants.setViewportView(lstPlants);
-
-        btnNew.setText("New");
-        btnNew.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnNewActionPerformed(evt);
-            }
-        });
-
-        GroupLayout panEntriesLayout = new GroupLayout(panEntries);
-        panEntries.setLayout(panEntriesLayout);
-        panEntriesLayout.setHorizontalGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(scrPlants, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnNew)
-        );
-        panEntriesLayout.setVerticalGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panEntriesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrPlants)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNew))
-        );
+        spl1.setRightComponent(panDetails);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panCalendar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panEntries, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addComponent(spl1, GroupLayout.PREFERRED_SIZE, 527, GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(panEntries, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 178, Short.MAX_VALUE))
-                            .addComponent(panCalendar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap()
+                .addComponent(panCalendar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(spl1)
         );
     }// </editor-fold>//GEN-END:initComponents
 

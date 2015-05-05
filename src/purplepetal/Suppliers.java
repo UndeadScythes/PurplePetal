@@ -30,6 +30,13 @@ public class Suppliers extends PurplePanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JSplitPane spl1 = new JSplitPane();
+        JPanel panSuppliers = new JPanel();
+        final JScrollPane scrSuppliers = new JScrollPane();
+        lstSuppliers = new JList<Pair>();
+        final JButton btnNew = new JButton();
+        final JButton btnRefresh = new JButton();
+        JSeparator sep2 = new JSeparator();
         final JPanel panDetails = new JPanel();
         final JLabel labName = new JLabel();
         txtName = new JTextField();
@@ -51,11 +58,59 @@ public class Suppliers extends PurplePanel {
         final JButton btnSave = new JButton();
         final JButton btnCancel = new JButton();
         JButton btnDelete = new JButton();
-        JPanel panSuppliers = new JPanel();
-        final JScrollPane scrSuppliers = new JScrollPane();
-        lstSuppliers = new JList<Pair>();
-        final JButton btnNew = new JButton();
-        final JButton btnRefresh = new JButton();
+
+        spl1.setDividerLocation(250);
+
+        lstSuppliers.setModel(mdlSuppliers);
+        lstSuppliers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lstSuppliers.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent evt) {
+                lstSuppliersValueChanged(evt);
+            }
+        });
+        scrSuppliers.setViewportView(lstSuppliers);
+
+        btnNew.setText("New");
+        btnNew.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        GroupLayout panSuppliersLayout = new GroupLayout(panSuppliers);
+        panSuppliers.setLayout(panSuppliersLayout);
+        panSuppliersLayout.setHorizontalGroup(panSuppliersLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(panSuppliersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrSuppliers, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(sep2)
+            .addGroup(panSuppliersLayout.createSequentialGroup()
+                .addComponent(btnRefresh)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnNew)
+                .addGap(0, 119, Short.MAX_VALUE))
+        );
+        panSuppliersLayout.setVerticalGroup(panSuppliersLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(panSuppliersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrSuppliers, GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sep2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panSuppliersLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRefresh)
+                    .addComponent(btnNew)))
+        );
+
+        spl1.setLeftComponent(panSuppliers);
 
         labName.setText("Name");
 
@@ -140,11 +195,11 @@ public class Suppliers extends PurplePanel {
                 .addComponent(btnCancel)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDelete)
-                .addGap(0, 207, Short.MAX_VALUE))
+                .addGap(0, 348, Short.MAX_VALUE))
         );
         panDetailsLayout.setVerticalGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panDetailsLayout.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(labName)
                     .addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -182,69 +237,19 @@ public class Suppliers extends PurplePanel {
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnCancel)
-                    .addComponent(btnDelete)))
+                    .addComponent(btnDelete))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
 
-        lstSuppliers.setModel(mdlSuppliers);
-        lstSuppliers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lstSuppliers.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent evt) {
-                lstSuppliersValueChanged(evt);
-            }
-        });
-        scrSuppliers.setViewportView(lstSuppliers);
-
-        btnNew.setText("New");
-        btnNew.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnNewActionPerformed(evt);
-            }
-        });
-
-        btnRefresh.setText("Refresh");
-        btnRefresh.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnRefreshActionPerformed(evt);
-            }
-        });
-
-        GroupLayout panSuppliersLayout = new GroupLayout(panSuppliers);
-        panSuppliers.setLayout(panSuppliersLayout);
-        panSuppliersLayout.setHorizontalGroup(panSuppliersLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(scrSuppliers, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
-            .addGroup(panSuppliersLayout.createSequentialGroup()
-                .addComponent(btnRefresh)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNew))
-        );
-        panSuppliersLayout.setVerticalGroup(panSuppliersLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panSuppliersLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrSuppliers, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panSuppliersLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNew)
-                    .addComponent(btnRefresh)))
-        );
+        spl1.setRightComponent(panDetails);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panSuppliers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+            .addComponent(spl1, GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panSuppliers, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(spl1)
         );
     }// </editor-fold>//GEN-END:initComponents
 
