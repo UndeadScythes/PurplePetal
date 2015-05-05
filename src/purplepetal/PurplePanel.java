@@ -35,7 +35,7 @@ public class PurplePanel extends JPanel {
      */
     protected static final DefaultComboBoxModel<Pair> plantsCombo = new DefaultComboBoxModel<>();
     private static final Logger LOGGER = Logger.getLogger(PurplePanel.class.getName());
-    private static Connection conn;
+    private static Connection c;
     
     /**
      * Create a date form "= 'DATE'" usable within an SQL query.
@@ -97,7 +97,7 @@ public class PurplePanel extends JPanel {
      * @param conn
      */
     public static void setConnection(Connection conn) {
-        PurplePanel.conn = conn;
+        PurplePanel.c = conn;
     }
     
 /**
@@ -136,7 +136,7 @@ public class PurplePanel extends JPanel {
                 plantTypesCombo.addElement(new Pair(rs.getInt("PlantTypeID"), rs.getString("Description")));
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            error(ex);
         }
     }
     
@@ -146,10 +146,10 @@ public class PurplePanel extends JPanel {
      * @throws java.sql.SQLException
      */
     protected Statement createStatement() throws SQLException {
-        if (conn == null) {
+        if (c == null) {
             throw new SQLException();
         }
-        return conn.createStatement();
+        return c.createStatement();
     }
     
     /**

@@ -518,7 +518,6 @@ public class Diary extends PurplePanel {
 
     private void tabCalendarMouseClicked(MouseEvent evt) {//GEN-FIRST:event_tabCalendarMouseClicked
         setCell();
-        LOGGER.info(getDate().toString());
         mldPlants.clear();
         if (tabCalendar.getSelectedColumn() > -1) {
             String query = String.format("SELECT * FROM Diary JOIN Plant ON PlantID=PlantREF WHERE Date %s;", getSQLDate());
