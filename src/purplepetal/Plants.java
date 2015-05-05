@@ -5,9 +5,8 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.*; // NB code
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -29,7 +28,7 @@ public class Plants extends PurplePanel {
         updatePlantTypesCombo();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -226,7 +225,7 @@ public class Plants extends PurplePanel {
     private void btnRefreshActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         mdlPlants.clear();
         try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery("SELECT * FROM Plant;")) {
+                ResultSet rs = s.executeQuery("SELECT * FROM Plant ORDER BY CommonName ASC;")) {
             plantsCombo.addElement(new Pair(-1, ""));
             while (rs.next()) {
                 mdlPlants.addElement(new Pair(rs.getInt("PlantID"), rs.getString("CommonName")));

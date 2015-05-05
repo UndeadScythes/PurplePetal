@@ -131,7 +131,7 @@ public class PurplePanel extends JPanel {
         plantTypesCombo.removeAllElements();
         plantTypesCombo.addElement(new Pair(-1, ""));
         try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery("SELECT * FROM PlantType;")) {
+                ResultSet rs = s.executeQuery("SELECT * FROM PlantType ORDER BY Description ASC;")) {
             while (rs.next()) {
                 plantTypesCombo.addElement(new Pair(rs.getInt("PlantTypeID"), rs.getString("Description")));
             }

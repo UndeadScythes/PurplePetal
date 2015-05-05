@@ -520,7 +520,7 @@ public class Diary extends PurplePanel {
         setCell();
         mldPlants.clear();
         if (tabCalendar.getSelectedColumn() > -1) {
-            String query = String.format("SELECT * FROM Diary JOIN Plant ON PlantID=PlantREF WHERE Date %s;", getSQLDate());
+            String query = String.format("SELECT * FROM Diary JOIN Plant ON PlantID=PlantREF WHERE Date %s ORDER BY CommonName ASC;", getSQLDate());
             try (Statement s = createStatement();
                     ResultSet rs = s.executeQuery(query)) {
                 while (rs.next()) {
