@@ -14,7 +14,7 @@ import javax.swing.*; // NB code
  */
 @SuppressWarnings("serial")
 public class PurplePetal extends JFrame {
-    private static final String version = "Flakware DBMS, v0.320";
+    private static final String version = "Flakware DBMS, v0.321";
     
     /**
      * Initialise components.
@@ -30,6 +30,8 @@ public class PurplePetal extends JFrame {
 
         final JLabel title = new JLabel();
         final JTabbedPane tabs = new JTabbedPane();
+        final JPanel panStatus = new JPanel();
+        final JSeparator sep1 = new JSeparator();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,27 +46,48 @@ public class PurplePetal extends JFrame {
         labFlakware.setHorizontalAlignment(SwingConstants.RIGHT);
         labFlakware.setText("Flakware DBMS, <version>");
 
+        GroupLayout panStatusLayout = new GroupLayout(panStatus);
+        panStatus.setLayout(panStatusLayout);
+        panStatusLayout.setHorizontalGroup(panStatusLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(sep1)
+            .addGroup(panStatusLayout.createSequentialGroup()
+                .addComponent(labStatus, GroupLayout.PREFERRED_SIZE, 487, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(prgProgress, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labFlakware))
+        );
+        panStatusLayout.setVerticalGroup(panStatusLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(panStatusLayout.createSequentialGroup()
+                .addComponent(sep1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panStatusLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(labFlakware)
+                    .addComponent(labStatus, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(prgProgress, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+        );
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(tabs, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
-                    .addComponent(title, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(title, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tabs, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(labFlakware))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panStatus, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(title, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabs, GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+                .addComponent(tabs, GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labFlakware, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+                .addComponent(panStatus, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -111,10 +134,12 @@ public class PurplePetal extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final JLabel labFlakware = new JLabel();
+    private final JLabel labStatus = new JLabel();
     private final Diary panDiary = new Diary();
     private final Plants panPlants = new Plants();
     private final Settings panSettings = new Settings();
     private final Suppliers panSuppliers = new Suppliers();
+    private final JProgressBar prgProgress = new JProgressBar();
     // End of variables declaration//GEN-END:variables
     private static final Logger LOGGER = Logger.getLogger(PurplePetal.class.getName());
 }
