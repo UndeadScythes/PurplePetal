@@ -14,7 +14,7 @@ import javax.swing.*; // NB code
  */
 @SuppressWarnings("serial")
 public class PurplePetal extends JFrame {
-    private static final String version = "Flakware DBMS, v0.232";
+    private static final String version = "Flakware DBMS, v0.300";
     
     /**
      * Initialise components.
@@ -39,6 +39,7 @@ public class PurplePetal extends JFrame {
         tabs.addTab("Diary", panDiary);
         tabs.addTab("Plants", panPlants);
         tabs.addTab("Suppliers", panSuppliers);
+        tabs.addTab("Settings", panSettings);
 
         labFlakware.setHorizontalAlignment(SwingConstants.RIGHT);
         labFlakware.setText("Flakware DBMS, <version>");
@@ -49,7 +50,7 @@ public class PurplePetal extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(tabs, GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
+                    .addComponent(tabs, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
                     .addComponent(title, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -118,6 +119,7 @@ public class PurplePetal extends JFrame {
     private final JLabel labFlakware = new JLabel();
     private final Diary panDiary = new Diary();
     private final Plants panPlants = new Plants();
+    private final Settings panSettings = new Settings();
     private final Suppliers panSuppliers = new Suppliers();
     // End of variables declaration//GEN-END:variables
     private static final Logger LOGGER = Logger.getLogger(PurplePetal.class.getName());
