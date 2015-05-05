@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 import javax.swing.*; // NB code
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -14,7 +15,7 @@ import javax.swing.event.ListSelectionListener;
  * 
  * @author UndeadScythes <udscythes@gmail.com>
  */
-@SuppressWarnings({"serial", "ClassWithoutLogger"})
+@SuppressWarnings("serial")
 public class Suppliers extends PurplePanel {
     private final DefaultListModel<Pair> mdlSuppliers = new DefaultListModel<>();
 
@@ -372,4 +373,5 @@ public class Suppliers extends PurplePanel {
     private JTextField txtTown;
     private JTextField txtWebsite;
     // End of variables declaration//GEN-END:variables
+    private static final Logger LOGGER = Logger.getLogger(Suppliers.class.getName());
 }
