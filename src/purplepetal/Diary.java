@@ -16,7 +16,7 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.*; // NB code
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -49,7 +49,7 @@ public class Diary extends PurplePanel {
         btnTodayActionPerformed(null);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -57,14 +57,16 @@ public class Diary extends PurplePanel {
         JButton btnToday = new JButton();
         cmbMonth = new JComboBox<Pair>();
         spnYear = new JSpinner();
-        scrCalendar = new JScrollPane();
+        JScrollPane scrCalendar = new JScrollPane();
         tabCalendar = new JTable();
         final JButton btnRefresh = new JButton();
+        JSeparator sep3 = new JSeparator();
         JSplitPane spl1 = new JSplitPane();
         JPanel panEntries = new JPanel();
         final JScrollPane scrPlants = new JScrollPane();
         lstPlants = new JList<Pair>();
         JButton btnNew = new JButton();
+        JSeparator sep2 = new JSeparator();
         JPanel panDetails = new JPanel();
         final JLabel labPlant = new JLabel();
         final JLabel labBought = new JLabel();
@@ -82,7 +84,8 @@ public class Diary extends PurplePanel {
         cmbPlant = new JComboBox<Pair>();
         JButton btnSave = new JButton();
         JButton btnCancel = new JButton();
-        btnDelete = new JButton();
+        JButton btnDelete = new JButton();
+        JSeparator sep1 = new JSeparator();
 
         btnToday.setText("Today");
         btnToday.addActionListener(new ActionListener() {
@@ -158,14 +161,19 @@ public class Diary extends PurplePanel {
         GroupLayout panCalendarLayout = new GroupLayout(panCalendar);
         panCalendar.setLayout(panCalendarLayout);
         panCalendarLayout.setHorizontalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(sep3)
             .addGroup(panCalendarLayout.createSequentialGroup()
-                .addComponent(btnToday)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE))
-            .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnRefresh)
+                .addContainerGap()
+                .addGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(panCalendarLayout.createSequentialGroup()
+                        .addComponent(btnToday)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRefresh))
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panCalendarLayout.setVerticalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panCalendarLayout.createSequentialGroup()
@@ -175,9 +183,12 @@ public class Diary extends PurplePanel {
                     .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrCalendar, GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 348, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep3, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRefresh))
+                .addComponent(btnRefresh)
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         spl1.setDividerLocation(150);
@@ -200,15 +211,25 @@ public class Diary extends PurplePanel {
         GroupLayout panEntriesLayout = new GroupLayout(panEntries);
         panEntries.setLayout(panEntriesLayout);
         panEntriesLayout.setHorizontalGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(scrPlants, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnNew)
+            .addComponent(sep2)
+            .addGroup(panEntriesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(scrPlants, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(panEntriesLayout.createSequentialGroup()
+                        .addComponent(btnNew)
+                        .addGap(0, 76, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panEntriesLayout.setVerticalGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panEntriesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrPlants)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNew))
+                .addComponent(scrPlants, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(btnNew)
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         spl1.setLeftComponent(panEntries);
@@ -265,45 +286,48 @@ public class Diary extends PurplePanel {
         GroupLayout panDetailsLayout = new GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
         panDetailsLayout.setHorizontalGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panDetailsLayout.createSequentialGroup()
-                .addComponent(btnSave)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancel)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelete))
+            .addComponent(sep1)
             .addGroup(panDetailsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(labBought, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labPotted, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
-                            .addComponent(labHardened, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(labPotted, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labHardened, GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                            .addComponent(labBought, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labPlant, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(txtBought, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPotted, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtHardened, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbPlant, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(panDetailsLayout.createSequentialGroup()
-                            .addComponent(labSold, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtSold, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
-                        .addGroup(GroupLayout.Alignment.LEADING, panDetailsLayout.createSequentialGroup()
-                            .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addComponent(labReady, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labLost, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtReady, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                                .addComponent(txtLost))))
-                    .addComponent(labPlant)))
+                            .addComponent(cmbPlant, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtReady, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(txtBought, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                                        .addComponent(txtPotted, GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtHardened, GroupLayout.Alignment.LEADING))
+                                    .addComponent(txtLost, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addComponent(btnSave)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancel)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete))
+                            .addComponent(labReady, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labLost)
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addComponent(labSold, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSold, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 176, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panDetailsLayout.setVerticalGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panDetailsLayout.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(labPlant)
                     .addComponent(cmbPlant, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -320,9 +344,9 @@ public class Diary extends PurplePanel {
                     .addComponent(labHardened)
                     .addComponent(txtHardened, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(txtReady, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labReady))
+                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(labReady)
+                    .addComponent(txtReady, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(labLost)
@@ -331,12 +355,14 @@ public class Diary extends PurplePanel {
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(labSold)
                     .addComponent(txtSold, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnCancel)
                     .addComponent(btnDelete))
-                .addGap(0, 0, 0))
+                .addGap(0, 232, Short.MAX_VALUE))
         );
 
         spl1.setRightComponent(panDetails);
@@ -345,17 +371,13 @@ public class Diary extends PurplePanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panCalendar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(spl1, GroupLayout.PREFERRED_SIZE, 527, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spl1, GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panCalendar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addComponent(spl1)
+            .addComponent(panCalendar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -584,11 +606,9 @@ public class Diary extends PurplePanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton btnDelete;
     private JComboBox<Pair> cmbMonth;
     private JComboBox<Pair> cmbPlant;
     private JList<Pair> lstPlants;
-    private JScrollPane scrCalendar;
     private JSpinner spnYear;
     private JTable tabCalendar;
     private JTextField txtBought;

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.*; // NB code
 
 /**
  * Main application window of the Purple Petal DBMS.
@@ -14,7 +14,7 @@ import javax.swing.*;
  */
 @SuppressWarnings("serial")
 public class PurplePetal extends JFrame {
-    private static final String version = "Flakware DBMS, v0.231";
+    private static final String version = "Flakware DBMS, v0.232";
     
     /**
      * Initialise components.

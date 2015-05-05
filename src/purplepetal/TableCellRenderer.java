@@ -55,7 +55,7 @@ public class TableCellRenderer extends DefaultTableCellRenderer {
             cell.setForeground(Color.BLACK);
         }
         if (marked.contains(coord)) {
-            cell.setFont(cell.getFont().deriveFont(Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD)));
+            cell.setFont(cell.getFont().deriveFont(Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_ULTRABOLD)));
         } else {
             cell.setFont(cell.getFont().deriveFont(Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_REGULAR)));
         }
