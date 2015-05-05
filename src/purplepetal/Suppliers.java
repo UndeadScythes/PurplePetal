@@ -5,9 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.*; // NB code
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -16,7 +14,7 @@ import javax.swing.event.ListSelectionListener;
  * 
  * @author UndeadScythes <udscythes@gmail.com>
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "ClassWithoutLogger"})
 public class Suppliers extends PurplePanel {
     private final DefaultListModel<Pair> mdlSuppliers = new DefaultListModel<>();
 
@@ -28,24 +26,31 @@ public class Suppliers extends PurplePanel {
         btnRefreshActionPerformed(null);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         final JPanel panDetails = new JPanel();
         final JLabel labName = new JLabel();
-        final JLabel labContact = new JLabel();
+        txtName = new JTextField();
+        final JLabel labContactNo = new JLabel();
+        txtContactNo = new JTextField();
+        JLabel labEmail = new JLabel();
+        txtEmail = new JTextField();
         final JLabel labWebsite = new JLabel();
-        final JLabel labAddress = new JLabel();
+        txtWebsite = new JTextField();
+        JLabel labStreet = new JLabel();
+        txtStreet = new JTextField();
+        JLabel labTown = new JLabel();
+        txtTown = new JTextField();
+        final JLabel labPostcode = new JLabel();
+        txtPostcode = new JTextField();
         final JLabel labAccount = new JLabel();
         txtAccount = new JTextField();
-        txtAddress = new JTextField();
-        txtWebsite = new JTextField();
-        txtContact = new JTextField();
-        txtName = new JTextField();
+        JSeparator sep1 = new JSeparator();
         final JButton btnSave = new JButton();
         final JButton btnCancel = new JButton();
-        btnDelete = new JButton();
+        JButton btnDelete = new JButton();
         JPanel panSuppliers = new JPanel();
         final JScrollPane scrSuppliers = new JScrollPane();
         lstSuppliers = new JList<Pair>();
@@ -54,13 +59,19 @@ public class Suppliers extends PurplePanel {
 
         labName.setText("Name");
 
-        labContact.setText("Contact");
+        labContactNo.setText("Contact No");
+
+        labEmail.setText("Email");
 
         labWebsite.setText("Website");
 
-        labAddress.setText("Address");
+        labStreet.setText("Street");
 
-        labAccount.setText("AccountNo");
+        labTown.setText("Town");
+
+        labPostcode.setText("Postcode");
+
+        labAccount.setText("Account No");
 
         btnSave.setText("Save");
         btnSave.addActionListener(new ActionListener() {
@@ -87,59 +98,87 @@ public class Suppliers extends PurplePanel {
         panDetails.setLayout(panDetailsLayout);
         panDetailsLayout.setHorizontalGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panDetailsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(labName, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtName))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(labAccount, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtAccount))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(labContactNo, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtContactNo))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(labEmail, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtEmail))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(labWebsite, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtWebsite))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(labStreet, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtStreet))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(labTown, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTown))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(labPostcode, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPostcode)))
+                .addGap(10, 10, 10))
+            .addComponent(sep1, GroupLayout.Alignment.TRAILING)
+            .addGroup(panDetailsLayout.createSequentialGroup()
                 .addComponent(btnSave)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDelete)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(panDetailsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labAccount)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtAccount))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(labName, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labContact, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(txtContact)
-                            .addComponent(txtName)))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(labWebsite, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labAddress, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(txtWebsite)
-                            .addComponent(txtAddress)))))
+                .addGap(0, 207, Short.MAX_VALUE))
         );
         panDetailsLayout.setVerticalGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panDetailsLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(labName)
                     .addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(labContact)
-                    .addComponent(txtContact, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labContactNo)
+                    .addComponent(txtContactNo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(labEmail)
+                    .addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(labWebsite)
                     .addComponent(txtWebsite, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(labAddress)
-                    .addComponent(txtAddress, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labStreet)
+                    .addComponent(txtStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(labTown)
+                    .addComponent(txtTown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(labPostcode)
+                    .addComponent(txtPostcode, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(labAccount)
                     .addComponent(txtAccount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnCancel)
@@ -181,7 +220,7 @@ public class Suppliers extends PurplePanel {
         panSuppliersLayout.setVerticalGroup(panSuppliersLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panSuppliersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrSuppliers)
+                .addComponent(scrSuppliers, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panSuppliersLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNew)
@@ -196,16 +235,16 @@ public class Suppliers extends PurplePanel {
                 .addComponent(panSuppliers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(605, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(389, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addComponent(panSuppliers, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panDetails, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -216,9 +255,12 @@ public class Suppliers extends PurplePanel {
                     ResultSet rs = s.executeQuery("SELECT * FROM Supplier WHERE SupplierID = " + id + ";")) {
                 while (rs.next()) {
                     txtName.setText(rs.getString("Name"));
-                    txtContact.setText(rs.getString("Contact"));
+                    txtContactNo.setText(rs.getString("ContactNo"));
+                    txtEmail.setText(rs.getString("ContactEmail"));
                     txtWebsite.setText(rs.getString("Website"));
-                    txtAddress.setText(rs.getString("Address"));
+                    txtStreet.setText(rs.getString("StreetName"));
+                    txtTown.setText(rs.getString("Town"));
+                    txtPostcode.setText(rs.getString("Postcode"));
                     txtAccount.setText(rs.getString("AccountNo"));
                 }
             } catch (SQLException ex) {
@@ -229,27 +271,35 @@ public class Suppliers extends PurplePanel {
 
     private void btnSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try (Statement s = createStatement()) {
-            String[] data = new String[5];
-            data[0] = txtName.getText();
-            data[1] = txtContact.getText();
-            data[2] = txtWebsite.getText();
-            data[3] = txtAddress.getText();
-            data[4] = txtAccount.getText();
+            String name = txtName.getText();
+            String contactNo = txtContactNo.getText();
+            String contactEmail = txtEmail.getText();
+            String website = txtWebsite.getText();
+            String street = txtStreet.getText();
+            String town = txtTown.getText();
+            String postcode = txtPostcode.getText();
+            String account = txtAccount.getText();
             if (lstSuppliers.isSelectionEmpty()) {
-                s.executeUpdate("INSERT INTO Supplier (Name, Contact, Website, Address, AccountNo) VALUES (" +
-                        "'" + data[0] + "', " +
-                        "'" + data[1] + "', " +
-                        "'" + data[2] + "', " +
-                        "'" + data[3] + "', " +
-                        "'" + data[4] + "');");
+                s.executeUpdate("INSERT INTO Supplier (Name, ContactNo, ContactEmail, Website, StreetName, Town, Postcode, AccountNo) VALUES (" +
+                        "'" + name + "', " +
+                        "'" + contactNo + "', " +
+                        "'" + contactEmail + "', " +
+                        "'" + website + "', " +
+                        "'" + street + "', " +
+                        "'" + town + "', " +
+                        "'" + postcode + "', " +
+                        "'" + account + "');");
             } else {
                 int id = lstSuppliers.getSelectedValue().getKey();
                 s.executeUpdate("UPDATE Supplier SET " +
-                        "Name = '" + data[0] + "', " +
-                        "Contact = '" + data[1] + "', " +
-                        "Website = '" + data[2] + "', " +
-                        "Address = '" + data[3] + "', " +
-                        "AccountNo = '" + data[4] + "' " +
+                        "Name = '" + name + "', " +
+                        "ContactNo = '" + contactNo + "', " +
+                        "ContactEmail = '" + contactEmail + "', " +
+                        "Website = '" + website + "', " +
+                        "StreetName = '" + street + "', " +
+                        "Town = '" + town + "', " +
+                        "Postcode = '" + postcode + "', " +
+                        "AccountNo = '" + account + "' " +
                         "WHERE SupplierID = " + id + ";");
             }
             btnRefreshActionPerformed(null);
@@ -266,9 +316,9 @@ public class Suppliers extends PurplePanel {
     private void btnNewActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
         lstSuppliers.clearSelection();
         txtName.setText("");
-        txtContact.setText("");
+        txtContactNo.setText("");
         txtWebsite.setText("");
-        txtAddress.setText("");
+        txtPostcode.setText("");
         txtAccount.setText("");
     }//GEN-LAST:event_btnNewActionPerformed
 
@@ -289,12 +339,17 @@ public class Suppliers extends PurplePanel {
 
     private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         try (Statement s = createStatement()) {
-            if (!lstSuppliers.isSelectionEmpty()) {
-                int id = lstSuppliers.getSelectedValue().getKey();
-                s.executeUpdate("DELETE FROM Supplier WHERE SupplierID = " + id + ";");
-            }
-            btnRefreshActionPerformed(null);
-            btnNewActionPerformed(null);
+            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+//
+// TODO: Implement a check for records referencing this supplier and ask for
+// confirmation of cascade delete or a supplier to replace in the records
+//            
+//            if (!lstSuppliers.isSelectionEmpty()) {
+//                int id = lstSuppliers.getSelectedValue().getKey();
+//                s.executeUpdate("DELETE FROM Supplier WHERE SupplierID = " + id + ";");
+//            }
+//            btnRefreshActionPerformed(null);
+//            btnNewActionPerformed(null);
         } catch (SQLException ex) {
             error(ex);
         }
@@ -302,13 +357,14 @@ public class Suppliers extends PurplePanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton btnDelete;
     private JList<Pair> lstSuppliers;
     private JTextField txtAccount;
-    private JTextField txtAddress;
-    private JTextField txtContact;
+    private JTextField txtContactNo;
+    private JTextField txtEmail;
     private JTextField txtName;
+    private JTextField txtPostcode;
+    private JTextField txtStreet;
+    private JTextField txtTown;
     private JTextField txtWebsite;
     // End of variables declaration//GEN-END:variables
-    private static final Logger LOGGER = Logger.getLogger(Suppliers.class.getName());
 }
