@@ -224,6 +224,7 @@ public class Plants extends PurplePanel {
 
     private void btnRefreshActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         mdlPlants.clear();
+        plantsCombo.removeAllElements();
         try (Statement s = createStatement();
                 ResultSet rs = s.executeQuery("SELECT * FROM Plant ORDER BY CommonName ASC;")) {
             plantsCombo.addElement(new Pair(-1, ""));

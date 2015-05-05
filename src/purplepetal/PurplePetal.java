@@ -14,7 +14,7 @@ import javax.swing.*; // NB code
  */
 @SuppressWarnings("serial")
 public class PurplePetal extends JFrame {
-    private static final String version = "Flakware DBMS, v0.310";
+    private static final String version = "Flakware DBMS, v0.320";
     
     /**
      * Initialise components.
