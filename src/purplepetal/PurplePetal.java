@@ -1,11 +1,11 @@
 package purplepetal;
 
-import java.awt.Font;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*; // NB code
+import javax.swing.JFrame;
+import purplepetal.panel.PurplePanel;
 
 /**
  * Main application window of the Purple Petal DBMS.
@@ -28,66 +28,80 @@ public class PurplePetal extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        final JLabel title = new JLabel();
-        final JTabbedPane tabs = new JTabbedPane();
-        final JPanel panStatus = new JPanel();
-        final JSeparator sep1 = new JSeparator();
+        final javax.swing.JLabel title = new javax.swing.JLabel();
+        final javax.swing.JTabbedPane tabs = new javax.swing.JTabbedPane();
+        final purplepetal.panel.tab.Diary panDiary = new purplepetal.panel.tab.Diary();
+        final purplepetal.panel.tab.Products panProducts = new purplepetal.panel.tab.Products();
+        final purplepetal.panel.tab.Plants panPlants = new purplepetal.panel.tab.Plants();
+        final purplepetal.panel.tab.Items panItems = new purplepetal.panel.tab.Items();
+        final purplepetal.panel.tab.Suppliers panSuppliers = new purplepetal.panel.tab.Suppliers();
+        final purplepetal.panel.tab.Settings panSettings = new purplepetal.panel.tab.Settings();
+        final javax.swing.JPanel panStatus = new javax.swing.JPanel();
+        final javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Purple Petal Nurseries");
 
-        title.setFont(new Font("Times New Roman", 3, 24)); // NOI18N
+        title.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         title.setText("Purple Petal Nurseries");
 
         tabs.addTab("Diary", panDiary);
+        tabs.addTab("Products", panProducts);
         tabs.addTab("Plants", panPlants);
+        tabs.addTab("Items", panItems);
         tabs.addTab("Suppliers", panSuppliers);
         tabs.addTab("Settings", panSettings);
 
-        labFlakware.setHorizontalAlignment(SwingConstants.RIGHT);
+        labFlakware.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labFlakware.setText("Flakware DBMS, <version>");
 
-        GroupLayout panStatusLayout = new GroupLayout(panStatus);
+        javax.swing.GroupLayout panStatusLayout = new javax.swing.GroupLayout(panStatus);
         panStatus.setLayout(panStatusLayout);
-        panStatusLayout.setHorizontalGroup(panStatusLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(sep1)
+        panStatusLayout.setHorizontalGroup(
+            panStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panStatusLayout.createSequentialGroup()
-                .addComponent(labStatus, GroupLayout.PREFERRED_SIZE, 487, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(prgProgress, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(prgProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labFlakware))
+            .addComponent(sep1)
         );
-        panStatusLayout.setVerticalGroup(panStatusLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        panStatusLayout.setVerticalGroup(
+            panStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panStatusLayout.createSequentialGroup()
-                .addComponent(sep1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panStatusLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(labFlakware)
-                    .addComponent(labStatus, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(prgProgress, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(prgProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panStatusLayout.createSequentialGroup()
+                        .addComponent(labFlakware)
+                        .addGap(0, 0, 0))))
         );
 
-        GroupLayout layout = new GroupLayout(getContentPane());
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(title, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tabs, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+                    .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panStatus, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(panStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(title, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabs, GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panStatus, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -105,13 +119,13 @@ public class PurplePetal extends JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -133,13 +147,9 @@ public class PurplePetal extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private final JLabel labFlakware = new JLabel();
-    private final JLabel labStatus = new JLabel();
-    private final Diary panDiary = new Diary();
-    private final Plants panPlants = new Plants();
-    private final Settings panSettings = new Settings();
-    private final Suppliers panSuppliers = new Suppliers();
-    private final JProgressBar prgProgress = new JProgressBar();
+    private final javax.swing.JLabel labFlakware = new javax.swing.JLabel();
+    private final javax.swing.JLabel labStatus = new javax.swing.JLabel();
+    private final javax.swing.JProgressBar prgProgress = new javax.swing.JProgressBar();
     // End of variables declaration//GEN-END:variables
     private static final Logger LOGGER = Logger.getLogger(PurplePetal.class.getName());
 }

@@ -7,7 +7,7 @@ import java.util.logging.Logger;
  * 
  * @author UndeadScythes <udscythes@gmail.com>
  */
-public class Pair {
+public class Pair implements Keyable {
     private static final Logger LOGGER = Logger.getLogger(Pair.class.getName());
     private final int key;
     private final String value;
@@ -27,10 +27,7 @@ public class Pair {
         return value;
     }
     
-    /**
-     * Get the key of the pair.
-     * @return
-     */
+    @Override
     public int getKey() {
         return key;
     }

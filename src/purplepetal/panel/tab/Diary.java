@@ -1,10 +1,7 @@
-package purplepetal;
+package purplepetal.panel.tab;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,12 +13,15 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Logger;
-import javax.swing.*; // NB code
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
+import purplepetal.Pair;
+import purplepetal.panel.PurplePanel;
+import purplepetal.renderer.TableCellRenderer;
 
 /**
  * Displays diary entries for the status of various plants.
@@ -53,64 +53,64 @@ public class Diary extends PurplePanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        JPanel panCalendar = new JPanel();
-        JButton btnToday = new JButton();
-        cmbMonth = new JComboBox<Pair>();
-        spnYear = new JSpinner();
-        JScrollPane scrCalendar = new JScrollPane();
-        tabCalendar = new JTable();
-        final JButton btnRefresh = new JButton();
-        JSeparator sep3 = new JSeparator();
-        JSplitPane spl1 = new JSplitPane();
-        JPanel panEntries = new JPanel();
-        final JScrollPane scrPlants = new JScrollPane();
-        lstPlants = new JList<Pair>();
-        JButton btnNew = new JButton();
-        JSeparator sep2 = new JSeparator();
-        JPanel panDetails = new JPanel();
-        final JLabel labPlant = new JLabel();
-        final JLabel labBought = new JLabel();
-        final JLabel labPotted = new JLabel();
-        final JLabel labHardened = new JLabel();
-        final JLabel labReady = new JLabel();
-        final JLabel labLost = new JLabel();
-        final JLabel labSold = new JLabel();
-        txtBought = new JTextField();
-        txtPotted = new JTextField();
-        txtHardened = new JTextField();
-        txtReady = new JTextField();
-        txtLost = new JTextField();
-        txtSold = new JTextField();
-        cmbPlant = new JComboBox<Pair>();
-        JButton btnSave = new JButton();
-        JButton btnCancel = new JButton();
-        JButton btnDelete = new JButton();
-        JSeparator sep1 = new JSeparator();
+        javax.swing.JPanel panCalendar = new javax.swing.JPanel();
+        javax.swing.JButton btnToday = new javax.swing.JButton();
+        cmbMonth = new javax.swing.JComboBox<Pair>();
+        spnYear = new javax.swing.JSpinner();
+        javax.swing.JScrollPane scrCalendar = new javax.swing.JScrollPane();
+        tabCalendar = new javax.swing.JTable();
+        final javax.swing.JButton btnRefresh = new javax.swing.JButton();
+        javax.swing.JSeparator sep3 = new javax.swing.JSeparator();
+        javax.swing.JSplitPane spl1 = new javax.swing.JSplitPane();
+        javax.swing.JPanel panEntries = new javax.swing.JPanel();
+        final javax.swing.JScrollPane scrPlants = new javax.swing.JScrollPane();
+        lstPlants = new javax.swing.JList<Pair>();
+        javax.swing.JButton btnNew = new javax.swing.JButton();
+        javax.swing.JSeparator sep2 = new javax.swing.JSeparator();
+        javax.swing.JPanel panDetails = new javax.swing.JPanel();
+        final javax.swing.JLabel labPlant = new javax.swing.JLabel();
+        final javax.swing.JLabel labBought = new javax.swing.JLabel();
+        final javax.swing.JLabel labPotted = new javax.swing.JLabel();
+        final javax.swing.JLabel labHardened = new javax.swing.JLabel();
+        final javax.swing.JLabel labReady = new javax.swing.JLabel();
+        final javax.swing.JLabel labLost = new javax.swing.JLabel();
+        final javax.swing.JLabel labSold = new javax.swing.JLabel();
+        txtBought = new javax.swing.JTextField();
+        txtPotted = new javax.swing.JTextField();
+        txtHardened = new javax.swing.JTextField();
+        txtReady = new javax.swing.JTextField();
+        txtLost = new javax.swing.JTextField();
+        txtSold = new javax.swing.JTextField();
+        cmbPlant = new javax.swing.JComboBox<Pair>();
+        javax.swing.JButton btnSave = new javax.swing.JButton();
+        javax.swing.JButton btnCancel = new javax.swing.JButton();
+        javax.swing.JButton btnDelete = new javax.swing.JButton();
+        javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
 
         btnToday.setText("Today");
-        btnToday.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        btnToday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTodayActionPerformed(evt);
             }
         });
 
         cmbMonth.setMaximumRowCount(12);
         cmbMonth.setModel(mdlMonths);
-        cmbMonth.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent evt) {
+        cmbMonth.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbMonthItemStateChanged(evt);
             }
         });
 
-        spnYear.setModel(new SpinnerNumberModel());
-        spnYear.setEditor(new JSpinner.NumberEditor(spnYear, "0000"));
-        spnYear.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
+        spnYear.setModel(new javax.swing.SpinnerNumberModel());
+        spnYear.setEditor(new javax.swing.JSpinner.NumberEditor(spnYear, "0000"));
+        spnYear.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 spnYearStateChanged(evt);
             }
         });
 
-        tabCalendar.setModel(new DefaultTableModel(
+        tabCalendar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -124,7 +124,7 @@ public class Diary extends PurplePanel {
             }
         ) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class, String.class, String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
@@ -141,95 +141,99 @@ public class Diary extends PurplePanel {
         tabCalendar.setAutoscrolls(false);
         tabCalendar.setFocusable(false);
         tabCalendar.setRowSelectionAllowed(false);
-        tabCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabCalendar.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tabCalendar.getTableHeader().setResizingAllowed(false);
         tabCalendar.getTableHeader().setReorderingAllowed(false);
-        tabCalendar.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
+        tabCalendar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabCalendarMouseClicked(evt);
             }
         });
         scrCalendar.setViewportView(tabCalendar);
 
         btnRefresh.setText("Refresh");
-        btnRefresh.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshActionPerformed(evt);
             }
         });
 
-        GroupLayout panCalendarLayout = new GroupLayout(panCalendar);
+        javax.swing.GroupLayout panCalendarLayout = new javax.swing.GroupLayout(panCalendar);
         panCalendar.setLayout(panCalendarLayout);
-        panCalendarLayout.setHorizontalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        panCalendarLayout.setHorizontalGroup(
+            panCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(sep3)
             .addGroup(panCalendarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(panCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panCalendarLayout.createSequentialGroup()
                         .addComponent(btnToday)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE))
-                    .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spnYear, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(scrCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRefresh))
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        panCalendarLayout.setVerticalGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        panCalendarLayout.setVerticalGroup(
+            panCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panCalendarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panCalendarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(panCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnToday)
-                    .addComponent(cmbMonth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spnYear, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrCalendar, GroupLayout.PREFERRED_SIZE, 348, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sep3, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(cmbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRefresh)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         spl1.setDividerLocation(150);
 
         lstPlants.setModel(mldPlants);
-        lstPlants.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent evt) {
+        lstPlants.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 lstPlantsValueChanged(evt);
             }
         });
         scrPlants.setViewportView(lstPlants);
 
         btnNew.setText("New");
-        btnNew.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewActionPerformed(evt);
             }
         });
 
-        GroupLayout panEntriesLayout = new GroupLayout(panEntries);
+        javax.swing.GroupLayout panEntriesLayout = new javax.swing.GroupLayout(panEntries);
         panEntries.setLayout(panEntriesLayout);
-        panEntriesLayout.setHorizontalGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        panEntriesLayout.setHorizontalGroup(
+            panEntriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(sep2)
             .addGroup(panEntriesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(scrPlants, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(panEntriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrPlants, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(panEntriesLayout.createSequentialGroup()
                         .addComponent(btnNew)
                         .addGap(0, 76, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        panEntriesLayout.setVerticalGroup(panEntriesLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        panEntriesLayout.setVerticalGroup(
+            panEntriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panEntriesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrPlants, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sep2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrPlants, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(btnNew)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         spl1.setLeftComponent(panEntries);
@@ -263,102 +267,104 @@ public class Diary extends PurplePanel {
         cmbPlant.setModel(plantsCombo);
 
         btnSave.setText("Save");
-        btnSave.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);
             }
         });
 
         btnCancel.setText("Cancel");
-        btnCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
 
         btnDelete.setText("Delete");
-        btnDelete.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
 
-        GroupLayout panDetailsLayout = new GroupLayout(panDetails);
+        javax.swing.GroupLayout panDetailsLayout = new javax.swing.GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
-        panDetailsLayout.setHorizontalGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        panDetailsLayout.setHorizontalGroup(
+            panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(sep1)
             .addGroup(panDetailsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(labPotted, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labHardened, GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                            .addComponent(labBought, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labPlant, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbPlant, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(labPotted, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labHardened, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                            .addComponent(labBought, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labPlant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbPlant, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(panDetailsLayout.createSequentialGroup()
-                                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtReady, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtBought, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
-                                        .addComponent(txtPotted, GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtHardened, GroupLayout.Alignment.LEADING))
-                                    .addComponent(txtLost, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtReady, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(txtBought, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                                        .addComponent(txtPotted, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtHardened, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(txtLost, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panDetailsLayout.createSequentialGroup()
                                 .addComponent(btnSave)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCancel)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnDelete))
-                            .addComponent(labReady, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labReady, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labLost)
                             .addGroup(panDetailsLayout.createSequentialGroup()
-                                .addComponent(labSold, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSold, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(labSold, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSold, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 176, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        panDetailsLayout.setVerticalGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        panDetailsLayout.setVerticalGroup(
+            panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panDetailsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labPlant)
-                    .addComponent(cmbPlant, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBought, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbPlant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBought, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labBought))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPotted, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPotted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labPotted))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labHardened)
-                    .addComponent(txtHardened, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtHardened, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labReady)
-                    .addComponent(txtReady, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtReady, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labLost)
-                    .addComponent(txtLost, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtLost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labSold)
-                    .addComponent(txtSold, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sep1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnCancel)
                     .addComponent(btnDelete))
@@ -367,17 +373,19 @@ public class Diary extends PurplePanel {
 
         spl1.setRightComponent(panDetails);
 
-        GroupLayout layout = new GroupLayout(this);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panCalendar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spl1, GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
+                .addComponent(panCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spl1))
         );
-        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(spl1)
-            .addComponent(panCalendar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panCalendar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -495,6 +503,12 @@ public class Diary extends PurplePanel {
 
     private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         try (Statement s = createStatement()) {
+            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+
+// TODO: Implement a check for records referencing this supplier and ask for
+// confirmation of cascade delete or a supplier to replace in the records
+           
+            
             if (!lstPlants.isSelectionEmpty()) {
                 int plant = lstPlants.getSelectedValue().getKey();
                 LocalDate date = getDate();
@@ -605,17 +619,17 @@ public class Diary extends PurplePanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JComboBox<Pair> cmbMonth;
-    private JComboBox<Pair> cmbPlant;
-    private JList<Pair> lstPlants;
-    private JSpinner spnYear;
-    private JTable tabCalendar;
-    private JTextField txtBought;
-    private JTextField txtHardened;
-    private JTextField txtLost;
-    private JTextField txtPotted;
-    private JTextField txtReady;
-    private JTextField txtSold;
+    private javax.swing.JComboBox<Pair> cmbMonth;
+    private javax.swing.JComboBox<Pair> cmbPlant;
+    private javax.swing.JList<Pair> lstPlants;
+    private javax.swing.JSpinner spnYear;
+    private javax.swing.JTable tabCalendar;
+    private javax.swing.JTextField txtBought;
+    private javax.swing.JTextField txtHardened;
+    private javax.swing.JTextField txtLost;
+    private javax.swing.JTextField txtPotted;
+    private javax.swing.JTextField txtReady;
+    private javax.swing.JTextField txtSold;
     // End of variables declaration//GEN-END:variables
     private static final Logger LOGGER = Logger.getLogger(Diary.class.getName());
 }

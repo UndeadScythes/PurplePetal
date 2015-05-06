@@ -1,0 +1,160 @@
+package purplepetal.panel.tab;
+
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import purplepetal.Pair;
+import purplepetal.panel.PurplePanel;
+
+/**
+ * Methods to change settings and edit some features.
+ * 
+ * @author UndeadScythes <udscythes@gmail.com>
+ */
+@SuppressWarnings("serial")
+public class Settings extends PurplePanel {
+    /**
+     * Creates new form Settings
+     */
+    public Settings() {
+        initComponents();
+    }
+
+    @SuppressWarnings({"unchecked", "Convert2Lambda"})
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        javax.swing.JPanel panSettings = new javax.swing.JPanel();
+        javax.swing.JLabel labDatabase = new javax.swing.JLabel();
+        javax.swing.JLabel labVAT = new javax.swing.JLabel();
+        txtDatabase = new javax.swing.JTextField();
+        javax.swing.JButton btnDatabase = new javax.swing.JButton();
+        txtVAT = new javax.swing.JTextField();
+        javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
+        javax.swing.JButton btnSave = new javax.swing.JButton();
+        javax.swing.JPanel panButtons = new javax.swing.JPanel();
+        javax.swing.JButton btnPlantTypes = new javax.swing.JButton();
+
+        labDatabase.setText("Database");
+
+        labVAT.setText("VAT");
+
+        btnDatabase.setText("Change");
+
+        btnSave.setText("Save");
+
+        javax.swing.GroupLayout panSettingsLayout = new javax.swing.GroupLayout(panSettings);
+        panSettings.setLayout(panSettingsLayout);
+        panSettingsLayout.setHorizontalGroup(
+            panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(sep1)
+            .addGroup(panSettingsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panSettingsLayout.createSequentialGroup()
+                        .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labDatabase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panSettingsLayout.createSequentialGroup()
+                                .addComponent(txtDatabase, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDatabase))
+                            .addGroup(panSettingsLayout.createSequentialGroup()
+                                .addComponent(txtVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(panSettingsLayout.createSequentialGroup()
+                        .addComponent(btnSave)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        panSettingsLayout.setVerticalGroup(
+            panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panSettingsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labDatabase)
+                    .addComponent(txtDatabase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDatabase))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labVAT)
+                    .addComponent(txtVAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(btnSave)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnPlantTypes.setText("Delete Plant Type");
+        btnPlantTypes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlantTypesActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panButtonsLayout = new javax.swing.GroupLayout(panButtons);
+        panButtons.setLayout(panButtonsLayout);
+        panButtonsLayout.setHorizontalGroup(
+            panButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panButtonsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnPlantTypes)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panButtonsLayout.setVerticalGroup(
+            panButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panButtonsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnPlantTypes)
+                .addContainerGap(160, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    // TODO: Implement the other editable settings in this form.
+    
+    private void btnPlantTypesActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantTypesActionPerformed
+        int typeCount = plantTypesCombo.getSize();
+        ArrayList<Pair> types = new ArrayList<>(typeCount);
+        for (int i = 0; i < typeCount; i++) {
+            Pair type = plantTypesCombo.getElementAt(i);
+            types.add(new Pair(type.getKey(), type.toString()));
+        }
+        Pair type = (Pair) JOptionPane.showInputDialog(this, "Which plant type do you wish to delete?", "Delete Plant Type", JOptionPane.QUESTION_MESSAGE, null, types.toArray(), "");
+        if (type != null) {
+            try (Statement s = createStatement()) {
+                s.executeUpdate(String.format("DELETE FROM PlantType WHERE PlantTypeID = %s;", type.getKey()));
+            } catch (SQLException ex) {
+                error(ex);
+            }
+            updatePlantTypesCombo();
+        }
+    }//GEN-LAST:event_btnPlantTypesActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField txtDatabase;
+    private javax.swing.JTextField txtVAT;
+    // End of variables declaration//GEN-END:variables
+    private static final Logger LOGGER = Logger.getLogger(Settings.class.getName());
+}

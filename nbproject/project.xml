@@ -12,5 +12,11 @@
             </test-roots>
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1"/>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>color</word>
+            <word>popups</word>
+            <word>Throwables</word>
+            <word>whos</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>
