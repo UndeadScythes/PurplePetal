@@ -25,7 +25,7 @@ public class Suppliers extends PurplePanel {
      */
     public Suppliers() {
         initComponents();
-        btnRefreshActionPerformed(null);
+        refresh();
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
@@ -33,12 +33,6 @@ public class Suppliers extends PurplePanel {
     private void initComponents() {
 
         javax.swing.JSplitPane spl1 = new javax.swing.JSplitPane();
-        javax.swing.JPanel panSuppliers = new javax.swing.JPanel();
-        final javax.swing.JScrollPane scrSuppliers = new javax.swing.JScrollPane();
-        lstSuppliers = new javax.swing.JList<Pair>();
-        final javax.swing.JButton btnNew = new javax.swing.JButton();
-        final javax.swing.JButton btnRefresh = new javax.swing.JButton();
-        javax.swing.JSeparator sep2 = new javax.swing.JSeparator();
         final javax.swing.JPanel panDetails = new javax.swing.JPanel();
         final javax.swing.JLabel labName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
@@ -60,61 +54,11 @@ public class Suppliers extends PurplePanel {
         final javax.swing.JButton btnSave = new javax.swing.JButton();
         final javax.swing.JButton btnCancel = new javax.swing.JButton();
         javax.swing.JButton btnDelete = new javax.swing.JButton();
+        final javax.swing.JButton btnNew = new javax.swing.JButton();
+        final javax.swing.JScrollPane scrSuppliers = new javax.swing.JScrollPane();
+        lstSuppliers = new javax.swing.JList<Pair>();
 
         spl1.setDividerLocation(250);
-
-        lstSuppliers.setModel(mdlSuppliers);
-        lstSuppliers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        lstSuppliers.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                lstSuppliersValueChanged(evt);
-            }
-        });
-        scrSuppliers.setViewportView(lstSuppliers);
-
-        btnNew.setText("New");
-        btnNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewActionPerformed(evt);
-            }
-        });
-
-        btnRefresh.setText("Refresh");
-        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefreshActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panSuppliersLayout = new javax.swing.GroupLayout(panSuppliers);
-        panSuppliers.setLayout(panSuppliersLayout);
-        panSuppliersLayout.setHorizontalGroup(
-            panSuppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panSuppliersLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(sep2)
-            .addGroup(panSuppliersLayout.createSequentialGroup()
-                .addComponent(btnRefresh)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNew)
-                .addGap(0, 119, Short.MAX_VALUE))
-        );
-        panSuppliersLayout.setVerticalGroup(
-            panSuppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panSuppliersLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sep2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panSuppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRefresh)
-                    .addComponent(btnNew)))
-        );
-
-        spl1.setLeftComponent(panSuppliers);
 
         labName.setText("Name");
 
@@ -153,62 +97,68 @@ public class Suppliers extends PurplePanel {
             }
         });
 
+        btnNew.setText("New");
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panDetailsLayout = new javax.swing.GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
         panDetailsLayout.setHorizontalGroup(
             panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(sep1)
             .addGroup(panDetailsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labName, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtName))
+                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labContactNo, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                    .addComponent(labName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(labAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                    .addComponent(labPostcode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labStreet, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labWebsite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labTown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEmail)
+                                    .addComponent(txtWebsite)
+                                    .addGroup(panDetailsLayout.createSequentialGroup()
+                                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtPostcode, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(txtStreet)
+                                    .addComponent(txtTown))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtAccount))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtContactNo))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtEmail))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labWebsite, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtWebsite))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labStreet, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtStreet))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labTown, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTown))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(labPostcode, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPostcode)))
-                .addGap(10, 10, 10))
-            .addComponent(sep1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(panDetailsLayout.createSequentialGroup()
-                .addComponent(btnSave)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelete)
-                .addGap(0, 348, Short.MAX_VALUE))
+                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         panDetailsLayout.setVerticalGroup(
             panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panDetailsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labName)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labContactNo)
@@ -241,19 +191,31 @@ public class Suppliers extends PurplePanel {
                 .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSave)
                     .addComponent(btnCancel)
-                    .addComponent(btnDelete))
-                .addContainerGap(145, Short.MAX_VALUE))
+                    .addComponent(btnSave)
+                    .addComponent(btnDelete)
+                    .addComponent(btnNew))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         spl1.setRightComponent(panDetails);
+
+        lstSuppliers.setModel(mdlSuppliers);
+        lstSuppliers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstSuppliers.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstSuppliersValueChanged(evt);
+            }
+        });
+        scrSuppliers.setViewportView(lstSuppliers);
+
+        spl1.setLeftComponent(scrSuppliers);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(spl1, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
+            .addComponent(spl1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,7 +277,7 @@ public class Suppliers extends PurplePanel {
                         "AccountNo = '" + account + "' " +
                         "WHERE SupplierID = " + id + ";");
             }
-            btnRefreshActionPerformed(null);
+            refresh();
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
             error(ex);
@@ -335,7 +297,7 @@ public class Suppliers extends PurplePanel {
         txtAccount.setText("");
     }//GEN-LAST:event_btnNewActionPerformed
 
-    private void btnRefreshActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+    private void refresh() {
         mdlSuppliers.clear();
         suppliersCombo.removeAllElements();
         suppliersCombo.addElement(new Pair(-1, ""));
@@ -348,8 +310,8 @@ public class Suppliers extends PurplePanel {
         } catch (SQLException ex) {
             error(ex);
         }
-    }//GEN-LAST:event_btnRefreshActionPerformed
-
+    }
+    
     private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         try (Statement s = createStatement()) {
             JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
@@ -361,7 +323,7 @@ public class Suppliers extends PurplePanel {
                 int id = lstSuppliers.getSelectedValue().getKey();
                 s.executeUpdate("DELETE FROM Supplier WHERE SupplierID = " + id + ";");
             }
-            btnRefreshActionPerformed(null);
+            refresh();
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
             error(ex);

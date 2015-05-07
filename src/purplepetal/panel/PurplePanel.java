@@ -39,6 +39,7 @@ public class PurplePanel extends DataPanel {
      * Drop down list of plants.
      */
     protected static final DefaultComboBoxModel<Pair> plantsCombo = new DefaultComboBoxModel<>();
+    protected static final int textWidth = 100;
     private static final Logger LOGGER = Logger.getLogger(PurplePanel.class.getName());
     
     /**
@@ -57,4 +58,5 @@ public class PurplePanel extends DataPanel {
             error(ex, query);
         }
     }
+    
 }

@@ -25,7 +25,7 @@ public class Plants extends PurplePanel {
      */
     public Plants() {
         initComponents();
-        btnRefreshActionPerformed(null);
+        refresh();
         updatePlantTypesCombo();
     }
 
@@ -34,11 +34,8 @@ public class Plants extends PurplePanel {
     private void initComponents() {
 
         javax.swing.JSplitPane spl1 = new javax.swing.JSplitPane();
-        javax.swing.JPanel panPlants = new javax.swing.JPanel();
         final javax.swing.JScrollPane scrPlants = new javax.swing.JScrollPane();
         lstPlants = new javax.swing.JList<Pair>();
-        final javax.swing.JButton btnNew = new javax.swing.JButton();
-        final javax.swing.JButton btnRefresh = new javax.swing.JButton();
         final javax.swing.JPanel panDetails = new javax.swing.JPanel();
         final javax.swing.JLabel labName = new javax.swing.JLabel();
         final javax.swing.JLabel labLatin = new javax.swing.JLabel();
@@ -55,6 +52,7 @@ public class Plants extends PurplePanel {
         btnDelete = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
+        final javax.swing.JButton btnNew = new javax.swing.JButton();
 
         spl1.setDividerLocation(250);
 
@@ -66,51 +64,11 @@ public class Plants extends PurplePanel {
         });
         scrPlants.setViewportView(lstPlants);
 
-        btnNew.setText("New");
-        btnNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewActionPerformed(evt);
-            }
-        });
+        spl1.setLeftComponent(scrPlants);
 
-        btnRefresh.setText("Refresh");
-        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefreshActionPerformed(evt);
-            }
-        });
+        labName.setText("Common");
 
-        javax.swing.GroupLayout panPlantsLayout = new javax.swing.GroupLayout(panPlants);
-        panPlants.setLayout(panPlantsLayout);
-        panPlantsLayout.setHorizontalGroup(
-            panPlantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panPlantsLayout.createSequentialGroup()
-                .addGroup(panPlantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panPlantsLayout.createSequentialGroup()
-                        .addComponent(btnRefresh)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNew)
-                        .addGap(0, 74, Short.MAX_VALUE))
-                    .addComponent(scrPlants, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        panPlantsLayout.setVerticalGroup(
-            panPlantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panPlantsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrPlants)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panPlantsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNew)
-                    .addComponent(btnRefresh))
-                .addGap(0, 0, 0))
-        );
-
-        spl1.setLeftComponent(panPlants);
-
-        labName.setText("Common Name");
-
-        labLatin.setText("Latin Name");
+        labLatin.setText("Latin");
 
         labSupplier.setText("Supplier");
 
@@ -150,36 +108,48 @@ public class Plants extends PurplePanel {
             }
         });
 
+        btnNew.setText("New");
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panDetailsLayout = new javax.swing.GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
         panDetailsLayout.setHorizontalGroup(
             panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panDetailsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labName, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                    .addComponent(labLatin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtName)
-                    .addComponent(txtLatin)
-                    .addComponent(cmbSupplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(cmbType, 0, 185, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNewType))
-                    .addComponent(txtPrice)))
             .addComponent(sep1)
             .addGroup(panDetailsLayout.createSequentialGroup()
-                .addComponent(btnSave)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelete)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(labType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labSupplier, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                            .addComponent(labLatin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnNewType))
+                            .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtLatin, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cmbSupplier, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE))
+                            .addComponent(txtName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panDetailsLayout.createSequentialGroup()
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panDetailsLayout.setVerticalGroup(
             panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,8 +181,9 @@ public class Plants extends PurplePanel {
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnCancel)
-                    .addComponent(btnDelete))
-                .addContainerGap(215, Short.MAX_VALUE))
+                    .addComponent(btnDelete)
+                    .addComponent(btnNew))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         spl1.setRightComponent(panDetails);
@@ -221,7 +192,7 @@ public class Plants extends PurplePanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(spl1)
+            .addComponent(spl1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,10 +200,10 @@ public class Plants extends PurplePanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRefreshActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+    private void refresh() {
         refresh(mdlPlants, plantsCombo, "Plant", "PlantID", "CommonName");
-    }//GEN-LAST:event_btnRefreshActionPerformed
-
+    }
+    
     private void lstPlantsValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstPlantsValueChanged
         if (!lstPlants.isSelectionEmpty()) {
             int id = lstPlants.getSelectedValue().getKey();
@@ -285,7 +256,7 @@ public class Plants extends PurplePanel {
                     "Price = '" + data[2] + "' " +
                     "WHERE PlantID = " + id + ";");
             }
-            btnRefreshActionPerformed(null);
+            refresh();
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
             error(ex);
@@ -319,7 +290,7 @@ public class Plants extends PurplePanel {
                 int id = lstPlants.getSelectedValue().getKey();
                 s.executeUpdate("DELETE FROM Plant WHERE PlantID = " + id + ";");
             }
-            btnRefreshActionPerformed(null);
+            refresh();
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
             error(ex);
