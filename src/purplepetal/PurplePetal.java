@@ -2,7 +2,6 @@ package purplepetal;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,7 +17,7 @@ import purplepetal.panel.PurplePanel;
  */
 @SuppressWarnings("serial")
 public class PurplePetal extends JFrame {
-    private double version = 0;
+    private static double version = 0;
     
     /**
      * Initialise components.
@@ -151,6 +150,14 @@ public class PurplePetal extends JFrame {
                 new PurplePetal().setVisible(true);
             }
         });
+    }
+    
+    /**
+     * Get the version of this instance of PurplePetal.
+     * @return
+     */
+    public static double getVersion() {
+        return version;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

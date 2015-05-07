@@ -1,12 +1,20 @@
 package purplepetal.panel.tab;
 
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.apache.commons.io.FileUtils;
 import purplepetal.Pair;
+import purplepetal.PurplePetal;
 import purplepetal.panel.PurplePanel;
 
 /**
@@ -16,6 +24,9 @@ import purplepetal.panel.PurplePanel;
  */
 @SuppressWarnings("serial")
 public class Settings extends PurplePanel {
+    private static final String VERSION_URL = "https://github.com/UndeadScythes/PurplePetal/raw/master/src/resources/version.txt";
+    private static final String JAR_URL = "https://github.com/UndeadScythes/PurplePetal/raw/master/dist/PurplePetal.jar";
+    
     /**
      * Creates new form Settings
      */
@@ -37,6 +48,7 @@ public class Settings extends PurplePanel {
         javax.swing.JButton btnSave = new javax.swing.JButton();
         javax.swing.JPanel panButtons = new javax.swing.JPanel();
         javax.swing.JButton btnPlantTypes = new javax.swing.JButton();
+        btnUpdates = new javax.swing.JButton();
 
         labDatabase.setText("Database");
 
@@ -61,7 +73,7 @@ public class Settings extends PurplePanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panSettingsLayout.createSequentialGroup()
-                                .addComponent(txtDatabase, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                                .addComponent(txtDatabase, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnDatabase))
                             .addGroup(panSettingsLayout.createSequentialGroup()
@@ -98,13 +110,22 @@ public class Settings extends PurplePanel {
             }
         });
 
+        btnUpdates.setText("Check for Updates");
+        btnUpdates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdatesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panButtonsLayout = new javax.swing.GroupLayout(panButtons);
         panButtons.setLayout(panButtonsLayout);
         panButtonsLayout.setHorizontalGroup(
             panButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panButtonsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnPlantTypes)
+                .addGroup(panButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPlantTypes)
+                    .addComponent(btnUpdates))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panButtonsLayout.setVerticalGroup(
@@ -112,7 +133,9 @@ public class Settings extends PurplePanel {
             .addGroup(panButtonsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnPlantTypes)
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUpdates)
+                .addContainerGap(219, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -127,7 +150,7 @@ public class Settings extends PurplePanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -151,8 +174,27 @@ public class Settings extends PurplePanel {
         }
     }//GEN-LAST:event_btnPlantTypesActionPerformed
 
+    private void btnUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatesActionPerformed
+        try {
+            double version = Double.parseDouble(new BufferedReader(new InputStreamReader(new URL(VERSION_URL).openStream())).readLine());
+            if (version > PurplePetal.getVersion()) {
+                int response = JOptionPane.showConfirmDialog(this, "A new version is available, do you want to download it?", "Version check", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    FileUtils.copyURLToFile(new URL(JAR_URL), new File(String.format("PurplePetal%01.3f.jar", version)));
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Your software is up to date.", "Version check", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (MalformedURLException ex) {
+            error(ex);
+        } catch (IOException ex) {
+            error(ex);
+        }
+    }//GEN-LAST:event_btnUpdatesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnUpdates;
     private javax.swing.JTextField txtDatabase;
     private javax.swing.JTextField txtVAT;
     // End of variables declaration//GEN-END:variables
