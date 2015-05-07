@@ -47,15 +47,12 @@ public class TableCellRenderer extends DefaultTableCellRenderer {
         } else {
             cell.setBackground(Color.WHITE);
         }
-        if (dimmed.contains(coord)) {
+        if (marked.contains(coord)) {
+            cell.setForeground(Color.RED);
+        } else if (dimmed.contains(coord)) {
             cell.setForeground(Color.LIGHT_GRAY);
         } else {
             cell.setForeground(Color.BLACK);
-        }
-        if (marked.contains(coord)) {
-            cell.setFont(cell.getFont().deriveFont(Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_ULTRABOLD)));
-        } else {
-            cell.setFont(cell.getFont().deriveFont(Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_REGULAR)));
         }
         return cell;
     }

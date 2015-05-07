@@ -19,7 +19,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
+import purplepetal.Entry;
+import purplepetal.EntryType;
 import purplepetal.Pair;
+import purplepetal.Part;
 import purplepetal.panel.PurplePanel;
 import purplepetal.renderer.TableCellRenderer;
 
@@ -30,9 +33,10 @@ import purplepetal.renderer.TableCellRenderer;
  */
 @SuppressWarnings("serial")
 public class Diary extends PurplePanel {
-    private final DefaultListModel<Pair> mldPlants = new DefaultListModel<>();
+    private final DefaultListModel<Entry> mdlEntries = new DefaultListModel<>();
     private final DefaultComboBoxModel<Pair> mdlMonths = new DefaultComboBoxModel<>();
     private final TableCellRenderer cellRenderer;
+    private boolean refresh = false;
 
     /**
      * Initialise components.
@@ -47,6 +51,8 @@ public class Diary extends PurplePanel {
             mdlMonths.addElement(new Pair(month.getValue(), month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)));
         }
         btnTodayActionPerformed(null);
+        refresh = true;
+        btnRefreshActionPerformed(null);
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
@@ -63,29 +69,47 @@ public class Diary extends PurplePanel {
         javax.swing.JSeparator sep3 = new javax.swing.JSeparator();
         javax.swing.JSplitPane spl1 = new javax.swing.JSplitPane();
         javax.swing.JPanel panEntries = new javax.swing.JPanel();
-        final javax.swing.JScrollPane scrPlants = new javax.swing.JScrollPane();
-        lstPlants = new javax.swing.JList<Pair>();
+        final javax.swing.JScrollPane scrEntries = new javax.swing.JScrollPane();
+        lstEntries = new javax.swing.JList<Entry>();
         javax.swing.JButton btnNew = new javax.swing.JButton();
         javax.swing.JSeparator sep2 = new javax.swing.JSeparator();
         javax.swing.JPanel panDetails = new javax.swing.JPanel();
+        tabDetails = new javax.swing.JTabbedPane();
+        panPlant = new javax.swing.JPanel();
         final javax.swing.JLabel labPlant = new javax.swing.JLabel();
-        final javax.swing.JLabel labBought = new javax.swing.JLabel();
+        cmbPlant = new javax.swing.JComboBox<Pair>();
+        txtPlantBought = new javax.swing.JTextField();
+        final javax.swing.JLabel labPlantBought = new javax.swing.JLabel();
+        javax.swing.JButton btnPlantSave = new javax.swing.JButton();
+        javax.swing.JButton btnPlantCancel = new javax.swing.JButton();
+        javax.swing.JButton btnPlantDelete = new javax.swing.JButton();
+        javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
+        panProduct = new javax.swing.JPanel();
+        javax.swing.JLabel labProduct = new javax.swing.JLabel();
+        cmbProduct = new javax.swing.JComboBox<Pair>();
+        txtPotted = new javax.swing.JTextField();
         final javax.swing.JLabel labPotted = new javax.swing.JLabel();
         final javax.swing.JLabel labHardened = new javax.swing.JLabel();
         final javax.swing.JLabel labReady = new javax.swing.JLabel();
         final javax.swing.JLabel labLost = new javax.swing.JLabel();
         final javax.swing.JLabel labSold = new javax.swing.JLabel();
-        txtBought = new javax.swing.JTextField();
-        txtPotted = new javax.swing.JTextField();
-        txtHardened = new javax.swing.JTextField();
-        txtReady = new javax.swing.JTextField();
-        txtLost = new javax.swing.JTextField();
         txtSold = new javax.swing.JTextField();
-        cmbPlant = new javax.swing.JComboBox<Pair>();
-        javax.swing.JButton btnSave = new javax.swing.JButton();
-        javax.swing.JButton btnCancel = new javax.swing.JButton();
-        javax.swing.JButton btnDelete = new javax.swing.JButton();
-        javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
+        txtLost = new javax.swing.JTextField();
+        txtReady = new javax.swing.JTextField();
+        txtHardened = new javax.swing.JTextField();
+        javax.swing.JButton btnProductSave = new javax.swing.JButton();
+        javax.swing.JButton btnProductCancel = new javax.swing.JButton();
+        javax.swing.JButton btnProductDelete = new javax.swing.JButton();
+        javax.swing.JSeparator sep4 = new javax.swing.JSeparator();
+        panItem = new javax.swing.JPanel();
+        cmbItem = new javax.swing.JComboBox<Pair>();
+        javax.swing.JLabel labItem = new javax.swing.JLabel();
+        javax.swing.JLabel labItemBought = new javax.swing.JLabel();
+        txtItemBought = new javax.swing.JTextField();
+        javax.swing.JButton btnItemSave = new javax.swing.JButton();
+        javax.swing.JButton btnItemCancel = new javax.swing.JButton();
+        javax.swing.JButton btnItemDelete = new javax.swing.JButton();
+        javax.swing.JSeparator sep5 = new javax.swing.JSeparator();
 
         btnToday.setText("Today");
         btnToday.addActionListener(new java.awt.event.ActionListener() {
@@ -193,15 +217,15 @@ public class Diary extends PurplePanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        spl1.setDividerLocation(150);
+        spl1.setDividerLocation(250);
 
-        lstPlants.setModel(mldPlants);
-        lstPlants.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+        lstEntries.setModel(mdlEntries);
+        lstEntries.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                lstPlantsValueChanged(evt);
+                lstEntriesValueChanged(evt);
             }
         });
-        scrPlants.setViewportView(lstPlants);
+        scrEntries.setViewportView(lstEntries);
 
         btnNew.setText("New");
         btnNew.addActionListener(new java.awt.event.ActionListener() {
@@ -218,29 +242,110 @@ public class Diary extends PurplePanel {
             .addGroup(panEntriesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panEntriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrPlants, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(scrEntries, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                     .addGroup(panEntriesLayout.createSequentialGroup()
                         .addComponent(btnNew)
-                        .addGap(0, 76, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panEntriesLayout.setVerticalGroup(
             panEntriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panEntriesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrPlants, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrEntries, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sep2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNew)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         spl1.setLeftComponent(panEntries);
 
         labPlant.setText("Plant");
 
-        labBought.setText("Bought");
+        cmbPlant.setModel(plantsCombo);
+
+        txtPlantBought.setText("0");
+
+        labPlantBought.setText("Bought");
+
+        btnPlantSave.setText("Save");
+        btnPlantSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlantSaveActionPerformed(evt);
+            }
+        });
+
+        btnPlantCancel.setText("Cancel");
+        btnPlantCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlantCancelActionPerformed(evt);
+            }
+        });
+
+        btnPlantDelete.setText("Delete");
+        btnPlantDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlantDeleteActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panPlantLayout = new javax.swing.GroupLayout(panPlant);
+        panPlant.setLayout(panPlantLayout);
+        panPlantLayout.setHorizontalGroup(
+            panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panPlantLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panPlantLayout.createSequentialGroup()
+                        .addComponent(labPlant, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbPlant, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panPlantLayout.createSequentialGroup()
+                        .addGroup(panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panPlantLayout.createSequentialGroup()
+                                .addComponent(labPlantBought, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPlantBought, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panPlantLayout.createSequentialGroup()
+                                .addComponent(btnPlantSave)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPlantCancel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPlantDelete)))
+                        .addGap(0, 89, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addComponent(sep1)
+        );
+        panPlantLayout.setVerticalGroup(
+            panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panPlantLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labPlant)
+                    .addComponent(cmbPlant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labPlantBought)
+                    .addComponent(txtPlantBought, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPlantSave)
+                    .addComponent(btnPlantCancel)
+                    .addComponent(btnPlantDelete))
+                .addContainerGap(312, Short.MAX_VALUE))
+        );
+
+        tabDetails.addTab("Plant", panPlant);
+
+        labProduct.setText("Product");
+
+        cmbProduct.setModel(productsCombo);
+
+        txtPotted.setText("0");
 
         labPotted.setText("Potted on");
 
@@ -252,123 +357,202 @@ public class Diary extends PurplePanel {
 
         labSold.setText("Sold");
 
-        txtBought.setText("0");
-
-        txtPotted.setText("0");
-
-        txtHardened.setText("0");
-
-        txtReady.setText("0");
+        txtSold.setText("0");
 
         txtLost.setText("0");
 
-        txtSold.setText("0");
+        txtReady.setText("0");
 
-        cmbPlant.setModel(plantsCombo);
+        txtHardened.setText("0");
 
-        btnSave.setText("Save");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
+        btnProductSave.setText("Save");
+        btnProductSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
+                btnProductSaveActionPerformed(evt);
             }
         });
 
-        btnCancel.setText("Cancel");
-        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+        btnProductCancel.setText("Cancel");
+        btnProductCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelActionPerformed(evt);
+                btnProductCancelActionPerformed(evt);
             }
         });
 
-        btnDelete.setText("Delete");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+        btnProductDelete.setText("Delete");
+        btnProductDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
+                btnProductDeleteActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout panProductLayout = new javax.swing.GroupLayout(panProduct);
+        panProduct.setLayout(panProductLayout);
+        panProductLayout.setHorizontalGroup(
+            panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(sep4)
+            .addGroup(panProductLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labSold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panProductLayout.createSequentialGroup()
+                        .addComponent(labProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbProduct, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panProductLayout.createSequentialGroup()
+                        .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panProductLayout.createSequentialGroup()
+                                .addComponent(labPotted, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPotted, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panProductLayout.createSequentialGroup()
+                                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(labReady, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(labHardened, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+                                    .addComponent(labLost))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtLost, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtReady, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtHardened, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSold, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panProductLayout.createSequentialGroup()
+                                .addComponent(btnProductSave)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnProductCancel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnProductDelete)))
+                        .addGap(0, 89, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        panProductLayout.setVerticalGroup(
+            panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panProductLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labProduct)
+                    .addComponent(cmbProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labPotted)
+                    .addComponent(txtPotted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labHardened)
+                    .addComponent(txtHardened, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labReady)
+                    .addComponent(txtReady, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labLost)
+                    .addComponent(txtLost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labSold)
+                    .addComponent(txtSold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnProductSave)
+                    .addComponent(btnProductCancel)
+                    .addComponent(btnProductDelete))
+                .addContainerGap(208, Short.MAX_VALUE))
+        );
+
+        tabDetails.addTab("Product", panProduct);
+
+        cmbItem.setModel(itemsCombo);
+
+        labItem.setText("Item");
+
+        labItemBought.setText("Bought");
+
+        txtItemBought.setText("0");
+
+        btnItemSave.setText("Save");
+        btnItemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnItemSaveActionPerformed(evt);
+            }
+        });
+
+        btnItemCancel.setText("Cancel");
+        btnItemCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnItemCancelActionPerformed(evt);
+            }
+        });
+
+        btnItemDelete.setText("Delete");
+        btnItemDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnItemDeleteActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panItemLayout = new javax.swing.GroupLayout(panItem);
+        panItem.setLayout(panItemLayout);
+        panItemLayout.setHorizontalGroup(
+            panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(sep5)
+            .addGroup(panItemLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panItemLayout.createSequentialGroup()
+                        .addComponent(labItem, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbItem, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panItemLayout.createSequentialGroup()
+                        .addGroup(panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panItemLayout.createSequentialGroup()
+                                .addComponent(labItemBought)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtItemBought, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panItemLayout.createSequentialGroup()
+                                .addComponent(btnItemSave)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnItemCancel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnItemDelete)))
+                        .addGap(0, 89, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        panItemLayout.setVerticalGroup(
+            panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panItemLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labItem)
+                    .addComponent(cmbItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labItemBought)
+                    .addComponent(txtItemBought, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sep5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnItemSave)
+                    .addComponent(btnItemCancel)
+                    .addComponent(btnItemDelete))
+                .addContainerGap(312, Short.MAX_VALUE))
+        );
+
+        tabDetails.addTab("Item", panItem);
 
         javax.swing.GroupLayout panDetailsLayout = new javax.swing.GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
         panDetailsLayout.setHorizontalGroup(
             panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sep1)
-            .addGroup(panDetailsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(labPotted, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labHardened, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                            .addComponent(labBought, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labPlant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbPlant, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(panDetailsLayout.createSequentialGroup()
-                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtReady, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtBought, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
-                                        .addComponent(txtPotted, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtHardened, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(txtLost, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panDetailsLayout.createSequentialGroup()
-                                .addComponent(btnSave)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCancel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDelete))
-                            .addComponent(labReady, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labLost)
-                            .addGroup(panDetailsLayout.createSequentialGroup()
-                                .addComponent(labSold, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSold, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 176, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addComponent(tabDetails, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
         );
         panDetailsLayout.setVerticalGroup(
             panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panDetailsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labPlant)
-                    .addComponent(cmbPlant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBought, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labBought))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPotted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labPotted))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labHardened)
-                    .addComponent(txtHardened, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labReady)
-                    .addComponent(txtReady, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labLost)
-                    .addComponent(txtLost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labSold)
-                    .addComponent(txtSold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSave)
-                    .addComponent(btnCancel)
-                    .addComponent(btnDelete))
-                .addGap(0, 232, Short.MAX_VALUE))
+            .addComponent(tabDetails, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         spl1.setRightComponent(panDetails);
@@ -390,12 +574,10 @@ public class Diary extends PurplePanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRefreshActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        String query = String.format("SELECT * FROM Diary WHERE Date %s;", getSQLDateRange());
-        try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery(query)) {
+        if (refresh) {
             ArrayList<Integer> days = new ArrayList<>(31);
-            while (rs.next()) {
-                days.add(parseSQLDate(rs.getString("Date")).getDayOfMonth());
+            for (EntryType type : EntryType.values()) {
+                days.addAll(checkDiary(type));
             }
             LocalDate date = getDate();
             int max = date.lengthOfMonth();
@@ -417,11 +599,23 @@ public class Diary extends PurplePanel {
                     tabCalendar.setValueAt(day, i / 7, i % 7);
                 }
             }
-        } catch (SQLException ex) {
-            error(ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
+    private ArrayList<Integer> checkDiary(EntryType type) {
+        String query = String.format("SELECT * FROM %s WHERE Date %s;", type.getDiary(), getSQLDateRange());
+        ArrayList<Integer> days = new ArrayList<>(31);
+        try (Statement s = createStatement();
+                ResultSet rs = s.executeQuery(query)) {
+            while (rs.next()) {
+                days.add(parseSQLDate(rs.getString("Date")).getDayOfMonth());
+            }
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
+        return days;
+    }
+    
     private void btnTodayActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnTodayActionPerformed
         setDate(LocalDate.now());
     }//GEN-LAST:event_btnTodayActionPerformed
@@ -434,74 +628,84 @@ public class Diary extends PurplePanel {
         tabCalendarMouseClicked(null);
     }
     
-    private void lstPlantsValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstPlantsValueChanged
-        if (!lstPlants.isSelectionEmpty()) {
-            int plant = lstPlants.getSelectedValue().getKey();
+    private void lstEntriesValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstEntriesValueChanged
+        if (!lstEntries.isSelectionEmpty()) {
+            Entry entry = lstEntries.getSelectedValue();
+            EntryType type = entry.getType();
             LocalDate date = getDate();
-            String query = String.format("SELECT * FROM Diary WHERE PlantREF = %d AND Date %s;", plant, makeSQLDate(date));
+            String query = String.format("SELECT * FROM %s WHERE %s = %d AND Date %s;", type.getDiary(), type.getRef(), entry.getKey(), makeSQLDate(date));
             try (Statement s = createStatement();
                     ResultSet rs = s.executeQuery(query)) {
-                while (rs.next()) {
-                    selectKey(cmbPlant, rs.getInt("PlantREF"));
-                    txtBought.setText(Integer.toString(rs.getInt("Bought")));
-                    txtPotted.setText(Integer.toString(rs.getInt("PottedOn")));
-                    txtHardened.setText(Integer.toString(rs.getInt("HardenedOff")));
-                    txtReady.setText(Integer.toString(rs.getInt("ReadyForSale")));
-                    txtLost.setText(Integer.toString(rs.getInt("Lost")));
-                    txtSold.setText(Integer.toString(rs.getInt("Sold")));
+                switch (type) {
+                    case PLANT:
+                        tabDetails.setSelectedComponent(panPlant);
+                        while (rs.next()) {
+                            selectKey(cmbPlant, rs.getInt("PlantREF"));
+                            txtPlantBought.setText(Integer.toString(rs.getInt("Bought")));
+                        }
+                        break;
+                    case PRODUCT:
+                        tabDetails.setSelectedComponent(panProduct);
+                        while (rs.next()) {
+                            selectKey(cmbProduct, rs.getInt("ProductREF"));
+                            txtPotted.setText(Integer.toString(rs.getInt("PottedOn")));
+                            txtHardened.setText(Integer.toString(rs.getInt("HardenedOff")));
+                            txtReady.setText(Integer.toString(rs.getInt("ReadyForSale")));
+                            txtLost.setText(Integer.toString(rs.getInt("Lost")));
+                            txtSold.setText(Integer.toString(rs.getInt("Sold")));
+                        }
+                        break;
+                    case ITEM:
+                        tabDetails.setSelectedComponent(panItem);
+                        while (rs.next()) {
+                            selectKey(cmbItem, rs.getInt("ItemREF"));
+                            txtItemBought.setText(Integer.toString(rs.getInt("Bought")));
+                        }
+                        break;
                 }
             } catch (SQLException ex) {
-                error(ex);
+                error(ex, query);
             }
         }
-    }//GEN-LAST:event_lstPlantsValueChanged
+    }//GEN-LAST:event_lstEntriesValueChanged
 
-    private void btnSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+    private void btnPlantSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantSaveActionPerformed
+        String query = "---";
         try (Statement s = createStatement()) {
             LocalDate date = getDate();
-            int bought = Integer.parseInt(txtBought.getText());
-            int potted = Integer.parseInt(txtPotted.getText());
-            int hardened = Integer.parseInt(txtHardened.getText());
-            int ready = Integer.parseInt(txtReady.getText());
-            int lost = Integer.parseInt(txtLost.getText());
-            int sold = Integer.parseInt(txtSold.getText());
-            if (!lstPlants.isSelectionEmpty() && getSelection(cmbPlant).getKey() == lstPlants.getSelectedValue().getKey()) {
-                int plant = lstPlants.getSelectedValue().getKey();
-                String query = String.format("UPDATE Diary SET " +
-                    "Bought = %d, PottedOn = %d, HardenedOff = %d, ReadyForSale = %d, Lost = %d, Sold = %d " +
-                    "WHERE PlantREF = %d AND Date %s;", bought, potted, hardened, ready, lost, sold, plant, makeSQLDate(date));
+            int bought = Integer.parseInt(txtPlantBought.getText());
+            if (!lstEntries.isSelectionEmpty() && getSelection(cmbPlant).getKey() == lstEntries.getSelectedValue().getKey()) {
+                int plant = lstEntries.getSelectedValue().getKey();
+                query = String.format("UPDATE PlantDiary SET " +
+                    "Bought = %d " +
+                    "WHERE PlantREF = %d AND Date %s;", bought, plant, makeSQLDate(date));
                 s.executeUpdate(query);
             } else {
                 int plant = getSelection(cmbPlant).getKey();
-                String query = String.format("INSERT INTO Diary (PlantREF, Date, Bought, PottedOn, HardenedOff, ReadyForSale, Lost, Sold) VALUES (" +
-                    "%d, '%s', %d, %d, %d, %d, %d, %d);", plant, makeDate(date), bought, potted, hardened, ready, lost, sold);
+                query = String.format("INSERT INTO Diary (PlantREF, Date, Bought) VALUES (" +
+                    "%d, '%s', %d);", plant, makeDate(date), bought);
                 s.executeUpdate(query);
             }
-            s.close();
             btnRefreshActionPerformed(null);
             setDate(date);
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
-            error(ex);
+            error(ex, query);
         }
-    }//GEN-LAST:event_btnSaveActionPerformed
+    }//GEN-LAST:event_btnPlantSaveActionPerformed
 
-    private void btnCancelActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+    private void btnPlantCancelActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantCancelActionPerformed
         tabCalendarMouseClicked(null);
-    }//GEN-LAST:event_btnCancelActionPerformed
+    }//GEN-LAST:event_btnPlantCancelActionPerformed
 
     private void btnNewActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        cmbPlant.setSelectedIndex(0);
-        lstPlants.clearSelection();
-        txtBought.setText("0");
-        txtPotted.setText("0");
-        txtHardened.setText("0");
-        txtReady.setText("0");
-        txtLost.setText("0");
-        txtSold.setText("0");
+        clear(cmbPlant, cmbProduct, cmbItem);
+        lstEntries.clearSelection();
+        set("0", txtPlantBought, txtPotted, txtHardened, txtReady, txtLost, txtSold, txtItemBought);
     }//GEN-LAST:event_btnNewActionPerformed
 
-    private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+    private void btnPlantDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantDeleteActionPerformed
+        String query = "---";
         try (Statement s = createStatement()) {
             JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
 
@@ -509,18 +713,18 @@ public class Diary extends PurplePanel {
 // confirmation of cascade delete or a supplier to replace in the records
            
             
-            if (!lstPlants.isSelectionEmpty()) {
-                int plant = lstPlants.getSelectedValue().getKey();
+            if (!lstEntries.isSelectionEmpty()) {
+                int plant = lstEntries.getSelectedValue().getKey();
                 LocalDate date = getDate();
-                String query = String.format("DELETE FROM Diary WHERE PlantREF = %d AND Date %s;", plant, makeSQLDate(date));
+                query = String.format("DELETE FROM PlantDiary WHERE PlantREF = %d AND Date %s;", plant, makeSQLDate(date));
                 s.executeUpdate(query);
             }
             btnRefreshActionPerformed(null);
             btnNewActionPerformed(null);
         } catch (SQLException ex) {
-            error(ex);
+            error(ex, query);
         }
-    }//GEN-LAST:event_btnDeleteActionPerformed
+    }//GEN-LAST:event_btnPlantDeleteActionPerformed
 
     private void cmbMonthItemStateChanged(ItemEvent evt) {//GEN-FIRST:event_cmbMonthItemStateChanged
         btnRefreshActionPerformed(null);
@@ -532,19 +736,142 @@ public class Diary extends PurplePanel {
 
     private void tabCalendarMouseClicked(MouseEvent evt) {//GEN-FIRST:event_tabCalendarMouseClicked
         setCell();
-        mldPlants.clear();
+        mdlEntries.clear();
         if (tabCalendar.getSelectedColumn() > -1) {
-            String query = String.format("SELECT * FROM Diary JOIN Plant ON PlantID=PlantREF WHERE Date %s ORDER BY CommonName ASC;", getSQLDate());
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery(query)) {
-                while (rs.next()) {
-                    mldPlants.addElement(new Pair(rs.getInt("PlantREF"), rs.getString("CommonName")));
-                }
-            } catch (SQLException ex) {
-                error(ex);
+            for (EntryType type : EntryType.values()) {
+                checkDay(type);
             }
         }
     }//GEN-LAST:event_tabCalendarMouseClicked
+
+    private void checkDay(EntryType type) {
+        String query = String.format("SELECT * FROM %s JOIN %s ON %s=%s WHERE Date %s ORDER BY %s ASC;",
+                type.getDiary(), type.getTable(), type.getId(), type.getRef(), getSQLDate(), type.getSort());
+        try (Statement s = createStatement();
+                ResultSet rs = s.executeQuery(query)) {
+            while (rs.next()) {
+                Pair pair = new Pair(rs.getInt(type.getRef()), rs.getString(type.getSort()));
+                switch (type) {
+                    case PLANT:
+                    case ITEM: // Fallthrough
+                        mdlEntries.addElement(new Entry(new Part(pair, rs.getInt("Bought")), type));
+                        break;
+                    case PRODUCT:
+                        int count = rs.getInt("PottedOn") - rs.getInt("Lost") - rs.getInt("Sold");
+                        mdlEntries.addElement(new Entry(new Part(pair, count), type));
+                        break;
+                }
+            }
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
+    }
+    
+    private void btnItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemSaveActionPerformed
+        String query = "---";
+        try (Statement s = createStatement()) {
+            LocalDate date = getDate();
+            int bought = Integer.parseInt(txtItemBought.getText());
+            if (!lstEntries.isSelectionEmpty() && getSelection(cmbItem).getKey() == lstEntries.getSelectedValue().getKey()) {
+                int item = lstEntries.getSelectedValue().getKey();
+                query = String.format("UPDATE ItemDiary SET " +
+                    "Bought = %d " +
+                    "WHERE ItemREF = %d AND Date %s;", bought, item, makeSQLDate(date));
+                s.executeUpdate(query);
+            } else {
+                int item = getSelection(cmbItem).getKey();
+                query = String.format("INSERT INTO ItemDiary (ItemREF, Date, Bought) VALUES (" +
+                    "%d, '%s', %d);", item, makeDate(date), bought);
+                s.executeUpdate(query);
+            }
+            btnRefreshActionPerformed(null);
+            setDate(date);
+            btnNewActionPerformed(null);
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
+    }//GEN-LAST:event_btnItemSaveActionPerformed
+
+    private void btnItemCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemCancelActionPerformed
+        tabCalendarMouseClicked(null);
+    }//GEN-LAST:event_btnItemCancelActionPerformed
+
+    private void btnItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemDeleteActionPerformed
+        String query = "---";
+        try (Statement s = createStatement()) {
+            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+
+// TODO: Implement a check for records referencing this supplier and ask for
+// confirmation of cascade delete or a supplier to replace in the records
+           
+            
+            if (!lstEntries.isSelectionEmpty()) {
+                int item = lstEntries.getSelectedValue().getKey();
+                LocalDate date = getDate();
+                query = String.format("DELETE FROM ItemDiary WHERE ItemREF = %d AND Date %s;", item, makeSQLDate(date));
+                s.executeUpdate(query);
+            }
+            btnRefreshActionPerformed(null);
+            btnNewActionPerformed(null);
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
+    }//GEN-LAST:event_btnItemDeleteActionPerformed
+
+    private void btnProductSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductSaveActionPerformed
+        String query = "---";
+        try (Statement s = createStatement()) {
+            LocalDate date = getDate();
+            int potted = Integer.parseInt(txtPotted.getText());
+            int hardened = Integer.parseInt(txtHardened.getText());
+            int ready = Integer.parseInt(txtReady.getText());
+            int lost = Integer.parseInt(txtLost.getText());
+            int sold = Integer.parseInt(txtSold.getText());
+            if (!lstEntries.isSelectionEmpty() && getSelection(cmbProduct).getKey() == lstEntries.getSelectedValue().getKey()) {
+                int product = lstEntries.getSelectedValue().getKey();
+                query = String.format("UPDATE ProductDiary SET " +
+                    "PottedOn = %d, HardenedOff = %d, ReadyForSale = %d, Lost = %d, Sold = %d " +
+                    "WHERE ProductREF = %d AND Date %s;", potted, hardened, ready, lost, sold, product, makeSQLDate(date));
+                s.executeUpdate(query);
+            } else {
+                int product = getSelection(cmbProduct).getKey();
+                query = String.format("INSERT INTO ProductDiary (ProductREF, Date, PottedOn, HardenedOff, ReadyForSale, Lost, Sold) VALUES (" +
+                    "%d, '%s', %d, %d, %d, %d, %d);", product, makeDate(date), potted, hardened, ready, lost, sold);
+                s.executeUpdate(query);
+            }
+            btnRefreshActionPerformed(null);
+            setDate(date);
+            btnNewActionPerformed(null);
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
+    }//GEN-LAST:event_btnProductSaveActionPerformed
+
+    private void btnProductCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductCancelActionPerformed
+        tabCalendarMouseClicked(null);
+    }//GEN-LAST:event_btnProductCancelActionPerformed
+
+    private void btnProductDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductDeleteActionPerformed
+        String query = "---";
+        try (Statement s = createStatement()) {
+            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+
+// TODO: Implement a check for records referencing this supplier and ask for
+// confirmation of cascade delete or a supplier to replace in the records
+           
+            
+            if (!lstEntries.isSelectionEmpty()) {
+                int product = lstEntries.getSelectedValue().getKey();
+                LocalDate date = getDate();
+                query = String.format("DELETE FROM ProductDiary WHERE ProductREF = %d AND Date %s;", product, makeSQLDate(date));
+                s.executeUpdate(query);
+            }
+            btnRefreshActionPerformed(null);
+            btnNewActionPerformed(null);
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
+    }//GEN-LAST:event_btnProductDeleteActionPerformed
 
     private LocalDate getDate() {
         YearMonth ym = getYearMonth();
@@ -619,14 +946,21 @@ public class Diary extends PurplePanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<Pair> cmbItem;
     private javax.swing.JComboBox<Pair> cmbMonth;
     private javax.swing.JComboBox<Pair> cmbPlant;
-    private javax.swing.JList<Pair> lstPlants;
+    private javax.swing.JComboBox<Pair> cmbProduct;
+    private javax.swing.JList<Entry> lstEntries;
+    private javax.swing.JPanel panItem;
+    private javax.swing.JPanel panPlant;
+    private javax.swing.JPanel panProduct;
     private javax.swing.JSpinner spnYear;
     private javax.swing.JTable tabCalendar;
-    private javax.swing.JTextField txtBought;
+    private javax.swing.JTabbedPane tabDetails;
     private javax.swing.JTextField txtHardened;
+    private javax.swing.JTextField txtItemBought;
     private javax.swing.JTextField txtLost;
+    private javax.swing.JTextField txtPlantBought;
     private javax.swing.JTextField txtPotted;
     private javax.swing.JTextField txtReady;
     private javax.swing.JTextField txtSold;

@@ -227,14 +227,15 @@ public class Items extends PurplePanel {
         mdlItems.clear();
         itemsCombo.removeAllElements();
         itemsCombo.addElement(new Pair(-1, ""));
+        String query = "SELECT * FROM Item;";
         try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery("SELECT * FROM Item;")) {
+                ResultSet rs = s.executeQuery(query)) {
             while (rs.next()) {
                 mdlItems.addElement(new Pair(rs.getInt("ItemID"), rs.getString("Name")));
                 itemsCombo.addElement(new Pair(rs.getInt("ItemID"), rs.getString("Name")));
             }
         } catch (SQLException ex) {
-            error(ex);
+            error(ex, query);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
 

@@ -47,13 +47,14 @@ public class PurplePanel extends DataPanel {
     protected void updatePlantTypesCombo() {
         plantTypesCombo.removeAllElements();
         plantTypesCombo.addElement(new Pair(-1, ""));
+        String query = "SELECT * FROM PlantType ORDER BY Description ASC;";
         try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery("SELECT * FROM PlantType ORDER BY Description ASC;")) {
+                ResultSet rs = s.executeQuery(query)) {
             while (rs.next()) {
                 plantTypesCombo.addElement(new Pair(rs.getInt("PlantTypeID"), rs.getString("Description")));
             }
         } catch (SQLException ex) {
-            error(ex);
+            error(ex, query);
         }
     }
 }

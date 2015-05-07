@@ -135,6 +135,17 @@ public class DataPanel extends JPanel {
     }
     
     /**
+     * SQLK query throwables cause popups and logs.
+     * @param ex
+     * @param query
+     */
+    protected void error(Exception ex, String query) {
+        LOGGER.log(Level.SEVERE, null, ex);
+        String msg = String.format("%s\n%s", query, ex.getMessage());
+        JOptionPane.showMessageDialog(this, msg, "Warning!", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    /**
      * Get values from a table and populate a list and combo box.
      * @param list
      * @param combo
@@ -164,7 +175,7 @@ public class DataPanel extends JPanel {
                 }
             }
         } catch (SQLException ex) {
-            error(ex);
+            error(ex, query);
         }
     }
 
