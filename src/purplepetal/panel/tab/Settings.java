@@ -177,7 +177,8 @@ public class Settings extends PurplePanel {
             if (version > PurplePetal.getVersion()) {
                 int response = JOptionPane.showConfirmDialog(this, "A new version is available, do you want to download it?", "Version check", JOptionPane.YES_NO_OPTION);
                 if (response == JOptionPane.YES_OPTION) {
-                    FileUtils.copyURLToFile(new URL(JAR_URL), new File(String.format("PurplePetal%01.3f.jar", version)));
+                    FileUtils.copyURLToFile(new URL(JAR_URL), new File(String.format("PurplePetal-%01.3f.jar", version)));
+                    JOptionPane.showMessageDialog(this, "New version downloaded, restart the software to enable.", "Version check", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Your software is up to date.", "Version check", JOptionPane.INFORMATION_MESSAGE);
