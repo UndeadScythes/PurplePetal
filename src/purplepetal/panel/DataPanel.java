@@ -131,7 +131,9 @@ public class DataPanel extends JPanel {
      */
     protected void error(Exception ex) {
         LOGGER.log(Level.SEVERE, null, ex);
-        JOptionPane.showMessageDialog(this, ex.getMessage(), "Warning!", JOptionPane.WARNING_MESSAGE);
+        if (ex.getMessage() != null) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Warning!", JOptionPane.WARNING_MESSAGE);
+        }
     }
     
     /**
@@ -142,7 +144,9 @@ public class DataPanel extends JPanel {
     protected void error(Exception ex, String query) {
         LOGGER.log(Level.SEVERE, null, ex);
         String msg = String.format("%s\n%s", query, ex.getMessage());
-        JOptionPane.showMessageDialog(this, msg, "Warning!", JOptionPane.WARNING_MESSAGE);
+        if (ex.getMessage() != null) {
+            JOptionPane.showMessageDialog(this, msg, "Warning!", JOptionPane.WARNING_MESSAGE);
+        }
     }
     
     /**

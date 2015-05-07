@@ -25,7 +25,7 @@ public class PurplePetal extends JFrame {
     public PurplePetal() {
         initComponents();
         try {
-            version = Double.parseDouble(new BufferedReader(new InputStreamReader(PurplePetal.class.getResourceAsStream("../resources/version.txt"))).readLine());
+            version = Double.parseDouble(new BufferedReader(new InputStreamReader(PurplePetal.class.getResourceAsStream("/resources/version.txt"))).readLine());
         } catch (IOException ex) {
             LOGGER.warning(ex.getMessage());
         }
