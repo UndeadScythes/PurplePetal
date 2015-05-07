@@ -1,5 +1,9 @@
 package purplepetal;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -14,14 +18,19 @@ import purplepetal.panel.PurplePanel;
  */
 @SuppressWarnings("serial")
 public class PurplePetal extends JFrame {
-    private static final String version = "Flakware DBMS, v0.400";
+    private double version = 0;
     
     /**
      * Initialise components.
      */
     public PurplePetal() {
         initComponents();
-        labFlakware.setText(version);
+        try {
+            version = Double.parseDouble(new BufferedReader(new InputStreamReader(PurplePetal.class.getResourceAsStream("../resources/version.txt"))).readLine());
+        } catch (IOException ex) {
+            LOGGER.warning(ex.getMessage());
+        }
+        labFlakware.setText(String.format("Flakware DBMS, v%01.3f", version));
     }
 
     @SuppressWarnings("unchecked")
@@ -73,12 +82,10 @@ public class PurplePetal extends JFrame {
                 .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(labStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(prgProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panStatusLayout.createSequentialGroup()
-                        .addComponent(labFlakware)
-                        .addGap(0, 0, 0))))
+                    .addGroup(panStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(prgProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labFlakware, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
