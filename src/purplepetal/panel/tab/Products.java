@@ -352,7 +352,7 @@ public class Products extends PurplePanel {
                 ResultSet rs = executeQuery("SELECT * FROM Plant_Product WHERE ProductREF = " + product + " AND PlantREF = " + plant + ";");
                 while (rs.next()) {
                     setFields(rs.getString("Amount"), txtPlantAmt);
-                    comboSelectKey(cmbPlants, rs.getInt(plant));
+                    comboSelectKey(cmbPlants, plant);
                 }
             } catch (SQLException ex) {
                 error(ex);
@@ -368,7 +368,7 @@ public class Products extends PurplePanel {
                 ResultSet rs = executeQuery("SELECT * FROM Item_Product WHERE ProductREF = " + product + " AND ItemREF = " + item + ";");
                 while (rs.next()) {
                     setFields(rs.getString("Amount"), txtItemAmt);
-                    comboSelectKey(cmbItems, rs.getInt(item));
+                    comboSelectKey(cmbItems, item);
                 }
             } catch (SQLException ex) {
                 error(ex);
