@@ -32,7 +32,7 @@ public class Suppliers extends PurplePanel {
     @Override
     protected void clear() {
         clearFields(lstSuppliers);
-        clearFields(txtName, txtContactNo, txtWebsite, txtPostcode, txtAccount);
+        clearFields(txtName, txtContactNo, txtWebsite, txtPostcode, txtAccount, txtEmail, txtStreet, txtTown);
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
