@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -31,7 +29,18 @@ public class Settings extends PurplePanel {
      * Creates new form Settings
      */
     public Settings() {
+        super ("Settings", "SettingsID", "");
         initComponents();
+    }
+
+    @Override
+    protected void refresh() {
+        
+    }
+
+    @Override
+    protected void clear() {
+        
     }
 
     @SuppressWarnings({"unchecked", "Convert2Lambda"})
@@ -162,11 +171,7 @@ public class Settings extends PurplePanel {
         }
         Pair type = (Pair) JOptionPane.showInputDialog(this, "Which plant type do you wish to delete?", "Delete Plant Type", JOptionPane.QUESTION_MESSAGE, null, types.toArray(), "");
         if (type != null) {
-            try (Statement s = createStatement()) {
-                s.executeUpdate(String.format("DELETE FROM PlantType WHERE PlantTypeID = %s;", type.getKey()));
-            } catch (SQLException ex) {
-                error(ex);
-            }
+            executeUpdate(String.format("DELETE FROM PlantType WHERE PlantTypeID = %s;", type.getKey()));
             updatePlantTypesCombo();
         }
     }//GEN-LAST:event_btnPlantTypesActionPerformed

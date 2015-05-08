@@ -3,7 +3,7 @@ package purplepetal.panel.tab;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -24,8 +24,15 @@ public class Suppliers extends PurplePanel {
      * Initialise panel components.
      */
     public Suppliers() {
+        super("Supplier", "SupplierID", "Name");
         initComponents();
         refresh();
+    }
+
+    @Override
+    protected void clear() {
+        clearFields(lstSuppliers);
+        clearFields(txtName, txtContactNo, txtWebsite, txtPostcode, txtAccount);
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
@@ -226,8 +233,8 @@ public class Suppliers extends PurplePanel {
     private void lstSuppliersValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstSuppliersValueChanged
         if (!lstSuppliers.isSelectionEmpty()) {
             int id = lstSuppliers.getSelectedValue().getKey();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Supplier WHERE SupplierID = " + id + ";")) {
+            try {
+                ResultSet rs = getEntry(id);
                 while (rs.next()) {
                     txtName.setText(rs.getString("Name"));
                     txtContactNo.setText(rs.getString("ContactNo"));
@@ -245,43 +252,21 @@ public class Suppliers extends PurplePanel {
     }//GEN-LAST:event_lstSuppliersValueChanged
 
     private void btnSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        try (Statement s = createStatement()) {
-            String name = txtName.getText();
-            String contactNo = txtContactNo.getText();
-            String contactEmail = txtEmail.getText();
-            String website = txtWebsite.getText();
-            String street = txtStreet.getText();
-            String town = txtTown.getText();
-            String postcode = txtPostcode.getText();
-            String account = txtAccount.getText();
-            if (lstSuppliers.isSelectionEmpty()) {
-                s.executeUpdate("INSERT INTO Supplier (Name, ContactNo, ContactEmail, Website, StreetName, Town, Postcode, AccountNo) VALUES (" +
-                        "'" + name + "', " +
-                        "'" + contactNo + "', " +
-                        "'" + contactEmail + "', " +
-                        "'" + website + "', " +
-                        "'" + street + "', " +
-                        "'" + town + "', " +
-                        "'" + postcode + "', " +
-                        "'" + account + "');");
-            } else {
-                int id = lstSuppliers.getSelectedValue().getKey();
-                s.executeUpdate("UPDATE Supplier SET " +
-                        "Name = '" + name + "', " +
-                        "ContactNo = '" + contactNo + "', " +
-                        "ContactEmail = '" + contactEmail + "', " +
-                        "Website = '" + website + "', " +
-                        "StreetName = '" + street + "', " +
-                        "Town = '" + town + "', " +
-                        "Postcode = '" + postcode + "', " +
-                        "AccountNo = '" + account + "' " +
-                        "WHERE SupplierID = " + id + ";");
-            }
-            refresh();
-            btnNewActionPerformed(null);
-        } catch (SQLException ex) {
-            error(ex);
+        HashMap<String, String> values = new HashMap<>(8);
+        values.put("Name", wrap(txtName.getText()));
+        values.put("ContactNo", wrap(txtContactNo.getText()));
+        values.put("ContactEmail", wrap(txtEmail.getText()));
+        values.put("Website", wrap(txtWebsite.getText()));
+        values.put("StreetName", wrap(txtStreet.getText()));
+        values.put("Town", wrap(txtTown.getText()));
+        values.put("Postcode", wrap(txtPostcode.getText()));
+        values.put("AccountNo", wrap(txtAccount.getText()));
+        if (lstSuppliers.isSelectionEmpty()) {
+            newEntry(values);
+        } else {
+            updateEntry(lstSuppliers.getSelectedValue().getKey(), values);
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCancelActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -289,45 +274,25 @@ public class Suppliers extends PurplePanel {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnNewActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        lstSuppliers.clearSelection();
-        txtName.setText("");
-        txtContactNo.setText("");
-        txtWebsite.setText("");
-        txtPostcode.setText("");
-        txtAccount.setText("");
+        clear();
     }//GEN-LAST:event_btnNewActionPerformed
 
-    private void refresh() {
-        mdlSuppliers.clear();
-        suppliersCombo.removeAllElements();
-        suppliersCombo.addElement(new Pair(-1, ""));
-        try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery("SELECT * FROM Supplier;")) {
-            while (rs.next()) {
-                mdlSuppliers.addElement(new Pair(rs.getInt("SupplierID"), rs.getString("Name")));
-                suppliersCombo.addElement(new Pair(rs.getInt("SupplierID"), rs.getString("Name")));
-            }
-        } catch (SQLException ex) {
-            error(ex);
-        }
+    @Override
+    protected final void refresh() {
+        refreshLists(mdlSuppliers, suppliersCombo);
     }
     
     private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        try (Statement s = createStatement()) {
-            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+        JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
 
 // TODO: Implement a check for records referencing this supplier and ask for
 // confirmation of cascade delete or a supplier to replace in the records
-            
-            if (!lstSuppliers.isSelectionEmpty()) {
-                int id = lstSuppliers.getSelectedValue().getKey();
-                s.executeUpdate("DELETE FROM Supplier WHERE SupplierID = " + id + ";");
-            }
-            refresh();
-            btnNewActionPerformed(null);
-        } catch (SQLException ex) {
-            error(ex);
+
+        if (!lstSuppliers.isSelectionEmpty()) {
+            int id = lstSuppliers.getSelectedValue().getKey();
+            deleteEntry(id);
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
 

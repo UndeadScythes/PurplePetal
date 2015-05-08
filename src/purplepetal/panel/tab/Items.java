@@ -3,7 +3,7 @@ package purplepetal.panel.tab;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -24,8 +24,16 @@ public class Items extends PurplePanel {
      * Creates new form Items
      */
     public Items() {
+        super("Item", "ItemID", "Name");
         initComponents();
         refresh();
+    }
+
+    @Override
+    protected void clear() {
+        clearFields(lstItems);
+        clearFields(txtName, txtPackSize, txtPrice, txtStock);
+        clearFields(cmbSupplier);
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
@@ -188,42 +196,26 @@ public class Items extends PurplePanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
-    private void refresh() {
-        mdlItems.clear();
-        itemsCombo.removeAllElements();
-        itemsCombo.addElement(new Pair(-1, ""));
-        String query = "SELECT * FROM Item;";
-        try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery(query)) {
-            while (rs.next()) {
-                mdlItems.addElement(new Pair(rs.getInt("ItemID"), rs.getString("Name")));
-                itemsCombo.addElement(new Pair(rs.getInt("ItemID"), rs.getString("Name")));
-            }
-        } catch (SQLException ex) {
-            error(ex, query);
-        }
+    @Override
+    protected final void refresh() {
+        refreshLists(mdlItems, itemsCombo);
     }
     
     private void btnNewActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        lstItems.clearSelection();
-        txtName.setText("");
-        txtPackSize.setText("");
-        txtPrice.setText("");
-        txtStock.setText("");
-        cmbSupplier.setSelectedIndex(0);
+        clear();
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void lstItemsValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstItemsValueChanged
         if (!lstItems.isSelectionEmpty()) {
             int id = lstItems.getSelectedValue().getKey();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Item WHERE ItemID = " + id + ";")) {
+            ResultSet rs = getEntry(id);
+            try {
                 while (rs.next()) {
                     txtName.setText(rs.getString("Name"));
                     txtPackSize.setText(rs.getString("PackSize"));
                     txtPrice.setText(rs.getString("Price"));
                     txtStock.setText(rs.getString("Stock"));
-                    selectKey(cmbSupplier, rs.getInt("SupplierREF"));
+                    comboSelectKey(cmbSupplier, rs.getInt("SupplierREF"));
                 }
             } catch (SQLException ex) {
                 error(ex);
@@ -232,34 +224,18 @@ public class Items extends PurplePanel {
     }//GEN-LAST:event_lstItemsValueChanged
 
     private void btnSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        try (Statement s = createStatement()) {
-            String name = txtName.getText();
-            String packSize = txtPackSize.getText();
-            String price = txtPrice.getText();
-            String stock = txtStock.getText();
-            int supplier = getSelection(cmbSupplier).getKey();
-            if (lstItems.isSelectionEmpty()) {
-                s.executeUpdate("INSERT INTO Item (Name, Price, SupplierREF, PackSize, Stock) VALUES (" +
-                        "'" + name + "', " +
-                        "'" + price + "', " +
-                        supplier + ", " +
-                        "'" + packSize + "', " +
-                        "'" + stock + "');");
-            } else {
-                int id = lstItems.getSelectedValue().getKey();
-                s.executeUpdate("UPDATE Item SET " +
-                        "Name = '" + name + "', " +
-                        "Price = '" + price + "', " +
-                        "SupplierREF = '" + supplier + "', " +
-                        "PackSize = '" + packSize + "', " +
-                        "Stock = '" + stock + "' " +
-                        "WHERE ItemID = " + id + ";");
-            }
-            refresh();
-            btnNewActionPerformed(null);
-        } catch (SQLException ex) {
-            error(ex);
+        HashMap<String, String> fields = new HashMap<>(4);
+        fields.put("Name", wrap(txtName.getText()));
+        fields.put("Price", wrap(txtPrice.getText()));
+        fields.put("SupplierREF", comboGetSelection(cmbSupplier).getKeyString());
+        fields.put("PackSize", wrap(txtPackSize.getText()));
+        fields.put("Stock", wrap(txtStock.getText()));
+        if (lstItems.isSelectionEmpty()) {
+            newEntry(fields);
+        } else {
+            updateEntry(lstItems.getSelectedValue().getKey(), fields);
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCancelActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -267,21 +243,15 @@ public class Items extends PurplePanel {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        try (Statement s = createStatement()) {
-            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+        JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
 
 // TODO: Implement a check for records referencing this supplier and ask for
 // confirmation of cascade delete or a supplier to replace in the records
-           
-            if (!lstItems.isSelectionEmpty()) {
-                int id = lstItems.getSelectedValue().getKey();
-                s.executeUpdate("DELETE FROM Supplier WHERE SupplierID = " + id + ";");
-            }
-            refresh();
-            btnNewActionPerformed(null);
-        } catch (SQLException ex) {
-            error(ex);
+
+        if (!lstItems.isSelectionEmpty()) {
+            deleteEntry(lstItems.getSelectedValue().getKey());
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
 

@@ -3,8 +3,8 @@ package purplepetal.panel.tab;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
@@ -30,8 +30,17 @@ public class Products extends PurplePanel {
      * Creates new form Products
      */
     public Products() {
+        super("Product", "ProductID", "Name");
         initComponents();
         refresh();
+    }
+
+    @Override
+    protected void clear() {
+        clearFields(lstProducts, lstPlants, lstItems);
+        clearFields(txtName, txtPrice, txtCompleted);
+        setFields("0", txtPlantAmt, txtItemAmt);
+        clearFields(cmbPlants, cmbItems);
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
@@ -258,61 +267,45 @@ public class Products extends PurplePanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void refresh() {
+    @Override
+    protected final void refresh() {
         mdlPlants.clear();
         mdlItems.clear();
-        refresh(mdlProducts, productsCombo, "Product", "ProductID", "Name");
+        refreshLists(mdlProducts, productsCombo);
     }
     
     private void btnNewActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        clear(lstProducts, lstPlants, lstItems);
-        clear(txtName, txtPrice, txtCompleted);
-        set("0", txtPlantAmt, txtItemAmt);
-        clear(cmbPlants, cmbItems);
+        clear();
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        try (Statement s = createStatement()) {
-            String name = txtName.getText();
-            String price = txtPrice.getText();
-            String completed = txtCompleted.getText();
-            int id;
-            if (lstProducts.isSelectionEmpty()) {
-                s.executeUpdate("INSERT INTO Product (Name, Price, Completed) VALUES (" +
-                        "'" + name + "', " +
-                        "'" + price + "', " +
-                        "'" + completed + "');");
-                ResultSet rs = s.executeQuery("SELECT last_insert_rowid();");
-                rs.next();
-                id = rs.getInt("last_insert_rowid()");
-            } else {
-                id = lstProducts.getSelectedValue().getKey();
-                s.executeUpdate("UPDATE Product SET " +
-                        "Name = '" + name + "', " +
-                        "Price = '" + price + "', " +
-                        "Completed = '" + completed + "' " +
-                        "WHERE ProductID = " + id + ";");
-            }
-            addParts(s, mdlPlants, id, "Plant");
-            addParts(s, mdlItems, id, "Item");
-            refresh();
-            btnNewActionPerformed(null);
-        } catch (SQLException ex) {
-            error(ex);
+        HashMap<String, String> values = new HashMap<>(3);
+        values.put("Name", wrap(txtName.getText()));
+        values.put("Price", txtPrice.getText());
+        values.put("Completed", txtCompleted.getText());
+        int id;
+        if (lstProducts.isSelectionEmpty()) {
+            id = newEntry(values);
+        } else {
+            id = lstProducts.getSelectedValue().getKey();
+            updateEntry(id, values);
         }
+        addParts(mdlPlants, id, "Plant");
+        addParts(mdlItems, id, "Item");
+        clearAndRefresh();
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void addParts(Statement s, DefaultListModel<Part> list, int id, String partName) throws SQLException {
+    private void addParts(DefaultListModel<Part> list, int id, String partName) {
         Enumeration<Part> parts = list.elements();
         String table = partName + "_Product";
         String partRef = partName + "REF";
         while (parts.hasMoreElements()) {
             Part part = parts.nextElement();
             String crit = String.format("ProductREF = %s AND %s = %s;", id, partRef, part.getKey());
-            if (s.executeQuery(String.format("SELECT * FROM %s WHERE %s;", table, crit)).next()) {
-                s.executeUpdate(String.format("UPDATE %s SET Amount = %s WHERE %s;", table, part.getAmount(), crit));
+            if (entryExists(String.format("SELECT * FROM %s WHERE %s;", table, crit))) {
+                executeUpdate(String.format("UPDATE %s SET Amount = %s WHERE %s;", table, part.getAmount(), crit));
             } else {
-                s.executeUpdate(String.format("INSERT INTO %s (ProductREF, %s, Amount) VALUES (%s, %s, %s);", table, partRef, id, part.getKey(), part.getAmount()));
+                executeUpdate(String.format("INSERT INTO %s (ProductREF, %s, Amount) VALUES (%s, %s, %s);", table, partRef, id, part.getKey(), part.getAmount()));
             }
         }
     }
@@ -322,21 +315,15 @@ public class Products extends PurplePanel {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        try (Statement s = createStatement()) {
-            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+        JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
 
 // TODO: Implement a check for records referencing this supplier and ask for
 // confirmation of cascade delete or a supplier to replace in the records
-          
-            if (!lstProducts.isSelectionEmpty()) {
-                int id = lstProducts.getSelectedValue().getKey();
-                s.executeUpdate("DELETE FROM Product WHERE ProductID = " + id + ";");
-            }
-            refresh();
-            btnNewActionPerformed(null);
-        } catch (SQLException ex) {
-            error(ex);
+
+        if (!lstProducts.isSelectionEmpty()) {
+            deleteEntry(lstProducts.getSelectedValue().getKey());
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnItemEditActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnItemEditActionPerformed
@@ -348,12 +335,12 @@ public class Products extends PurplePanel {
     }//GEN-LAST:event_btnPlantEditActionPerformed
 
     private void editPart(DefaultListModel<Part> model, JComboBox<Pair> combo, JTextField text) {
-        Pair pair = getSelection(combo);
+        Pair pair = comboGetSelection(combo);
         int amount = Integer.parseInt(text.getText());
         if (amount == 0) {
-            remove(model, pair.getKey());
+            listRemoveKey(model, pair.getKey());
         } else {
-            replace(model, pair.getKey(), new Part(pair, amount));
+            listReplaceKey(model, pair.getKey(), new Part(pair, amount));
         }
     }
     
@@ -361,11 +348,11 @@ public class Products extends PurplePanel {
         if (!lstPlants.isSelectionEmpty()) {
             int product = lstProducts.getSelectedValue().getKey();
             int plant = lstPlants.getSelectedValue().getKey();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Plant_Product WHERE ProductREF = " + product + " AND PlantREF = " + plant + ";")) {
+            try {
+                ResultSet rs = executeQuery("SELECT * FROM Plant_Product WHERE ProductREF = " + product + " AND PlantREF = " + plant + ";");
                 while (rs.next()) {
-                    set(rs.getString("Amount"), txtPlantAmt);
-                    selectKey(cmbPlants, rs.getInt(plant));
+                    setFields(rs.getString("Amount"), txtPlantAmt);
+                    comboSelectKey(cmbPlants, rs.getInt(plant));
                 }
             } catch (SQLException ex) {
                 error(ex);
@@ -377,11 +364,11 @@ public class Products extends PurplePanel {
         if (!lstItems.isSelectionEmpty()) {
             int product = lstProducts.getSelectedValue().getKey();
             int item = lstItems.getSelectedValue().getKey();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Item_Product WHERE ProductREF = " + product + " AND ItemREF = " + item + ";")) {
+            try {
+                ResultSet rs = executeQuery("SELECT * FROM Item_Product WHERE ProductREF = " + product + " AND ItemREF = " + item + ";");
                 while (rs.next()) {
-                    set(rs.getString("Amount"), txtItemAmt);
-                    selectKey(cmbItems, rs.getInt(item));
+                    setFields(rs.getString("Amount"), txtItemAmt);
+                    comboSelectKey(cmbItems, rs.getInt(item));
                 }
             } catch (SQLException ex) {
                 error(ex);
@@ -392,19 +379,19 @@ public class Products extends PurplePanel {
     private void lstProductsValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstProductsValueChanged
         if (!lstProducts.isSelectionEmpty()) {
             int id = lstProducts.getSelectedValue().getKey();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Product WHERE ProductID = " + id + ";")) {
+            try {
+                ResultSet rs = getEntry(id);
                 while (rs.next()) {
-                    set(rs.getString("Name"), txtName);
-                    set(rs.getString("Price"), txtPrice);
-                    set(rs.getString("Completed"), txtCompleted);
+                    setFields(rs.getString("Name"), txtName);
+                    setFields(rs.getString("Price"), txtPrice);
+                    setFields(rs.getString("Completed"), txtCompleted);
                 }
             } catch (SQLException ex) {
                 error(ex);
             }
             mdlPlants.clear();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Plant_Product JOIN Plant ON PlantID=PlantREF WHERE ProductREF = " + id + ";")) {
+            try {
+                ResultSet rs = executeQuery("SELECT * FROM Plant_Product JOIN Plant ON PlantID=PlantREF WHERE ProductREF = " + id + ";");
                 while (rs.next()) {
                     mdlPlants.addElement(new Part(new Pair(rs.getInt("PlantREF"), rs.getString("CommonName")), rs.getInt("Amount")));
                 }
@@ -412,8 +399,8 @@ public class Products extends PurplePanel {
                 error(ex);
             }
             mdlItems.clear();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Item_Product JOIN Item ON ItemID=ItemREF WHERE ProductREF = " + id + ";")) {
+            try {
+                ResultSet rs = executeQuery("SELECT * FROM Item_Product JOIN Item ON ItemID=ItemREF WHERE ProductREF = " + id + ";");
                 while (rs.next()) {
                     mdlItems.addElement(new Part(new Pair(rs.getInt("ItemREF"), rs.getString("Name")), rs.getInt("Amount")));
                 }

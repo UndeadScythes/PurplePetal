@@ -31,4 +31,12 @@ public class Pair implements Keyable {
     public int getKey() {
         return key;
     }
+    
+    /**
+     * Get the key as a string.
+     * @return
+     */
+    public String getKeyString() {
+        return String.valueOf(getKey());
+    }
 }

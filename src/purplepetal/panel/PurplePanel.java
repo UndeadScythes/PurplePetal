@@ -1,11 +1,7 @@
 package purplepetal.panel;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JPanel;
 import purplepetal.Pair;
 
 /**
@@ -14,7 +10,7 @@ import purplepetal.Pair;
  * @author UndeadScythes <udscythes@gmail.com>
  */
 @SuppressWarnings("serial")
-public class PurplePanel extends DataPanel {
+public abstract class PurplePanel extends DataPanel {
     /**
      * Drop down list of suppliers.
      */
@@ -39,24 +35,33 @@ public class PurplePanel extends DataPanel {
      * Drop down list of plants.
      */
     protected static final DefaultComboBoxModel<Pair> plantsCombo = new DefaultComboBoxModel<>();
-    protected static final int textWidth = 100;
     private static final Logger LOGGER = Logger.getLogger(PurplePanel.class.getName());
+
+    /**
+     * Set parameters.
+     * @param table
+     * @param idField
+     * @param nameField
+     * @param sortField
+     */
+    public PurplePanel(String table, String idField, String nameField, String sortField) {
+        super(table, idField, nameField, sortField);
+    }
+
+    /**
+     * Set parameters.
+     * @param table
+     * @param idField
+     * @param nameField
+     */
+    public PurplePanel(String table, String idField, String nameField) {
+        super(table, idField, nameField, nameField);
+    }
     
     /**
      * Update the list of plant types.
      */
     protected void updatePlantTypesCombo() {
-        plantTypesCombo.removeAllElements();
-        plantTypesCombo.addElement(new Pair(-1, ""));
-        String query = "SELECT * FROM PlantType ORDER BY Description ASC;";
-        try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery(query)) {
-            while (rs.next()) {
-                plantTypesCombo.addElement(new Pair(rs.getInt("PlantTypeID"), rs.getString("Description")));
-            }
-        } catch (SQLException ex) {
-            error(ex, query);
-        }
+        refreshLists(null, plantTypesCombo, "PlantType", "PlantTypeID", "Description");
     }
-    
 }

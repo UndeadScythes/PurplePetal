@@ -6,16 +6,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import purplepetal.Keyable;
+import purplepetal.OneLineFormatter;
 import purplepetal.Pair;
 
 /**
@@ -24,9 +24,17 @@ import purplepetal.Pair;
  * @author UndeadScythes <udscythes@gmail.com>
  */
 @SuppressWarnings("serial")
-public class DataPanel extends JPanel {
+public abstract class DataPanel extends HandyPanel {
     private static final Logger LOGGER = Logger.getLogger(DataPanel.class.getName());
     private static Connection c;
+    private Statement s;
+    
+    static {
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setFormatter(new OneLineFormatter());
+        LOGGER.setUseParentHandlers(false);
+        LOGGER.addHandler(handler);
+    }
 
     /**
      * Set the connection used to access the underlying database.
@@ -36,95 +44,88 @@ public class DataPanel extends JPanel {
         DataPanel.c = c;
     }
     
-    /**
-     * Create a date form "= 'DATE'" usable within an SQL query.
-     * @param date
-     * @return
-     */
-    protected static String makeSQLDate(LocalDate date) {
-        return "= '" + makeDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth()) + "'";
-    }
-    /**
-     * {@link PurplePanel#makeSQLDate}
-     * @param date
-     * @return
-     */
-    protected static String makeSQLDate(YearMonth date) {
-        int year = date.getYear();
-        int month = date.getMonthValue();
-        return "BETWEEN '" + makeDate(year, month, 1) + "' AND '" + makeDate(year, month, 31) + "'";
-    }
-    
-    /**
-     * Parse an SQL date value into its three parts.
-     * @param date
-     * @return
-     */
-    protected static LocalDate parseSQLDate(String date) {
-        String[] parts = date.split("-");
-        int[] output = new int[3];
-        for (int i = 0; i < 3; i++) {
-            output[i] = Integer.parseInt(parts[i]);
-        }
-        return LocalDate.of(output[0], output[1], output[2]);
-    }
-    
-    /**
-     * Generate an SQL date value from the parts.
-     * @param date
-     * @return
-     */
-    protected static String makeDate(LocalDate date) {
-        return String.format("%04d-%02d-%02d", date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-    }
-    
-    /**
-     * Generate an SQL date value from the parts.
-     * @param year
-     * @param month
-     * @param day
-     * @return
-     */
-    protected static String makeDate(int year, int month, int day) {
-        return String.format("%04d-%02d-%02d", year, month, day);
-    }
-    
-    /**
-     * Create and return a statement to access the database.
-     * @return
-     * @throws java.sql.SQLException
-     */
-    protected Statement createStatement() throws SQLException {
-        if (c == null) {
-            throw new SQLException();
-        }
-        return c.createStatement();
-    }
-    
-    /**
-     * Given key-value {@link Pair} based {@link JComboBox}, select a certain
-     * index with the given key.
-     * @param comboBox
-     * @param key
-     */
-    protected void selectKey(JComboBox<Pair> comboBox, int key) {
-        comboBox.setSelectedIndex(0);
-        for (int i = 0; i < comboBox.getItemCount(); i++) {
-            if (comboBox.getItemAt(i).getKey() == key) {
-                comboBox.setSelectedIndex(i);
-            }
-        }
-    }
-    
-    /**
-     * Return the {@link Pair} selected in a combo box.
-     * @param comboBox
-     * @return
-     */
-    protected Pair getSelection(JComboBox<Pair> comboBox) {
-        return comboBox.getItemAt(comboBox.getSelectedIndex());
-    }
+    private final String tableName;
+    private final String idField;
+    private final String nameField;
+    private final String sortField;
 
+    /**
+     * Set up all the necessary fields for the underlying table.
+     * @param table
+     * @param idField
+     * @param nameField
+     * @param sortField
+     */
+    public DataPanel(String table, String idField, String nameField, String sortField) {
+        this.tableName = table;
+        this.idField = idField;
+        this.nameField = nameField;
+        this.sortField = sortField;
+    }
+    
+    /**
+     * Set up all the necessary fields for the underlying table.
+     * @param table
+     * @param idField
+     * @param nameField
+     */
+    public DataPanel(String table, String idField, String nameField) {
+        this.tableName = table;
+        this.idField = idField;
+        this.nameField = nameField;
+        this.sortField = nameField;
+    }
+    
+    /**
+     * Execute a query on the database.
+     * @param query
+     * @return
+     */
+    protected ResultSet executeQuery(String query) {
+        ResultSet rs = null;
+        try {
+            s = createStatement();
+            rs = s.executeQuery(query);
+            int rows = 0;
+            while (rs.next()) {
+                rows++;
+            }
+            String msg = String.format("%03d rows from %s", rows, query);
+            LOGGER.info(msg);
+            rs = s.executeQuery(query);
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
+        return rs;
+    }
+    
+    /**
+     * Check if a query generates any entry results.
+     * @param query
+     * @return
+     */
+    protected boolean entryExists(String query) {
+        boolean exists = false;
+        try {
+            exists = executeQuery(query).next();
+        } catch (SQLException ex) {
+            error(ex);
+        }
+        return exists;
+    }
+    
+    /**
+     * Execute an update query on the database.
+     * @param query
+     */
+    protected void executeUpdate(String query) {
+        try (Statement s = createStatement()) {
+            s.executeQuery(query);
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
+    }
+    
     /**
      * Throwables cause popups and logs.
      * @param ex
@@ -137,16 +138,79 @@ public class DataPanel extends JPanel {
     }
     
     /**
-     * SQLK query throwables cause popups and logs.
-     * @param ex
-     * @param query
+     * {@link refreshListsX#refreshLists} with sort = name.
+     * @param list
+     * @param combo
+     * @param table
+     * @param keyField
+     * @param valueField
      */
-    protected void error(Exception ex, String query) {
-        LOGGER.log(Level.SEVERE, null, ex);
-        String msg = String.format("%s\n%s", query, ex.getMessage());
-        if (ex.getMessage() != null) {
-            JOptionPane.showMessageDialog(this, msg, "Warning!", JOptionPane.WARNING_MESSAGE);
-        }
+    protected void refreshLists(DefaultListModel<Pair> list, DefaultComboBoxModel<Pair> combo, String table, String keyField, String valueField) {
+        refreshLists(list, combo, table, keyField, valueField, valueField);
+    }
+    
+    /**
+     * Draw parameters from properties.
+     * @param list
+     * @param combo
+     */
+    protected void refreshLists(DefaultListModel<Pair> list, DefaultComboBoxModel<Pair> combo) {
+        refreshLists(list, combo, tableName, idField, nameField, sortField);
+    }
+    
+    /**
+     * Delete a table entry with SQL.
+     * @param id
+     */
+    protected void deleteEntry(int id) {
+        executeQuery(String.format("DELETE FROM %s WHERE %s = %d;", tableName, idField, id));
+    }
+    
+    /**
+     *
+     * @param id
+     * @return
+     */
+    protected ResultSet getEntry(int id) {
+        String query = String.format("SELECT * FROM %s WHERE %s = %d;", tableName, idField, id);
+        return executeQuery(query);
+    }
+    
+    /**
+     * Wrap a string with single quotes.
+     * @param string
+     * @return
+     */
+    protected String wrap(String string) {
+        return String.format("'%s'", string);
+    }
+    
+    /**
+     * Add a new entry to the table.
+     * @param map
+     * @return
+     */
+    protected int newEntry(Map<String, String> map) {
+        String fields = String.join(", ", map.keySet());
+        String values = String.join(", ", map.values());
+        String query = String.format("INSERT INTO %s (%s) VALUES (%s);", tableName, fields, values);
+        executeUpdate(query);
+        return getInsertID();
+    }
+    
+    /**
+     * Update an existing entry.
+     * @param id
+     * @param map
+     */
+    protected void updateEntry(int id, Map<String, String> map) {
+        ArrayList<String> values = new ArrayList<>(map.size());
+        map.entrySet().stream().forEach((entry) -> {
+            values.add(String.format("%s = %s", entry.getKey(), entry.getValue()));
+        });
+        String updates = String.join(", ", values);
+        String query = String.format("UPDATE %s SET %s WHERE %s = %d;", tableName, updates, idField, id);
+        executeUpdate(query);
     }
     
     /**
@@ -158,7 +222,7 @@ public class DataPanel extends JPanel {
      * @param valueField
      * @param orderField
      */
-    protected void refresh(DefaultListModel<Pair> list, DefaultComboBoxModel<Pair> combo, String table, String keyField, String valueField, String orderField) {
+    private void refreshLists(DefaultListModel<Pair> list, DefaultComboBoxModel<Pair> combo, String table, String keyField, String valueField, String orderField) {
         if (list != null) {
             list.clear();
         }
@@ -167,8 +231,8 @@ public class DataPanel extends JPanel {
             combo.addElement(new Pair(-1, ""));
         }
         String query = String.format("SELECT %s, %s FROM %s ORDER BY %s ASC;", keyField, valueField, table, orderField);
-        try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery(query)) {
+        ResultSet rs = executeQuery(query);
+        try {
             while (rs.next()) {
                 Pair pair = new Pair(rs.getInt(keyField), rs.getString(valueField));
                 if (list != null) {
@@ -179,126 +243,47 @@ public class DataPanel extends JPanel {
                 }
             }
         } catch (SQLException ex) {
-            error(ex, query);
-        }
-    }
-
-    /**
-     *
-     * @param list
-     * @param combo
-     * @param table
-     * @param keyField
-     * @param valueField
-     */
-    protected void refresh(DefaultListModel<Pair> list, DefaultComboBoxModel<Pair> combo, String table, String keyField, String valueField) {
-        refresh(list, combo, table, keyField, valueField, valueField);
-    }
-
-    /**
-     *
-     * @param list
-     * @param combo
-     * @param table
-     * @param valueField
-     */
-    protected void refresh(DefaultListModel<Pair> list, DefaultComboBoxModel<Pair> combo, String table, String valueField) {
-        refresh(list, combo, table, table + "ID", valueField, valueField);
-    }
-
-    /**
-     *
-     * @param list
-     * @param combo
-     * @param table
-     */
-    protected void refresh(DefaultListModel<Pair> list, DefaultComboBoxModel<Pair> combo, String table) {
-        String valueField = table + "Name";
-        refresh(list, combo, table, table + "ID", valueField, valueField);
-    }
-    
-    /**
-     * Set the text of the fields to "".
-     * @param fields
-     */
-    protected void clear(JTextField... fields) {
-        set("", fields);
-    }
-    
-    /**
-     * Clear the list selections.
-     * @param lists
-     */
-    protected void clear(JList... lists) {
-        for (JList list : lists) {
-            list.clearSelection();
+            error(ex);
         }
     }
     
     /**
-     * Clear the combo selections.
-     * @param combos
-     */
-    protected void clear(JComboBox... combos) {
-        for (JComboBox combo : combos) {
-            if (combo.getItemCount() > 0) {
-                combo.setSelectedIndex(0);
-            }
-        }
-    }
-    
-    /**
-     * Set the text of the fields to text.
-     * @param text
-     * @param fields
-     */
-    protected void set(String text, JTextField... fields) {
-        for (JTextField field : fields) {
-            field.setText(text);
-        }
-    }
-    
-    /**
-     * Remove the item from the list with this key.
-     * @param list
-     * @param key
-     */
-    protected void remove(DefaultListModel<? extends Keyable> list, int key) {
-        int index = getIndex(list, key);
-        if (index > -1) {
-            list.remove(index);
-        }
-    }
-    
-    /**
-     * Returns the index of the item with a given key in the list.
-     * @param list
-     * @param key
+     * Create and return a statement to access the database.
      * @return
+     * @throws java.sql.SQLException
      */
-    protected int getIndex(DefaultListModel<? extends Keyable> list, int key) {
-        for (int i = 0; i < list.getSize(); i++) {
-            if (list.get(i).getKey() == key) {
-                return i;
-            }
+    private Statement createStatement() throws SQLException {
+        if (s != null && !s.isClosed()) {
+            s.close();
         }
-        return -1;
+        if (c == null) {
+            throw new SQLException();
+        }
+        return c.createStatement();
     }
     
     /**
-     * Replace (or add) the item with this key with the value given.
-     * @param <T>
-     * @param list
-     * @param key
-     * @param value
+     * SQLK query throwables cause popups and logs.
+     * @param ex
+     * @param query
      */
-    protected <T extends Keyable> void replace(DefaultListModel<T> list, int key, T value) {
-        int index = getIndex(list, key);
-        if (index > -1) {
-            list.remove(index);
-            list.add(index, value);
-        } else {
-            list.addElement(value);
+    private void error(Exception ex, String query) {
+        LOGGER.log(Level.SEVERE, null, ex);
+        String msg = String.format("%s\n%s", query, ex.getMessage());
+        if (ex.getMessage() != null) {
+            JOptionPane.showMessageDialog(this, msg, "Warning!", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    private int getInsertID() {
+        int id = -1;
+        ResultSet rs = executeQuery("SELECT last_insert_rowid();");
+        try {
+            rs.next();
+            id = rs.getInt("last_insert_rowid()");
+        } catch (SQLException ex) {
+            error(ex);
+        }
+        return id;
     }
 }

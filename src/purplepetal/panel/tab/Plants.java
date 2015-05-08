@@ -3,7 +3,7 @@ package purplepetal.panel.tab;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -24,9 +24,17 @@ public class Plants extends PurplePanel {
      * Initialise components.
      */
     public Plants() {
+        super("Plant", "PlantID", "CommonName");
         initComponents();
         refresh();
         updatePlantTypesCombo();
+    }
+
+    @Override
+    protected void clear() {
+        clearFields(lstPlants);
+        clearFields(txtName, txtLatin, txtPrice);
+        clearFields(cmbSupplier, cmbType);
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
@@ -200,20 +208,20 @@ public class Plants extends PurplePanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void refresh() {
-        refresh(mdlPlants, plantsCombo, "Plant", "PlantID", "CommonName");
+    @Override
+    protected final void refresh() {
+        refreshLists(mdlPlants, plantsCombo);
     }
     
     private void lstPlantsValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstPlantsValueChanged
         if (!lstPlants.isSelectionEmpty()) {
-            int id = lstPlants.getSelectedValue().getKey();
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery("SELECT * FROM Plant WHERE PlantID = " + id + ";")) {
+            try {
+                ResultSet rs = getEntry(lstPlants.getSelectedValue().getKey());
                 while (rs.next()) {
                     txtName.setText(rs.getString("CommonName"));
                     txtLatin.setText(rs.getString("LatinName"));
-                    selectKey(cmbSupplier, rs.getInt("SupplierREF"));
-                    selectKey(cmbType, rs.getInt("TypeREF"));
+                    comboSelectKey(cmbSupplier, rs.getInt("SupplierREF"));
+                    comboSelectKey(cmbType, rs.getInt("TypeREF"));
                     txtPrice.setText(rs.getString("Price"));
                 }
             } catch (SQLException ex) {
@@ -223,44 +231,22 @@ public class Plants extends PurplePanel {
     }//GEN-LAST:event_lstPlantsValueChanged
 
     private void btnNewActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        lstPlants.clearSelection();
-        txtName.setText("");
-        txtLatin.setText("");
-        cmbSupplier.setSelectedIndex(0);
-        cmbType.setSelectedIndex(0);
-        txtPrice.setText("");
+        clear();
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        try (Statement s = createStatement()) {
-            String[] data = new String[3];
-            int[] refs = new int[2];
-            data[0] = txtName.getText();
-            data[1] = txtLatin.getText();
-            data[2] = txtPrice.getText();
-            refs[0] = getSelection(cmbSupplier).getKey();
-            refs[1] = getSelection(cmbType).getKey();
-            if (lstPlants.isSelectionEmpty()) {
-                s.executeUpdate("INSERT INTO Plant (CommonName, LatinName, SupplierREF, TypeREF, Price) VALUES (" +
-                    "'" + data[0] + "', " +
-                    "'" + data[1] + "', " +
-                    refs[0] + ", " + refs[1] + ", " +
-                    "'" + data[2] + "');");
-            } else {
-                int id = lstPlants.getSelectedValue().getKey();
-                s.executeUpdate("UPDATE Plant SET " +
-                    "CommonName = '" + data[0] + "', " +
-                    "LatinName = '" + data[1] + "', " +
-                    "SupplierREF = " + refs[0] + ", " +
-                    "TypeREF = " + refs[1] + ", " +
-                    "Price = '" + data[2] + "' " +
-                    "WHERE PlantID = " + id + ";");
-            }
-            refresh();
-            btnNewActionPerformed(null);
-        } catch (SQLException ex) {
-            error(ex);
+        HashMap<String, String> values = new HashMap<>(5);
+        values.put("CommonName", wrap(txtName.getText()));
+        values.put("LatinName", wrap(txtLatin.getText()));
+        values.put("SupplierREF", comboGetSelection(cmbSupplier).getKeyString());
+        values.put("TypeREF", comboGetSelection(cmbType).getKeyString());
+        values.put("Price", txtPrice.getText());
+        if (lstPlants.isSelectionEmpty()) {
+            newEntry(values);
+        } else {
+            updateEntry(lstPlants.getSelectedValue().getKey(), values);
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCancelActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -270,31 +256,21 @@ public class Plants extends PurplePanel {
     private void btnNewTypeActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnNewTypeActionPerformed
         String newName = JOptionPane.showInputDialog(this, "Enter new plant type:");
         if (newName != null && newName.length() > 0) {
-            try (Statement s = createStatement()) {
-                s.executeUpdate("INSERT INTO PlantType (Description) VALUES ('" + newName + "');");
-                updatePlantTypesCombo();
-            } catch (SQLException ex) {
-                error(ex);
-            }
+            executeUpdate("INSERT INTO PlantType (Description) VALUES ('" + newName + "');");
+            updatePlantTypesCombo();
         }
     }//GEN-LAST:event_btnNewTypeActionPerformed
 
     private void btnDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        try (Statement s = createStatement()) {
-            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+        JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
 
 // TODO: Implement a check for records referencing this supplier and ask for
 // confirmation of cascade delete or a supplier to replace in the records
-           
-            if (!lstPlants.isSelectionEmpty()) {
-                int id = lstPlants.getSelectedValue().getKey();
-                s.executeUpdate("DELETE FROM Plant WHERE PlantID = " + id + ";");
-            }
-            refresh();
-            btnNewActionPerformed(null);
-        } catch (SQLException ex) {
-            error(ex);
+
+        if (!lstPlants.isSelectionEmpty()) {
+            deleteEntry(lstPlants.getSelectedValue().getKey());
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
 

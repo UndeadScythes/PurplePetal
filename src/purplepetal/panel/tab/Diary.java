@@ -5,10 +5,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -33,6 +33,8 @@ import purplepetal.renderer.TableCellRenderer;
  */
 @SuppressWarnings("serial")
 public class Diary extends PurplePanel {
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+    
     private final DefaultListModel<Entry> mdlEntries = new DefaultListModel<>();
     private final DefaultComboBoxModel<Pair> mdlMonths = new DefaultComboBoxModel<>();
     private final TableCellRenderer cellRenderer;
@@ -42,6 +44,7 @@ public class Diary extends PurplePanel {
      * Initialise components.
      */
     public Diary() {
+        super("", "", "Date");
         initComponents();
         cellRenderer = new TableCellRenderer(tabCalendar.getColumnCount());
         for (int i = 0; i < tabCalendar.getColumnCount(); i++) {
@@ -53,6 +56,13 @@ public class Diary extends PurplePanel {
         btnTodayActionPerformed(null);
         refresh = true;
         refresh();
+    }
+
+    @Override
+    protected void clear() {
+        clearFields(cmbPlant, cmbProduct, cmbItem);
+        lstEntries.clearSelection();
+        setFields("0", txtPlantBought, txtPotted, txtHardened, txtReady, txtLost, txtSold, txtItemBought);
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
@@ -563,7 +573,8 @@ public class Diary extends PurplePanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void refresh() {
+    @Override
+    protected final void refresh() {
         if (refresh) {
             ArrayList<Integer> days = new ArrayList<>(31);
             for (EntryType type : EntryType.values()) {
@@ -595,13 +606,13 @@ public class Diary extends PurplePanel {
     private ArrayList<Integer> checkDiary(EntryType type) {
         String query = String.format("SELECT * FROM %s WHERE Date %s;", type.getDiary(), getSQLDateRange());
         ArrayList<Integer> days = new ArrayList<>(31);
-        try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery(query)) {
+        try {
+            ResultSet rs = executeQuery(query);
             while (rs.next()) {
-                days.add(parseSQLDate(rs.getString("Date")).getDayOfMonth());
+                days.add(LocalDate.parse(rs.getString("Date")).getDayOfMonth());
             }
         } catch (SQLException ex) {
-            error(ex, query);
+            error(ex);
         }
         return days;
     }
@@ -623,21 +634,21 @@ public class Diary extends PurplePanel {
             Entry entry = lstEntries.getSelectedValue();
             EntryType type = entry.getType();
             LocalDate date = getDate();
-            String query = String.format("SELECT * FROM %s WHERE %s = %d AND Date %s;", type.getDiary(), type.getRef(), entry.getKey(), makeSQLDate(date));
-            try (Statement s = createStatement();
-                    ResultSet rs = s.executeQuery(query)) {
+            String query = String.format("SELECT * FROM %s WHERE %s = %d AND Date %s;", type.getDiary(), type.getRef(), entry.getKey(), genSQLDateEqualX(date));
+            try {
+                ResultSet rs = executeQuery(query);
                 switch (type) {
                     case PLANT:
                         tabDetails.setSelectedComponent(panPlant);
                         while (rs.next()) {
-                            selectKey(cmbPlant, rs.getInt("PlantREF"));
+                            comboSelectKey(cmbPlant, rs.getInt("PlantREF"));
                             txtPlantBought.setText(Integer.toString(rs.getInt("Bought")));
                         }
                         break;
                     case PRODUCT:
                         tabDetails.setSelectedComponent(panProduct);
                         while (rs.next()) {
-                            selectKey(cmbProduct, rs.getInt("ProductREF"));
+                            comboSelectKey(cmbProduct, rs.getInt("ProductREF"));
                             txtPotted.setText(Integer.toString(rs.getInt("PottedOn")));
                             txtHardened.setText(Integer.toString(rs.getInt("HardenedOff")));
                             txtReady.setText(Integer.toString(rs.getInt("ReadyForSale")));
@@ -648,40 +659,35 @@ public class Diary extends PurplePanel {
                     case ITEM:
                         tabDetails.setSelectedComponent(panItem);
                         while (rs.next()) {
-                            selectKey(cmbItem, rs.getInt("ItemREF"));
+                            comboSelectKey(cmbItem, rs.getInt("ItemREF"));
                             txtItemBought.setText(Integer.toString(rs.getInt("Bought")));
                         }
                         break;
                 }
             } catch (SQLException ex) {
-                error(ex, query);
+                error(ex);
             }
         }
     }//GEN-LAST:event_lstEntriesValueChanged
 
     private void btnPlantSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantSaveActionPerformed
-        String query = "---";
-        try (Statement s = createStatement()) {
-            LocalDate date = getDate();
-            int bought = Integer.parseInt(txtPlantBought.getText());
-            if (!lstEntries.isSelectionEmpty() && getSelection(cmbPlant).getKey() == lstEntries.getSelectedValue().getKey()) {
-                int plant = lstEntries.getSelectedValue().getKey();
-                query = String.format("UPDATE PlantDiary SET " +
-                    "Bought = %d " +
-                    "WHERE PlantREF = %d AND Date %s;", bought, plant, makeSQLDate(date));
-                s.executeUpdate(query);
-            } else {
-                int plant = getSelection(cmbPlant).getKey();
-                query = String.format("INSERT INTO Diary (PlantREF, Date, Bought) VALUES (" +
-                    "%d, '%s', %d);", plant, makeDate(date), bought);
-                s.executeUpdate(query);
-            }
-            refresh();
-            setDate(date);
-            nova();
-        } catch (SQLException ex) {
-            error(ex, query);
+        LocalDate date = getDate();
+        int bought = Integer.parseInt(txtPlantBought.getText());
+        if (!lstEntries.isSelectionEmpty() && comboGetSelection(cmbPlant).getKey() == lstEntries.getSelectedValue().getKey()) {
+            int plant = lstEntries.getSelectedValue().getKey();
+            String query = String.format("UPDATE PlantDiary SET " +
+                "Bought = %d " +
+                "WHERE PlantREF = %d AND Date %s;", bought, plant, genSQLDateEqualX(date));
+            executeUpdate(query);
+        } else {
+            int plant = comboGetSelection(cmbPlant).getKey();
+            String query = String.format("INSERT INTO Diary (PlantREF, Date, Bought) VALUES (" +
+                "%d, '%s', %d);", plant, date.format(dtf), bought);
+            executeUpdate(query);
         }
+        refresh();
+        setDate(date);
+        clear();
     }//GEN-LAST:event_btnPlantSaveActionPerformed
 
     private void btnPlantCancelActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantCancelActionPerformed
@@ -689,35 +695,22 @@ public class Diary extends PurplePanel {
     }//GEN-LAST:event_btnPlantCancelActionPerformed
 
     private void btnPlantNewActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantNewActionPerformed
-        nova();
+        clear();
     }//GEN-LAST:event_btnPlantNewActionPerformed
 
-    private void nova() {
-        clear(cmbPlant, cmbProduct, cmbItem);
-        lstEntries.clearSelection();
-        set("0", txtPlantBought, txtPotted, txtHardened, txtReady, txtLost, txtSold, txtItemBought);
-    }
-    
     private void btnPlantDeleteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantDeleteActionPerformed
-        String query = "---";
-        try (Statement s = createStatement()) {
-            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+        JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
 
 // TODO: Implement a check for records referencing this supplier and ask for
 // confirmation of cascade delete or a supplier to replace in the records
-           
-            
-            if (!lstEntries.isSelectionEmpty()) {
-                int plant = lstEntries.getSelectedValue().getKey();
-                LocalDate date = getDate();
-                query = String.format("DELETE FROM PlantDiary WHERE PlantREF = %d AND Date %s;", plant, makeSQLDate(date));
-                s.executeUpdate(query);
-            }
-            refresh();
-            nova();
-        } catch (SQLException ex) {
-            error(ex, query);
+
+        if (!lstEntries.isSelectionEmpty()) {
+            int plant = lstEntries.getSelectedValue().getKey();
+            LocalDate date = getDate();
+            String query = String.format("DELETE FROM PlantDiary WHERE PlantREF = %d AND Date = '%s';", plant, date.format(dtf));
+            executeUpdate(query);
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnPlantDeleteActionPerformed
 
     private void cmbMonthItemStateChanged(ItemEvent evt) {//GEN-FIRST:event_cmbMonthItemStateChanged
@@ -741,8 +734,8 @@ public class Diary extends PurplePanel {
     private void checkDay(EntryType type) {
         String query = String.format("SELECT * FROM %s JOIN %s ON %s=%s WHERE Date %s ORDER BY %s ASC;",
                 type.getDiary(), type.getTable(), type.getId(), type.getRef(), getSQLDate(), type.getSort());
-        try (Statement s = createStatement();
-                ResultSet rs = s.executeQuery(query)) {
+        try {
+            ResultSet rs = executeQuery(query);
             while (rs.next()) {
                 Pair pair = new Pair(rs.getInt(type.getRef()), rs.getString(type.getSort()));
                 switch (type) {
@@ -757,33 +750,28 @@ public class Diary extends PurplePanel {
                 }
             }
         } catch (SQLException ex) {
-            error(ex, query);
+            error(ex);
         }
     }
     
     private void btnItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemSaveActionPerformed
-        String query = "---";
-        try (Statement s = createStatement()) {
-            LocalDate date = getDate();
-            int bought = Integer.parseInt(txtItemBought.getText());
-            if (!lstEntries.isSelectionEmpty() && getSelection(cmbItem).getKey() == lstEntries.getSelectedValue().getKey()) {
-                int item = lstEntries.getSelectedValue().getKey();
-                query = String.format("UPDATE ItemDiary SET " +
-                    "Bought = %d " +
-                    "WHERE ItemREF = %d AND Date %s;", bought, item, makeSQLDate(date));
-                s.executeUpdate(query);
-            } else {
-                int item = getSelection(cmbItem).getKey();
-                query = String.format("INSERT INTO ItemDiary (ItemREF, Date, Bought) VALUES (" +
-                    "%d, '%s', %d);", item, makeDate(date), bought);
-                s.executeUpdate(query);
-            }
-            refresh();
-            setDate(date);
-            nova();
-        } catch (SQLException ex) {
-            error(ex, query);
+        LocalDate date = getDate();
+        int bought = Integer.parseInt(txtItemBought.getText());
+        if (!lstEntries.isSelectionEmpty() && comboGetSelection(cmbItem).getKey() == lstEntries.getSelectedValue().getKey()) {
+            int item = lstEntries.getSelectedValue().getKey();
+            String query = String.format("UPDATE ItemDiary SET " +
+                "Bought = %d " +
+                "WHERE ItemREF = %d AND Date = '%s';", bought, item, date.format(dtf));
+            executeUpdate(query);
+        } else {
+            int item = comboGetSelection(cmbItem).getKey();
+            String query = String.format("INSERT INTO ItemDiary (ItemREF, Date, Bought) VALUES (" +
+                "%d, '%s', %d);", item, date.format(dtf), bought);
+            executeUpdate(query);
         }
+        refresh();
+        setDate(date);
+        clear();
     }//GEN-LAST:event_btnItemSaveActionPerformed
 
     private void btnItemCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemCancelActionPerformed
@@ -791,54 +779,42 @@ public class Diary extends PurplePanel {
     }//GEN-LAST:event_btnItemCancelActionPerformed
 
     private void btnItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemDeleteActionPerformed
-        String query = "---";
-        try (Statement s = createStatement()) {
-            JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
+        JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
 
 // TODO: Implement a check for records referencing this supplier and ask for
 // confirmation of cascade delete or a supplier to replace in the records
-           
-            
-            if (!lstEntries.isSelectionEmpty()) {
-                int item = lstEntries.getSelectedValue().getKey();
-                LocalDate date = getDate();
-                query = String.format("DELETE FROM ItemDiary WHERE ItemREF = %d AND Date %s;", item, makeSQLDate(date));
-                s.executeUpdate(query);
-            }
-            refresh();
-            nova();
-        } catch (SQLException ex) {
-            error(ex, query);
+
+        if (!lstEntries.isSelectionEmpty()) {
+            int item = lstEntries.getSelectedValue().getKey();
+            LocalDate date = getDate();
+            String query = String.format("DELETE FROM ItemDiary WHERE ItemREF = %d AND Date = '%s';", item, date.format(dtf));
+            executeUpdate(query);
         }
+        clearAndRefresh();
     }//GEN-LAST:event_btnItemDeleteActionPerformed
 
     private void btnProductSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductSaveActionPerformed
-        String query = "---";
-        try (Statement s = createStatement()) {
-            LocalDate date = getDate();
-            int potted = Integer.parseInt(txtPotted.getText());
-            int hardened = Integer.parseInt(txtHardened.getText());
-            int ready = Integer.parseInt(txtReady.getText());
-            int lost = Integer.parseInt(txtLost.getText());
-            int sold = Integer.parseInt(txtSold.getText());
-            if (!lstEntries.isSelectionEmpty() && getSelection(cmbProduct).getKey() == lstEntries.getSelectedValue().getKey()) {
-                int product = lstEntries.getSelectedValue().getKey();
-                query = String.format("UPDATE ProductDiary SET " +
-                    "PottedOn = %d, HardenedOff = %d, ReadyForSale = %d, Lost = %d, Sold = %d " +
-                    "WHERE ProductREF = %d AND Date %s;", potted, hardened, ready, lost, sold, product, makeSQLDate(date));
-                s.executeUpdate(query);
-            } else {
-                int product = getSelection(cmbProduct).getKey();
-                query = String.format("INSERT INTO ProductDiary (ProductREF, Date, PottedOn, HardenedOff, ReadyForSale, Lost, Sold) VALUES (" +
-                    "%d, '%s', %d, %d, %d, %d, %d);", product, makeDate(date), potted, hardened, ready, lost, sold);
-                s.executeUpdate(query);
-            }
-            refresh();
-            setDate(date);
-            nova();
-        } catch (SQLException ex) {
-            error(ex, query);
+        LocalDate date = getDate();
+        int potted = Integer.parseInt(txtPotted.getText());
+        int hardened = Integer.parseInt(txtHardened.getText());
+        int ready = Integer.parseInt(txtReady.getText());
+        int lost = Integer.parseInt(txtLost.getText());
+        int sold = Integer.parseInt(txtSold.getText());
+        if (!lstEntries.isSelectionEmpty() && comboGetSelection(cmbProduct).getKey() == lstEntries.getSelectedValue().getKey()) {
+            int product = lstEntries.getSelectedValue().getKey();
+            String query = String.format("UPDATE ProductDiary SET " +
+                "PottedOn = %d, HardenedOff = %d, ReadyForSale = %d, Lost = %d, Sold = %d " +
+                "WHERE ProductREF = %d AND Date = '%s';", potted, hardened, ready, lost, sold, product, date.format(dtf));
+            executeUpdate(query);
+        } else {
+            int product = comboGetSelection(cmbProduct).getKey();
+            String query = String.format("INSERT INTO ProductDiary (ProductREF, Date, PottedOn, HardenedOff, ReadyForSale, Lost, Sold) VALUES (" +
+                "%d, '%s', %d, %d, %d, %d, %d);", product, date.format(dtf), potted, hardened, ready, lost, sold);
+            executeUpdate(query);
         }
+        refresh();
+        setDate(date);
+        clear();
     }//GEN-LAST:event_btnProductSaveActionPerformed
 
     private void btnProductCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductCancelActionPerformed
@@ -846,33 +822,26 @@ public class Diary extends PurplePanel {
     }//GEN-LAST:event_btnProductCancelActionPerformed
 
     private void btnProductDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductDeleteActionPerformed
-        String query = "---";
-        try (Statement s = createStatement()) {
             JOptionPane.showMessageDialog(this, "This action has not been fully implemented yet.");
 
 // TODO: Implement a check for records referencing this supplier and ask for
 // confirmation of cascade delete or a supplier to replace in the records
-           
             
             if (!lstEntries.isSelectionEmpty()) {
                 int product = lstEntries.getSelectedValue().getKey();
                 LocalDate date = getDate();
-                query = String.format("DELETE FROM ProductDiary WHERE ProductREF = %d AND Date %s;", product, makeSQLDate(date));
-                s.executeUpdate(query);
+                String query = String.format("DELETE FROM ProductDiary WHERE ProductREF = %d AND Date = '%s';", product, date.format(dtf));
+                executeUpdate(query);
             }
-            refresh();
-            nova();
-        } catch (SQLException ex) {
-            error(ex, query);
-        }
+            clearAndRefresh();
     }//GEN-LAST:event_btnProductDeleteActionPerformed
 
     private void btnItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemNewActionPerformed
-        nova();
+        clear();
     }//GEN-LAST:event_btnItemNewActionPerformed
 
     private void btnProductNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductNewActionPerformed
-        nova();
+        clear();
     }//GEN-LAST:event_btnProductNewActionPerformed
 
     private LocalDate getDate() {
@@ -887,20 +856,51 @@ public class Diary extends PurplePanel {
     
     private YearMonth getYearMonth() {
         int year = (int) spnYear.getValue();
-        int month = getSelection(cmbMonth).getKey();
+        int month = comboGetSelection(cmbMonth).getKey();
         return YearMonth.of(year, month);
     }
     
     private String getSQLDate() {
         if (tabCalendar.getSelectedColumn() < 0) {
-            return makeSQLDate(getYearMonth());
+            return genSQLDateRangeX(getYearMonth());
         } else {
-            return makeSQLDate(getDate());
+            return genSQLDateEqualX(getDate());
         }
     }
     
     private String getSQLDateRange() {
-        return makeSQLDate(getYearMonth());
+        return genSQLDateRangeX(getYearMonth());
+    }
+    
+    /**
+     * Create a date form "= 'DATE'" usable within an SQL query.
+     * @param date
+     * @return
+     */
+    private String genSQLDateEqualX(LocalDate date) {
+        return "= '" + genSQLDateX(date.getYear(), date.getMonthValue(), date.getDayOfMonth()) + "'";
+    }
+    
+    /**
+     * {@link PurplePanel#genSQLDateEqual}
+     * @param date
+     * @return
+     */
+    private String genSQLDateRangeX(YearMonth date) {
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        return "BETWEEN '" + genSQLDateX(year, month, 1) + "' AND '" + genSQLDateX(year, month, 31) + "'";
+    }
+    
+    /**
+     * Generate an SQL date value from the parts.
+     * @param year
+     * @param month
+     * @param day
+     * @return
+     */
+    private String genSQLDateX(int year, int month, int day) {
+        return String.format("%04d-%02d-%02d", year, month, day);
     }
     
     private int getCoord(LocalDate date) {
