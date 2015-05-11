@@ -119,6 +119,7 @@ public abstract class DataPanel extends HandyPanel {
         try {
             createStatement();
             s.executeUpdate(query);
+            LOGGER.info(query);
         } catch (SQLException ex) {
             error(ex, query);
         }

@@ -21,6 +21,34 @@ import purplepetal.panel.PurplePanel;
 @SuppressWarnings("serial")
 public class Items extends PurplePanel {
     private final DefaultListModel<Pair> mdlItems = new DefaultListModel<>();
+    private final DocumentListener updateTotal = new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            updateTotal();
+        }
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            updateTotal();
+        }
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            updateTotal();
+        }
+    };
+    private final DocumentListener updateExVAT = new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            updateExVAT();
+        }
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            updateExVAT();
+        }
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            updateExVAT();
+        }
+    };
     
     /**
      * Creates new form Items
@@ -28,38 +56,9 @@ public class Items extends PurplePanel {
     public Items() {
         super("Item", "ItemID", "Name");
         initComponents();
-        txtPackSize.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateTotal();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateTotal();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateTotal();
-            }
-        });
-        txtStock.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateTotal();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateTotal();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateTotal();
-            }
-        });
+        txtPackSize.getDocument().addDocumentListener(updateTotal);
+        txtStock.getDocument().addDocumentListener(updateTotal);
+        txtPrice.getDocument().addDocumentListener(updateExVAT);
         refresh();
     }
 
@@ -95,7 +94,11 @@ public class Items extends PurplePanel {
         javax.swing.JButton btnNew = new javax.swing.JButton();
         javax.swing.JLabel labTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
-        javax.swing.JLabel labPound = new javax.swing.JLabel();
+        javax.swing.JLabel labPound2 = new javax.swing.JLabel();
+        javax.swing.JLabel labExVAT = new javax.swing.JLabel();
+        txtExVAT = new javax.swing.JTextField();
+        javax.swing.JLabel labPound1 = new javax.swing.JLabel();
+        javax.swing.JButton btnCalc = new javax.swing.JButton();
 
         spl1.setDividerLocation(250);
 
@@ -154,7 +157,18 @@ public class Items extends PurplePanel {
 
         txtTotal.setEditable(false);
 
-        labPound.setText("£");
+        labPound2.setText("£");
+
+        labExVAT.setText("Ex. VAT");
+
+        labPound1.setText("£");
+
+        btnCalc.setText("Calc");
+        btnCalc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panDetailsLayout = new javax.swing.GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
@@ -173,26 +187,37 @@ public class Items extends PurplePanel {
                                     .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(labStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labPound))
+                                .addComponent(labPound2))
                             .addComponent(labPackSize, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panDetailsLayout.createSequentialGroup()
+                                .addGap(0, 26, Short.MAX_VALUE)
+                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                                    .addComponent(cmbSupplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(panDetailsLayout.createSequentialGroup()
                                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtPackSize, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(panDetailsLayout.createSequentialGroup()
-                                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(labTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panDetailsLayout.createSequentialGroup()
+                                                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(labExVAT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(labPound1))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panDetailsLayout.createSequentialGroup()
+                                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(labTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 55, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panDetailsLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbSupplier, 0, 250, Short.MAX_VALUE)
-                                    .addComponent(txtName)))))
+                                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                                            .addComponent(txtExVAT))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnCalc)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(panDetailsLayout.createSequentialGroup()
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -218,7 +243,11 @@ public class Items extends PurplePanel {
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labPrice)
                     .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labPound))
+                    .addComponent(labPound2)
+                    .addComponent(labExVAT)
+                    .addComponent(txtExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labPound1)
+                    .addComponent(btnCalc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labPackSize)
@@ -273,6 +302,7 @@ public class Items extends PurplePanel {
                     int packSize = rs.getInt("PackSize");
                     txtPackSize.setText(Integer.toString(packSize));
                     txtPrice.setText(rs.getString("Price"));
+                    updateExVAT();
                     int stock = rs.getInt("Stock");
                     txtStock.setText(Integer.toString(stock));
                     txtTotal.setText(Integer.toString(packSize * stock));
@@ -315,6 +345,10 @@ public class Items extends PurplePanel {
         clearAndRefresh();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnCalcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcActionPerformed
+        updateIncVAT();
+    }//GEN-LAST:event_btnCalcActionPerformed
+
     private void updateTotal() {
         String stockText = txtStock.getText();
         int stock = 0;
@@ -328,10 +362,31 @@ public class Items extends PurplePanel {
         }
         txtTotal.setText(Integer.toString(stock * packSize));
     }
+    
+    private void updateIncVAT() {
+        String exText = txtExVAT.getText();
+        double exVAT = 0;
+        if (!exText.isEmpty()) {
+            exVAT = Double.parseDouble(exText);
+        }
+        double incVAT = exVAT / (1.0 + VAT);
+        txtPrice.setText(String.format("%.2f", incVAT));
+    }
+    
+    private void updateExVAT() {
+        String incText = txtPrice.getText();
+        double incVAT = 0;
+        if (!incText.isEmpty()) {
+            incVAT = Double.parseDouble(incText);
+        }
+        double exVAT = incVAT * (1.0 + VAT);
+        txtExVAT.setText(String.format("%.2f", exVAT));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Pair> cmbSupplier;
     private javax.swing.JList<Pair> lstItems;
+    private javax.swing.JTextField txtExVAT;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPackSize;
     private javax.swing.JTextField txtPrice;

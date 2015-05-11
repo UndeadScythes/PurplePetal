@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import purplepetal.Pair;
 import purplepetal.panel.PurplePanel;
@@ -19,6 +21,20 @@ import purplepetal.panel.PurplePanel;
 @SuppressWarnings("serial")
 public class Plants extends PurplePanel {
     private final DefaultListModel<Pair> mdlPlants = new DefaultListModel<>();
+    private final DocumentListener updateExVAT = new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            updateExVAT();
+        }
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            updateExVAT();
+        }
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            updateExVAT();
+        }
+    };
 
     /**
      * Initialise components.
@@ -26,6 +42,7 @@ public class Plants extends PurplePanel {
     public Plants() {
         super("Plant", "PlantID", "CommonName");
         initComponents();
+        txtPrice.getDocument().addDocumentListener(updateExVAT);
         refresh();
         updatePlantTypesCombo();
     }
@@ -61,6 +78,11 @@ public class Plants extends PurplePanel {
         btnSave = new javax.swing.JButton();
         javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
         final javax.swing.JButton btnNew = new javax.swing.JButton();
+        javax.swing.JLabel labPound1 = new javax.swing.JLabel();
+        javax.swing.JLabel labExVAT = new javax.swing.JLabel();
+        txtExVAT = new javax.swing.JTextField();
+        javax.swing.JLabel labPound2 = new javax.swing.JLabel();
+        javax.swing.JButton btnCalc = new javax.swing.JButton();
 
         spl1.setDividerLocation(250);
 
@@ -123,6 +145,19 @@ public class Plants extends PurplePanel {
             }
         });
 
+        labPound1.setText("£");
+
+        labExVAT.setText("Ex. VAT");
+
+        labPound2.setText("£");
+
+        btnCalc.setText("Calc");
+        btnCalc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panDetailsLayout = new javax.swing.GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
         panDetailsLayout.setHorizontalGroup(
@@ -136,7 +171,10 @@ public class Plants extends PurplePanel {
                             .addComponent(labType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labSupplier, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                             .addComponent(labLatin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labPound1))
                             .addComponent(labName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,11 +182,20 @@ public class Plants extends PurplePanel {
                                 .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnNewType))
-                            .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(labExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(labPound2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCalc))
                             .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtLatin, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(cmbSupplier, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE))
-                            .addComponent(txtName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panDetailsLayout.createSequentialGroup()
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -182,7 +229,12 @@ public class Plants extends PurplePanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labPrice)
-                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labPound1)
+                    .addComponent(labExVAT)
+                    .addComponent(txtExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labPound2)
+                    .addComponent(btnCalc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -223,6 +275,7 @@ public class Plants extends PurplePanel {
                     comboSelectKey(cmbSupplier, rs.getInt("SupplierREF"));
                     comboSelectKey(cmbType, rs.getInt("TypeREF"));
                     txtPrice.setText(rs.getString("Price"));
+                    updateExVAT();
                 }
             } catch (SQLException ex) {
                 error(ex);
@@ -273,6 +326,30 @@ public class Plants extends PurplePanel {
         clearAndRefresh();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void updateIncVAT() {
+        String exText = txtExVAT.getText();
+        double exVAT = 0;
+        if (!exText.isEmpty()) {
+            exVAT = Double.parseDouble(exText);
+        }
+        double incVAT = exVAT / (1.0 + VAT);
+        txtPrice.setText(String.format("%.2f", incVAT));
+    }
+    
+    private void updateExVAT() {
+        String incText = txtPrice.getText();
+        double incVAT = 0;
+        if (!incText.isEmpty()) {
+            incVAT = Double.parseDouble(incText);
+        }
+        double exVAT = incVAT * (1.0 + VAT);
+        txtExVAT.setText(String.format("%.2f", exVAT));
+    }
+    
+    private void btnCalcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcActionPerformed
+        updateIncVAT();
+    }//GEN-LAST:event_btnCalcActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
@@ -282,6 +359,7 @@ public class Plants extends PurplePanel {
     private javax.swing.JComboBox<Pair> cmbSupplier;
     private javax.swing.JComboBox<Pair> cmbType;
     private javax.swing.JList<Pair> lstPlants;
+    private javax.swing.JTextField txtExVAT;
     private javax.swing.JTextField txtLatin;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPrice;

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -24,18 +26,30 @@ import purplepetal.panel.PurplePanel;
 public class Settings extends PurplePanel {
     private static final String VERSION_URL = "https://github.com/UndeadScythes/PurplePetal/raw/master/src/resources/version.txt";
     private static final String JAR_URL = "https://github.com/UndeadScythes/PurplePetal/raw/master/dist/PurplePetal.jar";
-    
     /**
      * Creates new form Settings
      */
     public Settings() {
         super ("Settings", "SettingsID", "");
         initComponents();
+        refresh();
     }
 
     @Override
-    protected void refresh() {
-        
+    protected final void refresh() {
+        try {
+            ResultSet rs = executeQuery("SELECT * FROM Settings;");
+            if (rs.next()) {
+                VAT = rs.getDouble("VAT") / 100;
+                txtVAT.setText(Double.toString(VAT * 100));
+            } else {
+                VAT = 0.2;
+                txtVAT.setText("20");
+                btnSaveActionPerformed(null);
+            }
+        } catch (SQLException ex) {
+            error(ex);
+        }
     }
 
     @Override
@@ -48,66 +62,24 @@ public class Settings extends PurplePanel {
     private void initComponents() {
 
         javax.swing.JPanel panSettings = new javax.swing.JPanel();
-        javax.swing.JLabel labDatabase = new javax.swing.JLabel();
         javax.swing.JLabel labVAT = new javax.swing.JLabel();
-        txtDatabase = new javax.swing.JTextField();
-        javax.swing.JButton btnDatabase = new javax.swing.JButton();
         txtVAT = new javax.swing.JTextField();
-        javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
         javax.swing.JButton btnSave = new javax.swing.JButton();
-        javax.swing.JPanel panButtons = new javax.swing.JPanel();
+        javax.swing.JLabel labPercent = new javax.swing.JLabel();
         javax.swing.JButton btnPlantTypes = new javax.swing.JButton();
-        btnUpdates = new javax.swing.JButton();
-
-        labDatabase.setText("Database");
+        javax.swing.JButton btnUpdates = new javax.swing.JButton();
+        chkUpdates = new javax.swing.JCheckBox();
 
         labVAT.setText("VAT");
 
-        btnDatabase.setText("Change");
-
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout panSettingsLayout = new javax.swing.GroupLayout(panSettings);
-        panSettings.setLayout(panSettingsLayout);
-        panSettingsLayout.setHorizontalGroup(
-            panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sep1)
-            .addGroup(panSettingsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panSettingsLayout.createSequentialGroup()
-                        .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(labVAT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labDatabase, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panSettingsLayout.createSequentialGroup()
-                                .addComponent(txtDatabase, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDatabase, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(panSettingsLayout.createSequentialGroup()
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        panSettingsLayout.setVerticalGroup(
-            panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panSettingsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labDatabase)
-                    .addComponent(txtDatabase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDatabase))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labVAT)
-                    .addComponent(txtVAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(btnSave)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        labPercent.setText("%");
 
         btnPlantTypes.setText("Delete Plant Type");
         btnPlantTypes.addActionListener(new java.awt.event.ActionListener() {
@@ -123,25 +95,46 @@ public class Settings extends PurplePanel {
             }
         });
 
-        javax.swing.GroupLayout panButtonsLayout = new javax.swing.GroupLayout(panButtons);
-        panButtons.setLayout(panButtonsLayout);
-        panButtonsLayout.setHorizontalGroup(
-            panButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panButtonsLayout.createSequentialGroup()
+        chkUpdates.setText("Check for updates on start up");
+
+        javax.swing.GroupLayout panSettingsLayout = new javax.swing.GroupLayout(panSettings);
+        panSettings.setLayout(panSettingsLayout);
+        panSettingsLayout.setHorizontalGroup(
+            panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panSettingsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnUpdates, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnPlantTypes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panSettingsLayout.createSequentialGroup()
+                        .addComponent(btnUpdates)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkUpdates))
+                    .addComponent(btnPlantTypes, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panSettingsLayout.createSequentialGroup()
+                        .addComponent(labVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labPercent)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
-        panButtonsLayout.setVerticalGroup(
-            panButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panButtonsLayout.createSequentialGroup()
+        panSettingsLayout.setVerticalGroup(
+            panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panSettingsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnPlantTypes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnUpdates)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdates)
+                    .addComponent(chkUpdates))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labVAT)
+                    .addComponent(txtVAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labPercent)
+                    .addComponent(btnSave))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -149,14 +142,12 @@ public class Settings extends PurplePanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -195,10 +186,20 @@ public class Settings extends PurplePanel {
         }
     }//GEN-LAST:event_btnUpdatesActionPerformed
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        String vatText = txtVAT.getText();
+        int vatVal = 0;
+        if (!vatText.isEmpty()) {
+            vatVal = Integer.parseInt(vatText);
+        }
+        VAT = vatVal / 100.0;
+        String query = String.format("UPDATE Settings SET VAT=%d;", vatVal);
+        executeUpdate(query);
+    }//GEN-LAST:event_btnSaveActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnUpdates;
-    private javax.swing.JTextField txtDatabase;
+    private javax.swing.JCheckBox chkUpdates;
     private javax.swing.JTextField txtVAT;
     // End of variables declaration//GEN-END:variables
     private static final Logger LOGGER = Logger.getLogger(Settings.class.getName());

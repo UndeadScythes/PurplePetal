@@ -35,6 +35,12 @@ public abstract class PurplePanel extends DataPanel {
      * Drop down list of plants.
      */
     protected static final DefaultComboBoxModel<Pair> plantsCombo = new DefaultComboBoxModel<>();
+
+    /**
+     * Global VAT value.
+     */
+    protected static double VAT = 0;
+    
     private static final Logger LOGGER = Logger.getLogger(PurplePanel.class.getName());
 
     /**
