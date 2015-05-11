@@ -4,12 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -27,8 +24,6 @@ import purplepetal.Pair;
 public abstract class DataPanel extends HandyPanel {
     private static final Logger LOGGER = Logger.getLogger(DataPanel.class.getName());
     private static Connection c;
-    private Statement s;
-    
     static {
         ConsoleHandler handler = new ConsoleHandler();
         handler.setFormatter(new OneLineFormatter());
@@ -43,6 +38,8 @@ public abstract class DataPanel extends HandyPanel {
     public static void setConnection(Connection c) {
         DataPanel.c = c;
     }
+    
+    private Statement s;
     
     private final String tableName;
     private final String idField;
@@ -84,7 +81,7 @@ public abstract class DataPanel extends HandyPanel {
     protected ResultSet executeQuery(String query) {
         ResultSet rs = null;
         try {
-            s = createStatement();
+            createStatement();
             rs = s.executeQuery(query);
             int rows = 0;
             while (rs.next()) {
@@ -119,8 +116,9 @@ public abstract class DataPanel extends HandyPanel {
      * @param query
      */
     protected void executeUpdate(String query) {
-        try (Statement s = createStatement()) {
-            s.executeQuery(query);
+        try {
+            createStatement();
+            s.executeUpdate(query);
         } catch (SQLException ex) {
             error(ex, query);
         }
@@ -252,14 +250,14 @@ public abstract class DataPanel extends HandyPanel {
      * @return
      * @throws java.sql.SQLException
      */
-    private Statement createStatement() throws SQLException {
+    private void createStatement() throws SQLException {
         if (s != null && !s.isClosed()) {
             s.close();
         }
         if (c == null) {
             throw new SQLException();
         }
-        return c.createStatement();
+        s = c.createStatement();
     }
     
     /**
