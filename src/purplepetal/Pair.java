@@ -37,6 +37,6 @@ public class Pair implements Keyable {
      * @return
      */
     public String getKeyString() {
-        return String.valueOf(getKey());
+        return Integer.toString(getKey());
     }
 }
