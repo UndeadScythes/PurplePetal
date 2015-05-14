@@ -77,8 +77,9 @@ public abstract class DataPanel extends HandyPanel {
      * Execute a query on the database.
      * @param query
      * @return
+     * @throws java.sql.SQLException
      */
-    protected ResultSet executeQuery(String query) {
+    protected ResultSet executeQuery(String query) throws SQLException {
         ResultSet rs = null;
         try {
             createStatement();
@@ -92,6 +93,9 @@ public abstract class DataPanel extends HandyPanel {
             rs = s.executeQuery(query);
         } catch (SQLException ex) {
             error(ex, query);
+        }
+        if (rs == null) {
+            throw new SQLException("Result set could not be retrieved.", new NullPointerException("rs == null"));
         }
         return rs;
     }
@@ -131,7 +135,7 @@ public abstract class DataPanel extends HandyPanel {
      */
     protected void error(Exception ex) {
         LOGGER.log(Level.SEVERE, null, ex);
-        if (ex.getMessage() != null) {
+        if (c != null) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Warning!", JOptionPane.WARNING_MESSAGE);
         }
     }
@@ -162,15 +166,21 @@ public abstract class DataPanel extends HandyPanel {
      * @param id
      */
     protected void deleteEntry(int id) {
-        executeQuery(String.format("DELETE FROM %s WHERE %s = %d;", tableName, idField, id));
+        String query = String.format("DELETE FROM %s WHERE %s = %d;", tableName, idField, id);
+        try {
+            executeQuery(query);
+        } catch (SQLException ex) {
+            error(ex, query);
+        }
     }
     
     /**
      *
      * @param id
      * @return
+     * @throws java.sql.SQLException
      */
-    protected ResultSet getEntry(int id) {
+    protected ResultSet getEntry(int id) throws SQLException {
         String query = String.format("SELECT * FROM %s WHERE %s = %d;", tableName, idField, id);
         return executeQuery(query);
     }
@@ -230,8 +240,8 @@ public abstract class DataPanel extends HandyPanel {
             combo.addElement(new Pair(-1, ""));
         }
         String query = String.format("SELECT %s, %s FROM %s ORDER BY %s ASC;", keyField, valueField, table, orderField);
-        ResultSet rs = executeQuery(query);
         try {
+            ResultSet rs = executeQuery(query);
             while (rs.next()) {
                 Pair pair = new Pair(rs.getInt(keyField), rs.getString(valueField));
                 if (list != null) {
@@ -276,8 +286,8 @@ public abstract class DataPanel extends HandyPanel {
 
     private int getInsertID() {
         int id = -1;
-        ResultSet rs = executeQuery("SELECT last_insert_rowid();");
         try {
+            ResultSet rs = executeQuery("SELECT last_insert_rowid();");
             rs.next();
             id = rs.getInt("last_insert_rowid()");
         } catch (SQLException ex) {

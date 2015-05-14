@@ -295,8 +295,8 @@ public class Items extends PurplePanel {
     private void lstItemsValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstItemsValueChanged
         if (!lstItems.isSelectionEmpty()) {
             int id = lstItems.getSelectedValue().getKey();
-            ResultSet rs = getEntry(id);
             try {
+                ResultSet rs = getEntry(id);
                 while (rs.next()) {
                     txtName.setText(rs.getString("Name"));
                     int packSize = rs.getInt("PackSize");

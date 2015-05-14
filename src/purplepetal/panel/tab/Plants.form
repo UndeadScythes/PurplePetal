@@ -86,6 +86,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="labTraySize" alignment="0" max="32767" attributes="0"/>
                                   <Component id="labType" alignment="0" max="32767" attributes="0"/>
                                   <Component id="labSupplier" alignment="0" pref="75" max="32767" attributes="0"/>
                                   <Component id="labLatin" alignment="0" max="32767" attributes="0"/>
@@ -103,8 +104,16 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnNewType" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="txtPrice" min="-2" pref="50" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="txtLatin" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="cmbSupplier" alignment="0" pref="250" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="txtName" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="txtTraySize" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtPrice" alignment="0" pref="50" max="32767" attributes="0"/>
+                                      </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="labExVAT" min="-2" pref="63" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -114,11 +123,6 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnCalc" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="txtLatin" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="cmbSupplier" alignment="0" pref="250" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="txtName" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -168,6 +172,11 @@
                           <Component id="txtExVAT" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="labPound2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnCalc" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labTraySize" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtTraySize" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="sep1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -345,6 +354,17 @@
                 <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labTraySize">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Tray Size"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtTraySize">
             </Component>
           </SubComponents>
         </Container>

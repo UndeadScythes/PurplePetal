@@ -13,8 +13,6 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-// TODO: Uncomment line
-//import java.util.HashMap;
 import java.util.Locale;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -66,9 +64,7 @@ public class Diary extends PurplePanel {
     protected void clear() {
         clearFields(cmbPlant, cmbProduct, cmbItem);
         lstEntries.clearSelection();
-        // TODO: Switch lines
-        setFields("0", txtPlantBought, txtPotted, txtHardened, txtReady, txtLost, txtSold, txtItemBought);
-        //setFields("0", txtPlantBought, txtPotted, txtHardened, txtReady, txtSold, txtItemBought, txtPlantDelivered, txtItemDelivered, txtLostX);
+        setFields("0", txtPlantBought, txtPotted, txtHardened, txtReady, txtSold, txtItemBought, txtPlantDelivered, txtItemDelivered, txtLost);
     }
 
     @SuppressWarnings({"unchecked", "Convert2Diamond", "Convert2Lambda"})
@@ -99,8 +95,8 @@ public class Diary extends PurplePanel {
         javax.swing.JButton btnPlantNew = new javax.swing.JButton();
         javax.swing.JLabel labPlantDelivered = new javax.swing.JLabel();
         txtPlantDelivered = new javax.swing.JTextField();
-        javax.swing.JLabel labLostX = new javax.swing.JLabel();
-        txtLostX = new javax.swing.JTextField();
+        labLost = new javax.swing.JLabel();
+        txtLost = new javax.swing.JTextField();
         panProduct = new javax.swing.JPanel();
         javax.swing.JLabel labProduct = new javax.swing.JLabel();
         cmbProduct = new javax.swing.JComboBox<Pair>();
@@ -108,10 +104,8 @@ public class Diary extends PurplePanel {
         final javax.swing.JLabel labPotted = new javax.swing.JLabel();
         final javax.swing.JLabel labHardened = new javax.swing.JLabel();
         final javax.swing.JLabel labReady = new javax.swing.JLabel();
-        final javax.swing.JLabel labLost = new javax.swing.JLabel();
         final javax.swing.JLabel labSold = new javax.swing.JLabel();
         txtSold = new javax.swing.JTextField();
-        txtLost = new javax.swing.JTextField();
         txtReady = new javax.swing.JTextField();
         txtHardened = new javax.swing.JTextField();
         javax.swing.JButton btnProductSave = new javax.swing.JButton();
@@ -293,13 +287,11 @@ public class Diary extends PurplePanel {
 
         labPlantDelivered.setText("Delivered");
 
-        txtPlantDelivered.setEditable(false);
         txtPlantDelivered.setText("0");
 
-        labLostX.setText("Lost");
+        labLost.setText("Lost");
 
-        txtLostX.setEditable(false);
-        txtLostX.setText("0");
+        txtLost.setText("0");
 
         javax.swing.GroupLayout panPlantLayout = new javax.swing.GroupLayout(panPlant);
         panPlant.setLayout(panPlantLayout);
@@ -314,12 +306,12 @@ public class Diary extends PurplePanel {
                             .addComponent(labPlantDelivered, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labPlantBought, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                             .addComponent(labPlant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labLostX, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(labLost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cmbPlant, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtLostX, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtLost, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtPlantDelivered, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtPlantBought, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))))
                     .addGroup(panPlantLayout.createSequentialGroup()
@@ -349,8 +341,8 @@ public class Diary extends PurplePanel {
                     .addComponent(txtPlantDelivered, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panPlantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labLostX)
-                    .addComponent(txtLostX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labLost)
+                    .addComponent(txtLost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -376,13 +368,9 @@ public class Diary extends PurplePanel {
 
         labReady.setText("Ready for sale");
 
-        labLost.setText("Lost");
-
         labSold.setText("Sold");
 
         txtSold.setText("0");
-
-        txtLost.setText("0");
 
         txtReady.setText("0");
 
@@ -428,12 +416,10 @@ public class Diary extends PurplePanel {
                         .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(labReady, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                             .addComponent(labHardened, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labLost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labSold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtLost, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                            .addComponent(txtReady, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtReady, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                             .addComponent(txtHardened, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtSold)))
                     .addGroup(panProductLayout.createSequentialGroup()
@@ -475,10 +461,6 @@ public class Diary extends PurplePanel {
                     .addComponent(txtReady, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labLost)
-                    .addComponent(txtLost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labSold)
                     .addComponent(txtSold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -489,7 +471,7 @@ public class Diary extends PurplePanel {
                     .addComponent(btnProductSave)
                     .addComponent(btnProductDelete)
                     .addComponent(btnProductNew))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         tabDetails.addTab("Product", panProduct);
@@ -532,7 +514,6 @@ public class Diary extends PurplePanel {
 
         labItemDelivered.setText("Delivered");
 
-        txtItemDelivered.setEditable(false);
         txtItemDelivered.setText("0");
 
         javax.swing.GroupLayout panItemLayout = new javax.swing.GroupLayout(panItem);
@@ -564,11 +545,11 @@ public class Diary extends PurplePanel {
                                     .addGroup(panItemLayout.createSequentialGroup()
                                         .addComponent(labItemBought, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(26, 26, 26)))
-                                .addGroup(panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbItem, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(panItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtItemDelivered, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtItemBought, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)))))
+                                        .addComponent(txtItemBought, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                                        .addComponent(txtItemDelivered, javax.swing.GroupLayout.Alignment.LEADING)))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panItemLayout.setVerticalGroup(
@@ -694,9 +675,8 @@ public class Diary extends PurplePanel {
                         while (rs.next()) {
                             comboSelectKey(cmbPlant, rs.getInt("PlantREF"));
                             txtPlantBought.setText(Integer.toString(rs.getInt("Bought")));
-                            // TODO: Uncomment lines
-                            //txtPlantDelivered.setText(Integer.toString(rs.getInt("Delivered")));
-                            //txtLostX.setText(Integer.toString(rs.getInt("Lost")));
+                            txtPlantDelivered.setText(Integer.toString(rs.getInt("Delivered")));
+                            txtLost.setText(Integer.toString(rs.getInt("Lost")));
                         }
                         break;
                     case PRODUCT:
@@ -706,8 +686,6 @@ public class Diary extends PurplePanel {
                             txtPotted.setText(Integer.toString(rs.getInt("PottedOn")));
                             txtHardened.setText(Integer.toString(rs.getInt("HardenedOff")));
                             txtReady.setText(Integer.toString(rs.getInt("ReadyForSale")));
-                            // TODO: Remove line
-                            txtLost.setText(Integer.toString(rs.getInt("Lost")));
                             txtSold.setText(Integer.toString(rs.getInt("Sold")));
                         }
                         break;
@@ -716,8 +694,7 @@ public class Diary extends PurplePanel {
                         while (rs.next()) {
                             comboSelectKey(cmbItem, rs.getInt("ItemREF"));
                             txtItemBought.setText(Integer.toString(rs.getInt("Bought")));
-                            // TODO: Uncomment line
-                            //txtItemDelivered.setText(Integer.toString(rs.getInt("Delivered")));
+                            txtItemDelivered.setText(Integer.toString(rs.getInt("Delivered")));
                         }
                         break;
                 }
@@ -729,29 +706,21 @@ public class Diary extends PurplePanel {
 
     private void btnPlantSaveActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnPlantSaveActionPerformed
         LocalDate date = getDate();
-        // TODO: Uncomment lines
-        //int delivered = Integer.parseInt(txtPlantDelivered.getText());
-        //int lost = Integer.parseInt(txtLostX.getText());
+        int delivered = Integer.parseInt(txtPlantDelivered.getText());
+        int lost = Integer.parseInt(txtLost.getText());
         int bought = Integer.parseInt(txtPlantBought.getText());
         if (!lstEntries.isSelectionEmpty() && comboGetSelection(cmbPlant).getKey() == lstEntries.getSelectedValue().getKey()) {
             int plant = lstEntries.getSelectedValue().getKey();
             String query = String.format("UPDATE PlantDiary SET " +
                 "Bought = %d " +
-                // TODO: Uncomment lines
-                //"Delivered = %d" + 
-                //"Lost = %d" +
-                // TODO: Switch lines
-                "WHERE PlantREF = %d AND Date %s;", bought, plant, genSQLDateEqualX(date));
-                //"WHERE PlantREF = %d AND Date %s;", bought, delivered, lost, plant, genSQLDateEqualX(date));
+                "Delivered = %d" + 
+                "Lost = %d" +
+                "WHERE PlantREF = %d AND Date %s;", bought, delivered, lost, plant, genSQLDateEqualX(date));
             executeUpdate(query);
         } else {
             int plant = comboGetSelection(cmbPlant).getKey();
-            // TODO: Replace
-            String query = String.format("INSERT INTO Diary (PlantREF, Date, Bought) VALUES (" +
-                "%d, '%s', %d);", plant, date.format(dtf), bought);
-            // with
-            //String query = String.format("INSERT INTO Diary (PlantREF, Date, Bought, Delivered, Lost) VALUES (" +
-            //    "%d, '%s', %d, %d, %d);", plant, date.format(dtf), bought, delivered, lost);
+            String query = String.format("INSERT INTO Diary (PlantREF, Date, Bought, Delivered, Lost) VALUES (" +
+                "%d, '%s', %d, %d, %d);", plant, date.format(dtf), bought, delivered, lost);
             executeUpdate(query);
         }
         refresh();
@@ -809,19 +778,15 @@ public class Diary extends PurplePanel {
                 Pair pair = new Pair(rs.getInt(type.getRef()), rs.getString(type.getSort()));
                 switch (type) {
                     case PLANT:
-                        // TODO: Uncomment lines
-                        //int count = rs.getInt("Bought") - rs.getInt("Lost");
-                        //mdlEntries.addElement(new Entry(new Part(pair, rs.getInt("Bought")), type));
-                        //break;
-                        // TODO: No more fallthrough
-                    case ITEM: // Fallthrough
+                        int plantCount = rs.getInt("Bought") - rs.getInt("Lost");
+                        mdlEntries.addElement(new Entry(new Part(pair, plantCount), type));
+                        break;
+                    case ITEM:
                         mdlEntries.addElement(new Entry(new Part(pair, rs.getInt("Bought")), type));
                         break;
                     case PRODUCT:
-                        // TODO: Switch lines
-                        int count = rs.getInt("PottedOn") - rs.getInt("Lost") - rs.getInt("Sold");
-                        //int count = rs.getInt("PottedOn") - rs.getInt("Sold");
-                        mdlEntries.addElement(new Entry(new Part(pair, count), type));
+                        int prodCount = rs.getInt("PottedOn") - rs.getInt("Sold");
+                        mdlEntries.addElement(new Entry(new Part(pair, prodCount), type));
                         break;
                 }
             }
@@ -833,26 +798,18 @@ public class Diary extends PurplePanel {
     private void btnItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemSaveActionPerformed
         LocalDate date = getDate();
         int bought = Integer.parseInt(txtItemBought.getText());
-        // TODO: Uncomment line
-        //int delivered = Integer.parseInt(txtItemDelivered.getText());
+        int delivered = Integer.parseInt(txtItemDelivered.getText());
         if (!lstEntries.isSelectionEmpty() && comboGetSelection(cmbItem).getKey() == lstEntries.getSelectedValue().getKey()) {
             int item = lstEntries.getSelectedValue().getKey();
             String query = String.format("UPDATE ItemDiary SET " +
                 "Bought = %d " +
-                // TODO: Uncomment line
-                //"Delivered = %d" +
-                // TODO: Replace lines
-                "WHERE ItemREF = %d AND Date = '%s';", bought, item, date.format(dtf));
-                //"WHERE ItemREF = %d AND Date = '%s';", bought delivered, item, date.format(dtf));
+                "Delivered = %d" +
+                "WHERE ItemREF = %d AND Date = '%s';", bought, delivered, item, date.format(dtf));
             executeUpdate(query);
         } else {
             int item = comboGetSelection(cmbItem).getKey();
-            // TODO: Replace
-            String query = String.format("INSERT INTO ItemDiary (ItemREF, Date, Bought) VALUES (" +
-                "%d, '%s', %d);", item, date.format(dtf), bought);
-            // with
-            //String query = String.format("INSERT INTO ItemDiary (ItemREF, Date, Bought, Delivered) VALUES (" +
-            //    "%d, '%s', %d, %d);", item, date.format(dtf), bought, delivered);
+            String query = String.format("INSERT INTO ItemDiary (ItemREF, Date, Bought, Delivered) VALUES (" +
+                "%d, '%s', %d, %d);", item, date.format(dtf), bought, delivered);
             executeUpdate(query);
         }
         refresh();
@@ -884,26 +841,17 @@ public class Diary extends PurplePanel {
         int potted = Integer.parseInt(txtPotted.getText());
         int hardened = Integer.parseInt(txtHardened.getText());
         int ready = Integer.parseInt(txtReady.getText());
-        int lost = Integer.parseInt(txtLost.getText());
         int sold = Integer.parseInt(txtSold.getText());
         if (!lstEntries.isSelectionEmpty() && comboGetSelection(cmbProduct).getKey() == lstEntries.getSelectedValue().getKey()) {
             int product = lstEntries.getSelectedValue().getKey();
             String query = String.format("UPDATE ProductDiary SET " +
-                // TODO: Replace
-                "PottedOn = %d, HardenedOff = %d, ReadyForSale = %d, Lost = %d, Sold = %d " +
-                "WHERE ProductREF = %d AND Date = '%s';", potted, hardened, ready, lost, sold, product, date.format(dtf));
-                // with
-                //"PottedOn = %d, HardenedOff = %d, ReadyForSale = %d, Sold = %d " +
-                //"WHERE ProductREF = %d AND Date = '%s';", potted, hardened, ready, sold, product, date.format(dtf));
+                "PottedOn = %d, HardenedOff = %d, ReadyForSale = %d, Sold = %d " +
+                "WHERE ProductREF = %d AND Date = '%s';", potted, hardened, ready, sold, product, date.format(dtf));
             executeUpdate(query);
         } else {
             int product = comboGetSelection(cmbProduct).getKey();
-            // TODO: Replace
-            String query = String.format("INSERT INTO ProductDiary (ProductREF, Date, PottedOn, HardenedOff, ReadyForSale, Lost, Sold) VALUES (" +
-                "%d, '%s', %d, %d, %d, %d, %d);", product, date.format(dtf), potted, hardened, ready, lost, sold);
-            // with
-            //String query = String.format("INSERT INTO ProductDiary (ProductREF, Date, PottedOn, HardenedOff, ReadyForSale, Sold) VALUES (" +
-            //    "%d, '%s', %d, %d, %d, %d);", product, date.format(dtf), potted, hardened, ready, sold);
+            String query = String.format("INSERT INTO ProductDiary (ProductREF, Date, PottedOn, HardenedOff, ReadyForSale, Sold) VALUES (" +
+                "%d, '%s', %d, %d, %d, %d);", product, date.format(dtf), potted, hardened, ready, sold);
             executeUpdate(query);
         }
         refresh();
@@ -1046,6 +994,7 @@ public class Diary extends PurplePanel {
     private javax.swing.JComboBox<Pair> cmbMonth;
     private javax.swing.JComboBox<Pair> cmbPlant;
     private javax.swing.JComboBox<Pair> cmbProduct;
+    private javax.swing.JLabel labLost;
     private javax.swing.JList<Entry> lstEntries;
     private javax.swing.JPanel panItem;
     private javax.swing.JPanel panPlant;
@@ -1057,7 +1006,6 @@ public class Diary extends PurplePanel {
     private javax.swing.JTextField txtItemBought;
     private javax.swing.JTextField txtItemDelivered;
     private javax.swing.JTextField txtLost;
-    private javax.swing.JTextField txtLostX;
     private javax.swing.JTextField txtPlantBought;
     private javax.swing.JTextField txtPlantDelivered;
     private javax.swing.JTextField txtPotted;

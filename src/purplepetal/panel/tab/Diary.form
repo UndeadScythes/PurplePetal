@@ -269,13 +269,13 @@
                                           <Component id="labPlantDelivered" alignment="0" max="32767" attributes="0"/>
                                           <Component id="labPlantBought" pref="75" max="32767" attributes="0"/>
                                           <Component id="labPlant" max="32767" attributes="0"/>
-                                          <Component id="labLostX" max="32767" attributes="0"/>
+                                          <Component id="labLost" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="cmbPlant" min="-2" pref="250" max="-2" attributes="0"/>
                                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="txtLostX" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="txtLost" alignment="0" max="32767" attributes="0"/>
                                               <Component id="txtPlantDelivered" alignment="0" max="32767" attributes="0"/>
                                               <Component id="txtPlantBought" alignment="0" pref="50" max="32767" attributes="0"/>
                                           </Group>
@@ -315,8 +315,8 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="labLostX" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtLostX" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labLost" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtLost" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="sep1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -431,11 +431,10 @@
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtPlantDelivered">
                       <Properties>
-                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="text" type="java.lang.String" value="0"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="labLostX">
+                    <Component class="javax.swing.JLabel" name="labLost">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Lost"/>
                       </Properties>
@@ -444,9 +443,8 @@
                         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
                       </AuxValues>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtLostX">
+                    <Component class="javax.swing.JTextField" name="txtLost">
                       <Properties>
-                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="text" type="java.lang.String" value="0"/>
                       </Properties>
                     </Component>
@@ -472,13 +470,11 @@
                                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                           <Component id="labReady" pref="75" max="32767" attributes="0"/>
                                           <Component id="labHardened" max="32767" attributes="0"/>
-                                          <Component id="labLost" max="32767" attributes="0"/>
                                           <Component id="labSold" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="txtLost" alignment="0" pref="50" max="32767" attributes="0"/>
-                                          <Component id="txtReady" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtReady" alignment="0" pref="50" max="32767" attributes="0"/>
                                           <Component id="txtHardened" alignment="0" max="32767" attributes="0"/>
                                           <Component id="txtSold" max="32767" attributes="0"/>
                                       </Group>
@@ -533,11 +529,6 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="labLost" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtLost" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="labSold" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtSold" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -550,7 +541,7 @@
                                   <Component id="btnProductDelete" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnProductNew" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="37" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -607,15 +598,6 @@
                         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="16"/>
                       </AuxValues>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="labLost">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Lost"/>
-                      </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="16"/>
-                      </AuxValues>
-                    </Component>
                     <Component class="javax.swing.JLabel" name="labSold">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Sold"/>
@@ -626,11 +608,6 @@
                       </AuxValues>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtSold">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtLost">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="0"/>
                       </Properties>
@@ -743,11 +720,11 @@
                                                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="cmbItem" min="-2" pref="250" max="-2" attributes="0"/>
                                                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                                      <Component id="txtItemDelivered" alignment="0" max="32767" attributes="0"/>
                                                       <Component id="txtItemBought" alignment="0" pref="50" max="32767" attributes="0"/>
+                                                      <Component id="txtItemDelivered" alignment="0" max="32767" attributes="0"/>
                                                   </Group>
                                               </Group>
                                           </Group>
@@ -889,7 +866,6 @@
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtItemDelivered">
                       <Properties>
-                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="text" type="java.lang.String" value="0"/>
                       </Properties>
                     </Component>

@@ -50,7 +50,7 @@ public class Plants extends PurplePanel {
     @Override
     protected void clear() {
         clearFields(lstPlants);
-        clearFields(txtName, txtLatin, txtPrice);
+        clearFields(txtName, txtLatin, txtPrice, txtTraySize);
         clearFields(cmbSupplier, cmbType);
     }
 
@@ -83,6 +83,8 @@ public class Plants extends PurplePanel {
         txtExVAT = new javax.swing.JTextField();
         javax.swing.JLabel labPound2 = new javax.swing.JLabel();
         javax.swing.JButton btnCalc = new javax.swing.JButton();
+        javax.swing.JLabel labTraySize = new javax.swing.JLabel();
+        txtTraySize = new javax.swing.JTextField();
 
         spl1.setDividerLocation(250);
 
@@ -158,6 +160,8 @@ public class Plants extends PurplePanel {
             }
         });
 
+        labTraySize.setText("Tray Size");
+
         javax.swing.GroupLayout panDetailsLayout = new javax.swing.GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
         panDetailsLayout.setHorizontalGroup(
@@ -168,6 +172,7 @@ public class Plants extends PurplePanel {
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panDetailsLayout.createSequentialGroup()
                         .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(labTraySize, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labSupplier, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                             .addComponent(labLatin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -182,8 +187,14 @@ public class Plants extends PurplePanel {
                                 .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnNewType))
+                            .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtLatin, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cmbSupplier, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE))
+                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panDetailsLayout.createSequentialGroup()
-                                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtTraySize, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPrice, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(labExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -191,11 +202,7 @@ public class Plants extends PurplePanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCalc))
-                            .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtLatin, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cmbSupplier, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE))
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnCalc))))
                     .addGroup(panDetailsLayout.createSequentialGroup()
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -235,6 +242,10 @@ public class Plants extends PurplePanel {
                     .addComponent(txtExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labPound2)
                     .addComponent(btnCalc))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labTraySize)
+                    .addComponent(txtTraySize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sep1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -275,6 +286,7 @@ public class Plants extends PurplePanel {
                     comboSelectKey(cmbSupplier, rs.getInt("SupplierREF"));
                     comboSelectKey(cmbType, rs.getInt("TypeREF"));
                     txtPrice.setText(rs.getString("Price"));
+                    txtTraySize.setText(rs.getString("TraySize"));
                     updateExVAT();
                 }
             } catch (SQLException ex) {
@@ -294,6 +306,7 @@ public class Plants extends PurplePanel {
         values.put("SupplierREF", comboGetSelection(cmbSupplier).getKeyString());
         values.put("TypeREF", comboGetSelection(cmbType).getKeyString());
         values.put("Price", txtPrice.getText());
+        values.put("TraySize", txtTraySize.getText());
         if (lstPlants.isSelectionEmpty()) {
             newEntry(values);
         } else {
@@ -363,6 +376,7 @@ public class Plants extends PurplePanel {
     private javax.swing.JTextField txtLatin;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtTraySize;
     // End of variables declaration//GEN-END:variables
     private static final Logger LOGGER = Logger.getLogger(Plants.class.getName());
 }
