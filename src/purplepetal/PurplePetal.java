@@ -30,6 +30,12 @@ public class PurplePetal extends JFrame {
             LOGGER.warning(ex.getMessage());
         }
         labFlakware.setText(String.format("Flakware DBMS, v%01.3f", version));
+        if (PurplePanel.UPDATE) {
+            double newVersion = panSettings.checkUpdates();
+            if (newVersion > 0) {
+                panSettings.updatePrompt(newVersion);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -43,7 +49,6 @@ public class PurplePetal extends JFrame {
         final purplepetal.panel.tab.Plants panPlants = new purplepetal.panel.tab.Plants();
         final purplepetal.panel.tab.Items panItems = new purplepetal.panel.tab.Items();
         final purplepetal.panel.tab.Suppliers panSuppliers = new purplepetal.panel.tab.Suppliers();
-        final purplepetal.panel.tab.Settings panSettings = new purplepetal.panel.tab.Settings();
         final javax.swing.JPanel panStatus = new javax.swing.JPanel();
         final javax.swing.JSeparator sep1 = new javax.swing.JSeparator();
 
@@ -163,6 +168,7 @@ public class PurplePetal extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final javax.swing.JLabel labFlakware = new javax.swing.JLabel();
     private final javax.swing.JLabel labStatus = new javax.swing.JLabel();
+    private final purplepetal.panel.tab.Settings panSettings = new purplepetal.panel.tab.Settings();
     private final javax.swing.JProgressBar prgProgress = new javax.swing.JProgressBar();
     // End of variables declaration//GEN-END:variables
     private static final Logger LOGGER = Logger.getLogger(PurplePetal.class.getName());

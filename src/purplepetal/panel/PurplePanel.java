@@ -41,6 +41,11 @@ public abstract class PurplePanel extends DataPanel {
      */
     protected static double VAT = 0;
     
+    /**
+     * Check for updates on startup.
+     */
+    public static boolean UPDATE = false;
+    
     private static final Logger LOGGER = Logger.getLogger(PurplePanel.class.getName());
 
     /**

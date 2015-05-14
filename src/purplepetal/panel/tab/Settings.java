@@ -37,15 +37,21 @@ public class Settings extends PurplePanel {
 
     @Override
     protected final void refresh() {
+        refreshOnce(true);
+    }
+    
+    private void refreshOnce(boolean first) {
         try {
             ResultSet rs = executeQuery("SELECT * FROM Settings;");
             if (rs.next()) {
                 VAT = rs.getDouble("VAT") / 100;
                 txtVAT.setText(Double.toString(VAT * 100));
+                UPDATE = rs.getBoolean("CheckUpdates");
             } else {
-                VAT = 0.2;
-                txtVAT.setText("20");
-                btnSaveActionPerformed(null);
+                executeUpdate("INSERT INTO Settings (VAT, CheckUpdates) VALUES (20, 0);");
+                if (first) {
+                    refreshOnce(false);
+                }
             }
         } catch (SQLException ex) {
             error(ex);
@@ -96,6 +102,11 @@ public class Settings extends PurplePanel {
         });
 
         chkUpdates.setText("Check for updates on start up");
+        chkUpdates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkUpdatesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panSettingsLayout = new javax.swing.GroupLayout(panSettings);
         panSettings.setLayout(panSettingsLayout);
@@ -168,24 +179,49 @@ public class Settings extends PurplePanel {
     }//GEN-LAST:event_btnPlantTypesActionPerformed
 
     private void btnUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatesActionPerformed
+        double version = checkUpdates();
+        if (version > 0) {
+            updatePrompt(version);
+        } else {
+            JOptionPane.showMessageDialog(this, "Your software is up to date.", "Version check", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUpdatesActionPerformed
+
+    /**
+     * Ask user to update.
+     * @param version
+     */
+    public void updatePrompt(double version) {
+        int response = JOptionPane.showConfirmDialog(this, "A new version is available, do you want to download it?", "Version check", JOptionPane.YES_NO_OPTION);
+        if (response == JOptionPane.YES_OPTION) {
+            try {
+                FileUtils.copyURLToFile(new URL(JAR_URL), new File(String.format("PurplePetal-%01.3f.jar", version)));
+                JOptionPane.showMessageDialog(this, "New version downloaded, restart the software to enable.", "Version check", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                error(ex);
+            }
+        }
+    }
+    
+    /**
+     * Check if new updates are available.
+     * @return
+     */
+    public double checkUpdates() {
+        double version = 0;
         try {
-            double version = Double.parseDouble(new BufferedReader(new InputStreamReader(new URL(VERSION_URL).openStream())).readLine());
-            if (version > PurplePetal.getVersion()) {
-                int response = JOptionPane.showConfirmDialog(this, "A new version is available, do you want to download it?", "Version check", JOptionPane.YES_NO_OPTION);
-                if (response == JOptionPane.YES_OPTION) {
-                    FileUtils.copyURLToFile(new URL(JAR_URL), new File(String.format("PurplePetal-%01.3f.jar", version)));
-                    JOptionPane.showMessageDialog(this, "New version downloaded, restart the software to enable.", "Version check", JOptionPane.INFORMATION_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Your software is up to date.", "Version check", JOptionPane.INFORMATION_MESSAGE);
+            double newVersion = Double.parseDouble(new BufferedReader(new InputStreamReader(new URL(VERSION_URL).openStream())).readLine());
+            if (newVersion > PurplePetal.getVersion()) {
+                version = newVersion;
             }
         } catch (MalformedURLException ex) {
             error(ex);
         } catch (IOException ex) {
             error(ex);
         }
-    }//GEN-LAST:event_btnUpdatesActionPerformed
-
+        return version;
+    }
+    
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         String vatText = txtVAT.getText();
         int vatVal = 0;
@@ -196,6 +232,12 @@ public class Settings extends PurplePanel {
         String query = String.format("UPDATE Settings SET VAT=%d;", vatVal);
         executeUpdate(query);
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void chkUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUpdatesActionPerformed
+        UPDATE = chkUpdates.isSelected();
+        String query = String.format("UPDATE Settings SET VAT=%d;", (UPDATE ? 1 : 0));
+        executeUpdate(query);
+    }//GEN-LAST:event_chkUpdatesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
