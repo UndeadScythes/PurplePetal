@@ -172,6 +172,8 @@ public class Plants extends PurplePanel {
 
         labStock.setText("Total Stock");
 
+        txtStock.setEditable(false);
+
         lstEntries.setModel(mdlEntries);
         scrEntries.setViewportView(lstEntries);
 
