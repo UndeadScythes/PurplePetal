@@ -719,7 +719,7 @@ public class Diary extends PurplePanel {
             executeUpdate(query);
         } else {
             int plant = comboGetSelection(cmbPlant).getKey();
-            String query = String.format("INSERT INTO Diary (PlantREF, Date, Bought, Delivered, Lost) VALUES (" +
+            String query = String.format("INSERT INTO PlantDiary (PlantREF, Date, Bought, Delivered, Lost) VALUES (" +
                 "%d, '%s', %d, %d, %d);", plant, date.format(dtf), bought, delivered, lost);
             executeUpdate(query);
         }
@@ -778,11 +778,12 @@ public class Diary extends PurplePanel {
                 Pair pair = new Pair(rs.getInt(type.getRef()), rs.getString(type.getSort()));
                 switch (type) {
                     case PLANT:
-                        int plantCount = rs.getInt("Bought") - rs.getInt("Lost");
+                        int plantCount = rs.getInt("Bought")  + rs.getInt("Delivered") - rs.getInt("Lost");
                         mdlEntries.addElement(new Entry(new Part(pair, plantCount), type));
                         break;
                     case ITEM:
-                        mdlEntries.addElement(new Entry(new Part(pair, rs.getInt("Bought")), type));
+                        int itemCount = rs.getInt("Bought") + rs.getInt("Delivered");
+                        mdlEntries.addElement(new Entry(new Part(pair, itemCount), type));
                         break;
                     case PRODUCT:
                         int prodCount = rs.getInt("PottedOn") - rs.getInt("Sold");

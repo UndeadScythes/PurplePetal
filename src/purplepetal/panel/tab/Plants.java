@@ -11,6 +11,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import purplepetal.Pair;
+import purplepetal.Part;
 import purplepetal.panel.PurplePanel;
 
 /**
@@ -21,6 +22,7 @@ import purplepetal.panel.PurplePanel;
 @SuppressWarnings("serial")
 public class Plants extends PurplePanel {
     private final DefaultListModel<Pair> mdlPlants = new DefaultListModel<>();
+    private final DefaultListModel<Part> mdlEntries = new DefaultListModel<>();
     private final DocumentListener updateExVAT = new DocumentListener() {
         @Override
         public void insertUpdate(DocumentEvent e) {
@@ -49,8 +51,9 @@ public class Plants extends PurplePanel {
 
     @Override
     protected void clear() {
-        clearFields(lstPlants);
-        clearFields(txtName, txtLatin, txtPrice, txtTraySize);
+        clearFields(lstPlants, lstEntries);
+        mdlEntries.clear();
+        clearFields(txtName, txtLatin, txtPrice, txtTraySize, txtStock);
         clearFields(cmbSupplier, cmbType);
     }
 
@@ -85,6 +88,11 @@ public class Plants extends PurplePanel {
         javax.swing.JButton btnCalc = new javax.swing.JButton();
         javax.swing.JLabel labTraySize = new javax.swing.JLabel();
         txtTraySize = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        javax.swing.JLabel labStock = new javax.swing.JLabel();
+        txtStock = new javax.swing.JTextField();
+        javax.swing.JScrollPane scrEntries = new javax.swing.JScrollPane();
+        lstEntries = new javax.swing.JList<Part>();
 
         spl1.setDividerLocation(250);
 
@@ -162,56 +170,70 @@ public class Plants extends PurplePanel {
 
         labTraySize.setText("Tray Size");
 
+        labStock.setText("Total Stock");
+
+        lstEntries.setModel(mdlEntries);
+        scrEntries.setViewportView(lstEntries);
+
         javax.swing.GroupLayout panDetailsLayout = new javax.swing.GroupLayout(panDetails);
         panDetails.setLayout(panDetailsLayout);
         panDetailsLayout.setHorizontalGroup(
             panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(sep1)
+            .addComponent(jSeparator1)
             .addGroup(panDetailsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrEntries)
                     .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(labTraySize, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labSupplier, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                            .addComponent(labLatin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(panDetailsLayout.createSequentialGroup()
-                                .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labPound1))
-                            .addComponent(labName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panDetailsLayout.createSequentialGroup()
-                                .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnNewType))
-                            .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtLatin, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cmbSupplier, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE))
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panDetailsLayout.createSequentialGroup()
                                 .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtTraySize, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPrice, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addComponent(labExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(labPound2)
+                                    .addComponent(labTraySize, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labSupplier, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                    .addComponent(labLatin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(panDetailsLayout.createSequentialGroup()
+                                        .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(labPound1))
+                                    .addComponent(labName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panDetailsLayout.createSequentialGroup()
+                                        .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnNewType))
+                                    .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(txtLatin, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cmbSupplier, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE))
+                                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panDetailsLayout.createSequentialGroup()
+                                        .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(txtTraySize, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtPrice, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(labExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(labPound2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtExVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnCalc))))
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCalc))))
-                    .addGroup(panDetailsLayout.createSequentialGroup()
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnCancel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panDetailsLayout.createSequentialGroup()
+                                .addComponent(labStock, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panDetailsLayout.setVerticalGroup(
             panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,7 +276,15 @@ public class Plants extends PurplePanel {
                     .addComponent(btnCancel)
                     .addComponent(btnDelete)
                     .addComponent(btnNew))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labStock)
+                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrEntries, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         spl1.setRightComponent(panDetails);
@@ -279,16 +309,39 @@ public class Plants extends PurplePanel {
     private void lstPlantsValueChanged(ListSelectionEvent evt) {//GEN-FIRST:event_lstPlantsValueChanged
         if (!lstPlants.isSelectionEmpty()) {
             try {
-                ResultSet rs = getEntry(lstPlants.getSelectedValue().getKey());
+                int id = lstPlants.getSelectedValue().getKey();
+                ResultSet rs = getEntry(id);
+                int traySize = 0;
                 while (rs.next()) {
                     txtName.setText(rs.getString("CommonName"));
                     txtLatin.setText(rs.getString("LatinName"));
                     comboSelectKey(cmbSupplier, rs.getInt("SupplierREF"));
                     comboSelectKey(cmbType, rs.getInt("TypeREF"));
                     txtPrice.setText(rs.getString("Price"));
-                    txtTraySize.setText(rs.getString("TraySize"));
+                    traySize = rs.getInt("TraySize");
+                    txtTraySize.setText(Integer.toString(traySize));
                     updateExVAT();
                 }
+                String query = String.format("SELECT * FROM PlantDiary WHERE PlantREF=%d;", id);
+                rs = executeQuery(query);
+                int stock = 0;
+                mdlEntries.clear();
+                while (rs.next()) {
+                    int bought = rs.getInt("Bought");
+                    int delivered = rs.getInt("Delivered");
+                    int lost = rs.getInt("Lost");
+                    if (bought > 0) {
+                        mdlEntries.addElement(new Part(new Pair(id, rs.getString("Date") + " Bought"), bought));
+                    }
+                    if (delivered > 0) {
+                        mdlEntries.addElement(new Part(new Pair(id, rs.getString("Date") + " Delivered"), delivered));
+                    }
+                    if (lost > 0) {
+                        mdlEntries.addElement(new Part(new Pair(id, rs.getString("Date") + " Lost"), lost));
+                    }
+                    stock += delivered * traySize - lost;
+                }
+                setFields(Integer.toString(stock), txtStock);
             } catch (SQLException ex) {
                 error(ex);
             }
@@ -305,7 +358,12 @@ public class Plants extends PurplePanel {
         values.put("LatinName", wrap(txtLatin.getText()));
         values.put("SupplierREF", comboGetSelection(cmbSupplier).getKeyString());
         values.put("TypeREF", comboGetSelection(cmbType).getKeyString());
-        values.put("Price", txtPrice.getText());
+        String textPrice = txtPrice.getText();
+        if (textPrice.isEmpty()) {
+            values.put("Price", "0");
+        } else {
+            values.put("Price", textPrice);
+        }
         values.put("TraySize", txtTraySize.getText());
         if (lstPlants.isSelectionEmpty()) {
             newEntry(values);
@@ -371,11 +429,14 @@ public class Plants extends PurplePanel {
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<Pair> cmbSupplier;
     private javax.swing.JComboBox<Pair> cmbType;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JList<Part> lstEntries;
     private javax.swing.JList<Pair> lstPlants;
     private javax.swing.JTextField txtExVAT;
     private javax.swing.JTextField txtLatin;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtTraySize;
     // End of variables declaration//GEN-END:variables
     private static final Logger LOGGER = Logger.getLogger(Plants.class.getName());
