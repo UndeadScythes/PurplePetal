@@ -3,3 +3,6 @@ dist/lib
 *.db
 *.ini
 nb*
+/dist/
+*.csv
+*.dia~
