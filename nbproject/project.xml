@@ -13,7 +13,12 @@
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1"/>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>accessor</word>
             <word>color</word>
+            <word>completable</word>
+            <word>Init</word>
+            <word>keyable</word>
+            <word>popup</word>
             <word>popups</word>
             <word>Throwables</word>
             <word>whos</word>
