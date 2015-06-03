@@ -52,19 +52,19 @@ public abstract class PurplePanel extends JPanel {
      */
     protected static final DBStep plantTypesDB = new DBStep("PlantType", "PlantTypeID", "Description", "Description");
 
-    private static double VAT = 0;
+    private static int VAT = 0;
 
     /**
      * @return the VAT
      */
-    public static double getVAT() {
+    public static int getVAT() {
         return VAT;
     }
 
     /**
      * @param aVAT the VAT to set
      */
-    public static void setVAT(double aVAT) {
+    public static void setVAT(int aVAT) {
         VAT = aVAT;
     }
 

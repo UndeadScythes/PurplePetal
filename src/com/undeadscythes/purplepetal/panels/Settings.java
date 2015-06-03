@@ -1,5 +1,8 @@
 package com.undeadscythes.purplepetal.panels;
 
+import com.undeadscythes.purplepetal.frames.PurpleFrame;
+import com.undeadscythes.purplepetal.keyables.Pair;
+import com.undeadscythes.purplepetal.utilities.DBStep;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,11 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
-import com.undeadscythes.purplepetal.frames.PurpleFrame;
-import com.undeadscythes.purplepetal.keyables.Pair;
-import com.undeadscythes.purplepetal.panels.PurplePanel;
-import com.undeadscythes.purplepetal.panels.PurplePanel;
-import com.undeadscythes.purplepetal.utilities.DBStep;
 
 /**
  * Methods to change settings and edit some features.
@@ -36,13 +34,13 @@ public class Settings extends PurplePanel {
     public Settings() {
         super ();
         initComponents();
+        refresh();
         if (updateOnBoot) {
             double newVersion = checkUpdates();
             if (newVersion > 0) {
                 updatePrompt(newVersion);
             }
         }
-        refresh();
     }
 
     private void refresh() {
@@ -53,9 +51,10 @@ public class Settings extends PurplePanel {
         try {
             ResultSet rs = DBStep.executeQuery("SELECT * FROM Settings;");
             if (rs.next()) {
-                setVAT(rs.getDouble("VAT") / 100);
-                txtVAT.setText(Double.toString(getVAT() * 100));
+                setVAT(rs.getInt("VAT"));
+                txtVAT.setText(Integer.toString(getVAT()));
                 updateOnBoot = rs.getBoolean("CheckUpdates");
+                chkUpdates.setSelected(updateOnBoot);
             } else {
                 DBStep.executeUpdate("INSERT INTO Settings (VAT, CheckUpdates) VALUES (20, 0);");
                 if (first) {
@@ -207,14 +206,14 @@ public class Settings extends PurplePanel {
         if (!vatText.isEmpty()) {
             vatVal = Integer.parseInt(vatText);
         }
-        setVAT(vatVal / 100.0);
+        setVAT(vatVal);
         String query = String.format("UPDATE Settings SET VAT=%d;", vatVal);
         DBStep.executeUpdate(query);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void chkUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUpdatesActionPerformed
         updateOnBoot = chkUpdates.isSelected();
-        String query = String.format("UPDATE Settings SET VAT=%d;", (updateOnBoot ? 1 : 0));
+        String query = String.format("UPDATE Settings SET CheckUpdates=%d;", (updateOnBoot ? 1 : 0));
         DBStep.executeUpdate(query);
     }//GEN-LAST:event_chkUpdatesActionPerformed
 
