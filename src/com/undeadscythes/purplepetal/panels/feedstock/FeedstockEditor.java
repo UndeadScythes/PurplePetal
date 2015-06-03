@@ -81,7 +81,7 @@ public class FeedstockEditor extends FeedstockPanel {
         if (!exText.isEmpty()) {
             exVAT = Double.parseDouble(exText);
         }
-        double incVAT = exVAT / (1.0 + getVAT());
+        double incVAT = exVAT * (1.0 + getVAT() / 100.0);
         txtPrice.setText(String.format("%.2f", incVAT));
     }
     
@@ -91,7 +91,7 @@ public class FeedstockEditor extends FeedstockPanel {
         if (!incText.isEmpty()) {
             incVAT = Double.parseDouble(incText);
         }
-        double exVAT = incVAT * (1.0 + getVAT());
+        double exVAT = incVAT / (1.0 + getVAT() / 100.0);
         txtExVAT.setText(String.format("%.2f", exVAT));
     }
 
@@ -121,7 +121,7 @@ public class FeedstockEditor extends FeedstockPanel {
 
         labPackSize.setText("Pack Size");
 
-        labExVAT.setText("Inc. VAT (£)");
+        labExVAT.setText("Ex. VAT (£)");
 
         btnCalc.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         btnCalc.setText("Calc");
