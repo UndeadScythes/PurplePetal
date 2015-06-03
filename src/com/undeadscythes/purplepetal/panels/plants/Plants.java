@@ -33,7 +33,7 @@ public class Plants extends PurpleAccessPanel {
 
     @Override
     protected KeyedPurplePanel getEditorPanel(int key) throws SQLException {
-        return new PlantEditor(this);
+        return new PlantEditor(this, key);
     }
 
     @Override
