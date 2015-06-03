@@ -32,7 +32,7 @@ public class Suppliers extends PurpleAccessPanel {
 
     @Override
     protected KeyedPurplePanel getEditorPanel(int key) throws SQLException {
-        return new SupplierEditor(this);
+        return new SupplierEditor(this, key);
     }
 
     @Override

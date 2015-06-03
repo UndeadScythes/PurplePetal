@@ -1,5 +1,6 @@
 package com.undeadscythes.purplepetal.panels.plants;
 
+import com.undeadscythes.purplepetal.db.Plant;
 import com.undeadscythes.purplepetal.keyables.Pair;
 import com.undeadscythes.purplepetal.utilities.DBStep;
 import com.undeadscythes.purplepetal.utilities.Swingers;
@@ -72,14 +73,12 @@ public class PlantEditor extends PlantPanel {
     private void populate() throws SQLException {
         ResultSet rs = db.getEntry(plantID);
         while (rs.next()) {
-            String latinName = rs.getString("LatinName");
-            if (!latinName.isEmpty()) {
-                latinName = String.format("(%s)", latinName);
-            }
-            String price = String.format("%d @ £%.2f", rs.getInt("TraySize"), rs.getFloat("Price"));
-            Swingers.setText(String.format("%s %s", rs.getString("CommonName"), latinName), txtName);
+            txtLatin.setText(rs.getString(Plant.LATIN.toString()));
+            txtName.setText(rs.getString("CommonName"));
+            txtPrice.setText(Float.toString(rs.getFloat("Price")));
+            txtTraySize.setText(Integer.toString(rs.getInt("TraySize")));
             Swingers.setSelectedItem(cmbSupplier, rs.getInt("SupplierREF"));
-            Swingers.setText(price, txtPrice);
+            Swingers.setSelectedItem(cmbType, rs.getInt("TypeREF"));
         }
     }
     

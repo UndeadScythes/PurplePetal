@@ -45,6 +45,8 @@ public class NewComponent extends PurplePanel {
         javax.swing.JLabel labQuantity = new javax.swing.JLabel();
         cmbSelection = new javax.swing.JComboBox<Pair>();
 
+        txtQuantity.setText("1");
+
         labQuantity.setText("Quantity:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -52,10 +54,11 @@ public class NewComponent extends PurplePanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(labQuantity)
+                .addComponent(labQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtQuantity))
-            .addComponent(cmbSelection, 0, 167, Short.MAX_VALUE)
+                .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(cmbSelection, 0, 250, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

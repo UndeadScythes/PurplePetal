@@ -34,6 +34,14 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
           </AuxValues>
         </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="itmEdit">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Edit"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itmEditActionPerformed"/>
+          </Events>
+        </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="itmRefresh">
           <Properties>
             <Property name="text" type="java.lang.String" value="Refresh"/>
@@ -85,12 +93,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="spl1" alignment="0" pref="139" max="32767" attributes="0"/>
+          <Component id="spl1" alignment="0" pref="555" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="spl1" alignment="0" pref="31" max="32767" attributes="0"/>
+          <Component id="spl1" alignment="0" pref="406" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -120,12 +128,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrList" alignment="0" pref="23" max="32767" attributes="0"/>
+                  <Component id="scrList" alignment="0" pref="249" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrList" alignment="0" pref="29" max="32767" attributes="0"/>
+                  <Component id="scrList" alignment="0" pref="404" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

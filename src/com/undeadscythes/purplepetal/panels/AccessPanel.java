@@ -158,6 +158,12 @@ public abstract class AccessPanel extends PurplePanel {
     protected abstract void newEntry();
 
     /**
+     * Edit an existing entry.
+     * @param key
+     */
+    protected abstract void editEntry(int key);
+    
+    /**
      * Refresh the list.
      */
     protected abstract void refresh();
@@ -182,6 +188,7 @@ public abstract class AccessPanel extends PurplePanel {
         itmImport = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator itmSep1 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem itmNew = new javax.swing.JMenuItem();
+        itmEdit = new javax.swing.JMenuItem();
         javax.swing.JMenuItem itmRefresh = new javax.swing.JMenuItem();
         itmSep2 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem itmDelete = new javax.swing.JMenuItem();
@@ -210,6 +217,14 @@ public abstract class AccessPanel extends PurplePanel {
             }
         });
         mnuListMenu.add(itmNew);
+
+        itmEdit.setText("Edit");
+        itmEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmEditActionPerformed(evt);
+            }
+        });
+        mnuListMenu.add(itmEdit);
 
         itmRefresh.setText("Refresh");
         itmRefresh.addActionListener(new java.awt.event.ActionListener() {
@@ -252,11 +267,11 @@ public abstract class AccessPanel extends PurplePanel {
         panList.setLayout(panListLayout);
         panListLayout.setHorizontalGroup(
             panListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrList, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+            .addComponent(scrList, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
         );
         panListLayout.setVerticalGroup(
             panListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrList, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+            .addComponent(scrList, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
         );
 
         spl1.setLeftComponent(panList);
@@ -291,11 +306,11 @@ public abstract class AccessPanel extends PurplePanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(spl1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+            .addComponent(spl1, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(spl1, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+            .addComponent(spl1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -330,8 +345,13 @@ public abstract class AccessPanel extends PurplePanel {
     private void lstListMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstListMouseReleased
         lstList.showPopup(evt);
     }//GEN-LAST:event_lstListMouseReleased
+
+    private void itmEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmEditActionPerformed
+        editEntry(Swingers.getSelectedKey(lstList));
+    }//GEN-LAST:event_itmEditActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itmEdit;
     private javax.swing.JMenuItem itmImport;
     private javax.swing.JPopupMenu.Separator itmSep2;
     private javax.swing.JSeparator jSeparator1;

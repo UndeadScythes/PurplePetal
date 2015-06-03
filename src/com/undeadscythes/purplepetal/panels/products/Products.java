@@ -51,7 +51,7 @@ public class Products extends PurpleAccessPanel {
 
     @Override
     protected KeyedPurplePanel getEditorPanel(int key) throws SQLException {
-        return new ProductEditor(this);
+        return new ProductEditor(this, key);
     }
 
     @Override

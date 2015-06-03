@@ -32,7 +32,7 @@ public class Feedstock extends PurpleAccessPanel {
 
     @Override
     protected KeyedPurplePanel getEditorPanel(int key) throws SQLException {
-        return new FeedstockEditor(this);
+        return new FeedstockEditor(this, key);
     }
 
     @Override

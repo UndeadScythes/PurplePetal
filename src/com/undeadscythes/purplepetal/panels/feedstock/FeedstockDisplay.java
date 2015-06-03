@@ -151,7 +151,7 @@ public class FeedstockDisplay extends FeedstockPanel {
         );
         panOrdersLayout.setVerticalGroup(
             panOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrOrders, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+            .addComponent(scrOrders, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -160,7 +160,7 @@ public class FeedstockDisplay extends FeedstockPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(labSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
+            .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
             .addComponent(labStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panOrders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );

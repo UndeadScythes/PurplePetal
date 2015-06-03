@@ -169,13 +169,13 @@ public class PlantDisplay extends PlantPanel {
         );
         panOrdersLayout.setVerticalGroup(
             panOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrOrders, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+            .addComponent(scrOrders, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
         );
 
         labLost.setText("Total lost: <Lost>");
 
         btnLost.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        btnLost.setText("+");
+        btnLost.setText("Record Loss");
         btnLost.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLostActionPerformed(evt);
@@ -188,7 +188,7 @@ public class PlantDisplay extends PlantPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panOrders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(labStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(labNames, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+            .addComponent(labNames, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
             .addComponent(labType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(labSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

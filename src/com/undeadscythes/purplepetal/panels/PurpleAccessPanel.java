@@ -26,6 +26,11 @@ public abstract class PurpleAccessPanel extends AccessPanel {
         refresh();
     }
 
+    @Override
+    public final void refresh() {
+        db.refreshLists(listModel, getComboBoxModel());
+    }
+    
     /**
      * Get a new sub panel.
      * @param key
@@ -69,15 +74,23 @@ public abstract class PurpleAccessPanel extends AccessPanel {
             error(ex);
         }
     }
+    
+    /**
+     * Edit an existing entry.
+     * @param key
+     */
+    @Override
+    protected final void editEntry(int key) {
+        try {
+            loadPanel(getEditorPanel(key));
+        } catch (SQLException ex) {
+            error(ex);
+        }
+    }
 
     @Override
     protected final ListModel<Pair> getListModel() {
         return listModel;
-    }
-
-    @Override
-    public final void refresh() {
-        db.refreshLists(listModel, getComboBoxModel());
     }
 
     @Override

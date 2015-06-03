@@ -145,13 +145,13 @@ public class ProductDisplay extends ProductPanel {
         lstComponents = new com.undeadscythes.purplepetal.lists.ListWithPopup<TypedPart>();
         labCost = new javax.swing.JLabel();
         labProfit = new javax.swing.JLabel();
-        btnSetProfit = new javax.swing.JButton();
-        btnSetPrice = new javax.swing.JButton();
         btnSetTarget = new javax.swing.JButton();
         btnSetMaxTarget = new javax.swing.JButton();
         labTotalCost = new javax.swing.JLabel();
         labTotalProfit = new javax.swing.JLabel();
         labCompletion = new javax.swing.JLabel();
+        btnSetPrice = new javax.swing.JButton();
+        btnSetProfit = new javax.swing.JButton();
 
         itmAddPlant.setText("Add plant");
         itmAddPlant.addActionListener(new java.awt.event.ActionListener() {
@@ -201,46 +201,24 @@ public class ProductDisplay extends ProductPanel {
 
         labProfit.setText("Profit: £<Profit>");
 
-        btnSetProfit.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        btnSetProfit.setText("Set Profit");
-        btnSetProfit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSetProfitActionPerformed(evt);
-            }
-        });
-
-        btnSetPrice.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        btnSetPrice.setText("Set Price");
-        btnSetPrice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSetPriceActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panComponentsLayout = new javax.swing.GroupLayout(panComponents);
         panComponents.setLayout(panComponentsLayout);
         panComponentsLayout.setHorizontalGroup(
             panComponentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrComponents)
+            .addComponent(scrComponents, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
             .addComponent(labCost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panComponentsLayout.createSequentialGroup()
                 .addComponent(labProfit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSetPrice)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSetProfit))
+                .addGap(154, 154, 154))
         );
         panComponentsLayout.setVerticalGroup(
             panComponentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panComponentsLayout.createSequentialGroup()
-                .addComponent(scrComponents, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                .addComponent(scrComponents, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labCost)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panComponentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labProfit)
-                    .addComponent(btnSetProfit)
-                    .addComponent(btnSetPrice)))
+                .addComponent(labProfit))
         );
 
         btnSetTarget.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -267,14 +245,35 @@ public class ProductDisplay extends ProductPanel {
 
         labCompletion.setText("Completion: <Completed>/<Target> (<Percent>%)");
 
+        btnSetPrice.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        btnSetPrice.setText("Set Price");
+        btnSetPrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSetPriceActionPerformed(evt);
+            }
+        });
+
+        btnSetProfit.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        btnSetProfit.setText("Set Profit");
+        btnSetProfit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSetProfitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(labTarget, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSetPrice)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSetProfit))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(labTarget, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSetTarget)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -289,7 +288,11 @@ public class ProductDisplay extends ProductPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(labName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labPrice)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labPrice)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSetProfit)
+                        .addComponent(btnSetPrice)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panComponents, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

@@ -74,21 +74,19 @@ public class Settings extends PurplePanel {
         javax.swing.JLabel labVAT = new javax.swing.JLabel();
         txtVAT = new javax.swing.JTextField();
         javax.swing.JButton btnSave = new javax.swing.JButton();
-        javax.swing.JLabel labPercent = new javax.swing.JLabel();
         javax.swing.JButton btnPlantTypes = new javax.swing.JButton();
         javax.swing.JButton btnUpdates = new javax.swing.JButton();
         chkUpdates = new javax.swing.JCheckBox();
 
-        labVAT.setText("VAT");
+        labVAT.setText("VAT (%)");
 
+        btnSave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         btnSave.setText("Save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);
             }
         });
-
-        labPercent.setText("%");
 
         btnPlantTypes.setText("Delete Plant Type");
         btnPlantTypes.addActionListener(new java.awt.event.ActionListener() {
@@ -119,20 +117,19 @@ public class Settings extends PurplePanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnUpdates, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                            .addComponent(btnPlantTypes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(chkUpdates)
+                        .addGap(92, 92, 92))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(labVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labPercent)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnUpdates, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                            .addComponent(btnPlantTypes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkUpdates)))
-                .addContainerGap(100, Short.MAX_VALUE))
+                        .addComponent(btnSave)
+                        .addGap(100, 100, 100))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,9 +144,8 @@ public class Settings extends PurplePanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labVAT)
                     .addComponent(txtVAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labPercent)
                     .addComponent(btnSave))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

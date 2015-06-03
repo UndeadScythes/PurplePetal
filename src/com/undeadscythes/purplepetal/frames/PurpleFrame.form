@@ -27,7 +27,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="title" pref="558" max="32767" attributes="0"/>
+                  <Component id="title" pref="666" max="32767" attributes="0"/>
                   <Component id="tabs" pref="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -41,7 +41,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="title" min="-2" pref="29" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="tabs" pref="350" max="32767" attributes="0"/>
+              <Component id="tabs" pref="451" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panStatus" min="-2" max="-2" attributes="0"/>
           </Group>
