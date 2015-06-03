@@ -121,7 +121,7 @@ public class FeedstockEditor extends FeedstockPanel {
 
         labPackSize.setText("Pack Size");
 
-        labExVAT.setText("Ex. VAT (£)");
+        labExVAT.setText("Inc. VAT (£)");
 
         btnCalc.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         btnCalc.setText("Calc");
